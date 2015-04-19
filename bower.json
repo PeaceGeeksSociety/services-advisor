@@ -1,0 +1,12 @@
+{
+  "name": "services-advisor",
+  "description": "Map to list services available to Syrian refugees in Jordan",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "dependencies": {
+    "angular": "1.3.x",
+    "angular-route": "~1.3.0",
+    "angular-resource": "~1.3.0"
+  }
+}
