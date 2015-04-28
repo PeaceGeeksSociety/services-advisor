@@ -43,7 +43,7 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', 'Search', function ($
         }
     });
 
-    polygonLayer = L.geoJson();
+    var polygonLayer = L.geoJson();
     map.addLayer(polygonLayer);
 
     // Match possible Activity Categories to Humanitarian Font icons.
