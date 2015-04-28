@@ -33,7 +33,7 @@ services.factory('Search', ['ServicesList', '$rootScope', function (ServicesList
     });
 
     var regionDimension = crossfilter.dimension(function (f) {
-        return f.geometry.coordinates[0] + "," + f.geometry.coordinates[1] || "";
+        return f.properties['locationName'] || undefined;
     });
 
     /** Used to get list of currently filtered services rather than re-using an existing dimension **/
@@ -48,7 +48,18 @@ services.factory('Search', ['ServicesList', '$rootScope', function (ServicesList
             categoryDimension.filter(function(service) {
                 return service == category;
             });
-            $rootScope.$emit('FILTER_CHANGED')
+            $rootScope.$emit('FILTER_CHANGED');
+        },
+        selectRegion: function (region) {
+            regionDimension.filter(function (service) {
+                return service == region;
+            });
+            $rootScope.$emit('FILTER_CHANGED');
+        },
+        clearSelects: function() {
+            categoryDimension.filter(null);
+            regionDimension.filter(null);
+            $rootScope.$emit('FILTER_CHANGED');
         },
         currResults: function () {
             return metaDimension.top(Infinity);

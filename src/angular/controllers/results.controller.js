@@ -3,11 +3,28 @@ var controllers = angular.module('controllers');
 /**
  * For the results view
  */
-controllers.controller('ResultsCtrl', ['$scope', 'Search', function ($scope, Search) {
+controllers.controller('ResultsCtrl', ['$scope', '$location', 'Search', function ($scope, $location, Search) {
     
-    // Filtered object based on the categories/regions 
-    $scope.results = Search.currResults()
-    
+    // Filtered object based on the categories/regions
+    var getFilteredResults = function ($location) {
+        var filters = $location.search();
+
+        // Start by clearing all existing searches
+        Search.clearSelects();
+
+        if (filters.region !== undefined) {
+            Search.selectRegion(filters.region)
+        }
+
+        if (filters.category !== undefined) {
+            Search.selectCategory(filters.category)
+        }
+
+        return Search.currResults();
+    };
+
+    $scope.results = getFilteredResults($location);
+
     // the methods below serves to get the key value in the object between each ng-repeat loop. 
     // The object is passed in from the view, manipulated then returned back.  
 
