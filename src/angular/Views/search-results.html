@@ -1,0 +1,56 @@
+<!-- view when clicked once a category/region is click on -->
+
+      <div data-ng-controller="ResultsCtrl">
+        <div class="row">
+          <div class="col-xs-6">
+            <button id="backButton" type="button" class="btn btn-default" href="#"
+                onclick="history.back(); return false;">
+              <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> 
+              {{ 'BACK' | translate }}
+            </button>
+          </div>          
+            <div class="col-xs-6">
+              <!-- TODO: huge hack here using global variable to be able to call map.invalidateSize() on map so it resizes -->
+            <button id="toggleMapButton" type="button" class="btn btn-default visible-xs pull-right" 
+                onclick="$('#mapContainer').toggleClass('map-hide'); map.invalidateSize();">
+              {{ 'TOGGLE_MAP' | translate }}
+            </button>
+          </div>
+        </div>
+        <div class="row">
+          <h4>{{ 'SEARCH_RESULTS' | translate }}</h4>
+          <ul class="list-group">
+
+            <div ng-repeat="result in results">
+              <a href="#" class="list-group-item" ng-href="#/services/{{result.id}}">
+                
+                <!-- location name section -->
+                <div class="row media-body">
+                  <h2 class="media-heading">{{result.properties.locationName}}: {{result.properties.activityName}}</h2>
+                  <img class="media-object pull-right" ng-src="{{getPartnerLogoUrl(result)}}" onError="this.onerror=null;this.style.display='none'">
+                </div>
+
+                <div class="row">
+
+                  <!-- hours section -->
+                  <div class="col-xs-5">
+                    <h3>{{ 'HOURS' | translate }}</h3>
+                    <p> {{ getOpeningTime(result) || 'N/A' }} - {{ getClosingTime(result) || 'N/A' }} </p>
+                  </div>
+
+                  <!-- activites detail section -->
+                  <div class="col-xs-7">
+                    <h3>{{ 'ACTIVITY_DETAILS' | translate }}</h3>
+                    <div ng-repeat="activity in getActivityDetails(result)">
+                      <p> {{ activity }}</p>
+                    </div>
+                  </div>
+                    
+                </div><!--  /row  -->
+              </a> <!-- /list-group-items -->
+            </div>
+
+          </ul>
+
+        </div>
+      </div>

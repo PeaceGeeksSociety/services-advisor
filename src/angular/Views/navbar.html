@@ -1,0 +1,25 @@
+  <nav id="searchNav" class="navbar navbar-inverse navbar-fixed-top" ng-controller="NavbarCtrl">
+    <div class="container-fluid">
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div id="navbar">
+        <div id="filterSummary" class="form-group col-xs-10 col-md-11 well">
+          <div id="filterPlaceholder">
+            <button id="filtersButton" type="button" class="btn btn-secondary pull-left" ng-click="toggleFilters();">
+              {{ 'FILTERS' | translate }}
+            </button>
+            <div class="arrow-right pull-left"></div>
+          </div>
+          <div ng-controller="FilterCtrl" id="activeFilters" class="col-xs-12 col-md-9">
+              <div ng-repeat="filter in filterSelection">
+                <button type="button" class="btn label filter-pill pull-left" ng-click="toggleSelection(filter)">{{ filter }}</button>
+              </div>
+          </div>
+        </div>
+        <div id="preferences" class="col-xs-2 col-md-1">
+          <select id="selectedLanguage" class="form-control" ng-model="selectedLanguage" ng-change="changeLanguage(selectedLanguage)">
+            <option ng-repeat="lang in languages">{{lang}}</option>
+          </select>
+        </div>
+      </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+  </nav>

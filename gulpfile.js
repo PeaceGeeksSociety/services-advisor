@@ -1,53 +1,37 @@
 var gulp = require('gulp'),
     gutil = require('gulp-util'),
+    cssmin = require('gulp-cssmin'),
     sass = require('gulp-sass'),
+    uglify = require('gulp-uglify'),
+    watchify = require('gulp-watchify'),
     source = require('vinyl-source-stream'),
-    watchify = require('watchify'),
-    pathUtil = require('path');
-
-
-var dest = path('./');
-
-gulp.task('sass', function () {
-    gulp.src('./scss/*.scss')
-        .pipe(sass())
-        .pipe(gulp.dest('./css'));
-});
+    buffer = require('vinyl-buffer');
 
 gulp.task('default', ['watch']);
 
-gulp.task('watch', ['watchify', 'sass'], function() {
-  gutil.log('running sass');
-  gulp.watch('./scss/*.scss', ['sass']);
+var isDist = false;
+gulp.task('enable-dist-mode', function() { isDist = true; });
+
+gulp.task('watch', ['browserify', 'sass'], function() {
+  gulp.watch('scss/*.scss', ['sass']);
 });
 
-gulp.task('watchify', function () {
-    var bundler = watchify('./src/index.js');
+gulp.task('dist', ['enable-dist-mode', 'browserify', 'sass']);
 
-    bundler.on('update', rebundle);
-    bundler.on('log', gutil.log);
-
-    function rebundle() {
-        var stream = bundler.bundle({ debug: true });
-
-        stream.on('error', function (err) {
-            gutil.beep();
-            gutil.log(err.message);
-        });
-
-        return stream
-            .pipe(source('app.js'))
-            .pipe(dest('/js'));
-    }
-
-    return rebundle();
+gulp.task('sass', function () {
+    var result = gulp.src('scss/*.scss')
+        .pipe(sass());
+    if (isDist) {
+      result = result.pipe(cssmin());
+    }
+    return result.pipe(gulp.dest('./css'));
 });
 
-function path() {
-    var base = pathUtil.join.apply(pathUtil, Array.prototype.slice.call(arguments, 0));
-    return function () {
-        var args = Array.prototype.slice.call(arguments, 0),
-            pieces = [base].concat(args);
-        return gulp.dest(pathUtil.join.apply(pathUtil, pieces));
-    };
-}
+gulp.task('browserify', watchify(function(watchify) {
+    var result = gulp.src('src/angular/app.js')
+        .pipe(watchify({watch:!isDist}));
+    if (isDist) {
+      result = result.pipe(buffer()).pipe(uglify());
+    }
+    return result.pipe(gulp.dest('./js'));
+}));

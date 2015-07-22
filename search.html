@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+
+<!-- This is an HTML5 boilerplate. -->
+
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="node_modules/mapbox.js/theme/style.css">
+        <link rel="stylesheet" href="css/leaflet.awesome-markers.css">
+        <link rel="stylesheet" href="humanfont/assets/css/font-humanitarian.css">
+        <link rel="stylesheet" href="node_modules/leaflet.markercluster/dist/MarkerCluster.css">
+        <link rel="stylesheet" href="node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css">
+
+
+    </head>
+
+    <body>
+        <!-- IE7 warning - maybe take this out, it's probably unhelpful in this case -->
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <nav  id="searchNav" class="navbar navbar-fixed-top">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">UNHCR Services Advisor</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <!-- <a class="navbar-brand" href="#">UNHCR</a> -->
+            </div>
+
+            <div id="navbar" class="navbar-collapse collapse">
+              <form class="navbar-form" role="search">
+                <button id="filters" type="button" class="btn btn-default navbar-btn col-xs-12 col-md-1 col-md-offset-2">Filters</button>
+                <div class="form-group col-xs-12 col-md-7">
+                  <div class="input-group">
+                    <input id="search" class="form-control" name="search" placeholder="search" autofocus="autofocus" type="text">
+                  </div>
+                </div>
+              </form>
+            </div><!--/.navbar-collapse -->
+          </div>
+        </nav>
+
+        <main role="main">
+          <section id="map" class="col-sm-7 hidden-xs"><h3 class="hide">Map</h3></section>
+          <section id="serviceList" class ="col-xs-12 col-sm-5"> 
+            <h1>UNHCR Services Advisor</h1>
+            <button id="mapButton" type="button" class="btn btn-default">
+              <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> Map
+            </button>
+            <h2>Heading 2</h2>
+            <h3>Heading 3</h3>
+            <p>
+              To find a service, select from the category or region below. Use the filter button above to further refine your search.
+            </p>
+
+            <h4>Category</h4>
+            <div class="list-group">
+              <a href="#" class="list-group-item">
+                <span class="icon glyphicon glyphicon-star-empty"></span>
+                Cras justo odio
+                <span class="badge">14</span>
+              </a>
+              <a href="#" class="list-group-item">
+                <span class="icon glyphicon glyphicon-star-empty"></span>
+                Dapibus ac facilisis in
+                <span class="badge">14</span>
+              </a>
+              <a href="#" class="list-group-item">
+                <span class="icon glyphicon glyphicon-star-empty"></span>
+                Morbi leo risus
+                <span class="badge">14</span>
+              </a>
+              <a href="#" class="list-group-item">
+                <span class="icon glyphicon glyphicon-star-empty"></span>
+                Porta ac consectetur ac
+                <span class="badge"></span>
+              </a>
+              <a href="#" class="list-group-item">
+                <span class="icon glyphicon glyphicon-star-empty"></span>
+                Vestibulum at eros
+                <span class="badge"></span>
+              </a>
+            </div>
+            <h4>Region</h4>
+            <div class="list-group">
+              <a href="#" class="list-group-item">
+                <span class="icon glyphicon glyphicon-star-empty"></span>
+                Cras justo odio
+                <span class="badge"></span>
+              </a>
+              <a href="#" class="list-group-item">
+                <span class="icon glyphicon glyphicon-star-empty"></span>
+                Dapibus ac facilisis in
+                <span class="badge"></span>
+              </a>
+              <a href="#" class="list-group-item">
+                <span class="icon glyphicon glyphicon-star-empty"></span>
+                Morbi leo risus
+                <span class="badge"></span>
+              </a>
+              <a href="#" class="list-group-item">
+                <span class="icon glyphicon glyphicon-star-empty"></span>
+                Porta ac consectetur ac
+                <span class="badge"></span>
+              </a>
+              <a href="#" class="list-group-item">
+                <span class="icon glyphicon glyphicon-star-empty"></span>
+                Vestibulum at eros
+                <span class="badge"></span>
+              </a>
+            </div>
+          </section>
+        </main>
+
+        <!-- Include jquery -->
+        <script>window.jQuery || document.write('<script src="node_modules/jquery/dist/jquery.min.js"><\/script>')</script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+        <!-- app.js is the main, browserified, minified application JS for the UNHCR map. -->
+        <script src="js/app.min.js"></script>
+
+     
+
+    </body>
+</html>

@@ -1,0 +1,824 @@
+
+/* ==========================================================================
+   UNHCR-specific
+   ========================================================================== */
+
+/* Variables */
+$dark-blue: #1B2932;
+$teal: #5ED9DB;
+$grey-medium: #E9EDEF;
+$grey-light: #F8FAFB;
+
+$grey-dark: #333333;
+$orange-dark: #d64a2b;
+$brown-light: #e6c68b;
+$header-bg-color: $grey-dark;
+
+$navbar-height: 50px;
+$checkbox-height: 30px;
+
+/** From Bootstrap **/
+$screen-xs-max: 768px;
+$screen-md-min: 992px;
+
+
+/* Basics */
+
+html,
+body,
+main
+{ height: 100%; }
+
+/* this class is added to the body once we determine our language */
+body.lang-AR {
+  direction: rtl;
+  @media (min-width: $screen-xs-max) {
+    font-size: 16px;
+    h3 {
+      font-size: 16px;
+    }
+  }
+}
+
+body {
+  font: 12px "Open Sans", "Helvetica", "Arial", sans-serif;
+  padding-top: $navbar-height; /* to compensate for fixed navbar */
+  background-color: $grey-light;
+}
+
+h1 {
+  font-size: 18px;
+  font-weight: bold;
+}
+h2 {
+  font-size: 14px;
+  font-weight: bold;
+}
+h3 {
+  font-size: 12px;
+  font-weight: light;
+  text-transform: uppercase;
+}
+
+.btn {
+  text-transform: uppercase;
+  -webkit-transition: color 0.2s;
+   -moz-transition: color 0.2s;
+    -ms-transition: color 0.2s;
+     -o-transition: color 0.2s;
+        transition: color 0.2s;
+}
+
+.btn-secondary {
+    font: 14px "Open Sans";
+    font-weight: lighter;
+    color: white;
+    background-color: $teal;
+    border-radius: 0px;
+
+    &:visited, &:active {
+      color: white;
+    }
+
+    &:hover {
+      color: black;
+    }
+}
+
+
+/* Utilities */
+.clearfix {
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
+.arrow-right {
+  width: 0; 
+  height: 0; 
+  border-top: 17px solid transparent;
+  border-bottom: 16px solid transparent;
+  border-left: 12px solid #5ED9DB;
+}
+
+#activeFilters {
+  margin-top:2px;
+  padding-left: 5px;
+}
+
+/* Header */
+#searchNav {
+  background-color: $dark-blue;
+  min-height: $navbar-height;
+
+  #filterSummary {    
+    background-color: white;
+    min-height: 40px;
+  }
+
+  .filter-pill {
+    background-color: $teal;
+    color: white;
+    text-transform: none;
+  /* overwrite Bootstrap label styling*/
+    font-size: 120%;
+    font-weight: normal;
+    line-height: normal;
+    margin-right: 5px;
+    border-radius: 15px;
+
+    &:after {
+      font-family: "FontAwesome";
+      content: "\f00d";
+      margin-left: 6px;
+    }
+
+    &:hover {
+      color: black;
+    }
+
+    &:focus {
+      padding-top: 2.9px;
+    }
+  }
+
+  #selectedLanguage {
+    font-weight: bold;
+  }
+
+
+  @media (min-width: $screen-xs-max) {
+    #navbar {
+      padding-top: 8px
+    }
+
+    #filterSummary {        
+      margin-left: -3px; /* to align with map zoom buttons */
+      /* overwrite Bootstrap well styling*/
+      margin-bottom: 5px;
+      padding: 2px;
+    }
+
+    #preferences {
+      margin-top: 5px;
+    }
+
+    #selectedLanguage {
+      margin-top: -1px;
+      margin-right: -15px;
+      min-height: 40px;
+      padding: 10px;
+      float: right;
+    }
+  } 
+
+  @media (max-width: $screen-xs-max) {
+    #filterSummary {  
+      padding: 3px 3px 0px;
+      margin: 5px 0px 5px -3px; 
+    }
+
+    #preferences {
+      margin-top: 5px;
+
+      // override padding from grid because the select box for language was squished against the filters
+      padding: 0;
+    }
+
+    #selectedLanguage {
+      min-height: 41px;
+      min-width: 45px;
+      padding: 3px;
+      width: auto;
+    }
+  }
+}
+
+/* Filters */
+#filterForm {
+  padding: 10px;
+}
+
+#filters {
+  @media (min-width: $screen-md-min) {
+    position: absolute;
+    top: 12px;
+    left: 15vw;
+    z-index: 9999;
+    background-color: white;
+    box-shadow: 0px 5px 15px rgba(0,0,0,.15);
+  }
+
+  label {
+    text-align: left;
+    font-size: 12px;
+    background-color: $grey-medium;
+    border: 2px solid $grey-light;
+
+    padding: 12px;
+
+    @media (min-width: $screen-md-min) {
+      &:nth-of-type(odd) {
+        border-right-width: 10px;
+      }
+      &:nth-of-type(even) {
+        border-left-width: 10px;
+      }
+    }    
+
+    div.pull-right {
+      margin: -10px -5px -5px;
+
+      img {
+        margin-top: -15px;
+      }
+
+      input[type=checkbox] {
+        height: $checkbox-height;
+        width: $checkbox-height;
+      }
+    }
+  }
+}
+
+.organization-label {
+  height: 50px;
+}
+.organization-logo {
+  height: 30px;
+}
+
+
+/* Map styles */
+#mapContainer {
+  height: 100%;
+  clear: both;
+  direction: ltr;
+
+  @media (max-width: $screen-md-min) {
+    height: 75%;
+
+    &.map-hide {
+      height: 0%; /* hide by setting height so that map is still loaded correctly */
+    }
+  }
+}
+
+/* Map Popup styles */
+.leaflet-popup-content {
+  font-size: 12px;
+
+  p {
+    font-size: 12px;
+    margin: 0;
+  }
+
+  h3 {
+    font-size: 14px;
+    margin: 0;
+  }
+
+  h4 {
+    font-size: 12px;
+    margin: 0;
+  }
+  > .serviceText {
+      margin: 0;
+      border-bottom: none;
+  }
+}
+
+.leaflet-popup-content .serviceText header { padding: 0 !important; }
+.leaflet-popup-content .serviceText p { margin: 2px 0 !important; }
+.leaflet-popup-content .serviceText img { width: 100px; }
+
+/* Sidebar */
+#serviceList {
+  height: 94vh; /* compensate for the scroll buttons */
+  overflow-y: scroll;
+
+  div.col-xs-5 {
+    background-color: white;
+    padding: 5px;
+
+    &:first-child {
+      border-left: 20px solid $grey-medium;
+      border-right: 20px solid $grey-medium;
+    }
+    &:last-child {
+      border-right: 20px solid $grey-medium;
+      margin-bottom: 10px;
+    }
+  }
+
+   div.col-xs-7 {
+    background-color: white;
+    padding: 5px;
+
+    &:first-child {
+      border-left: 20px solid $grey-medium;
+    }
+    &:last-child {
+      border-right: 20px solid $grey-medium;
+      margin-bottom: 10px;
+    }
+  }
+
+  .list-group {
+    :first-child, 
+    :last-child {  
+      border-radius: 0px;
+      margin-top: 5px;
+    }
+  }
+  .list-group-item {
+    background-color: $grey-medium;
+    border: 1px solid $grey-light;
+    font-weight: bold;
+    color: black;
+    cursor: pointer;
+
+    .icon {
+      padding: 3px;
+    }
+
+    .badge {
+    background: none;
+    font-weight: normal;
+    color: black;
+    }
+
+    .media-heading{
+      margin-bottom: 5px;
+      padding: 5px 5px 0px 5px;
+    }
+
+    .media-object {
+      display: block;
+      padding-right: 5px;
+    }
+
+
+  }
+
+  button {
+    margin: 25px 0px 20px -15px;
+    padding: 7px 15px 6px 10px;
+    font-size: 1em;
+    border: 1px solid $grey-medium;
+  }
+
+  button:hover{
+    background-color: $grey-medium;
+  }
+
+  .instructions {
+    margin-top: 20px;
+  }
+}
+
+
+
+.service-details-partner-logo {
+  float:right !important;
+  margin:1em !important;
+}
+
+#serviceDetails {
+  background-color: $grey-medium;
+  border-radius: 0px;
+  border: 0px;
+  padding: 10px;
+
+  .service-details-container-row-1 {
+    padding:5px; 
+    height:100px;
+  }
+
+  div.col-xs-6 {
+    background-color: white;
+    padding: 5px;
+
+    &:first-child {
+      border-right: 10px solid $grey-medium;
+    }
+    &:last-child {
+      border-left: 10px solid $grey-medium;
+      margin-bottom: 20px;
+    }
+  }
+
+  .row {
+    margin: 0px;
+    background-color: $grey-medium;
+  }  
+
+  table {
+    margin-top:1em;
+    margin-bottom: 0px; 
+
+    td {
+      border-top: 0px;
+
+      &:first-child {
+        font-weight: bold;
+      }
+    }
+
+    tbody>tr:nth-of-type(odd) {
+      background-color: white;
+    }
+  }
+
+  div {
+    padding-top:10px;
+    text-align:center;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Toggle styles */
+#map-list-toggler {
+  border: 1px solid darken($orange-dark, 20%);
+  font-size: 14px;
+  position: absolute;
+  top: 7px;
+  right: 10px;
+  cursor: pointer;
+
+  span {
+    display: inline-block;
+    padding: 1px 8px;
+    margin: 0;
+    background-color: #fff;
+    color: $orange-dark;
+
+    &.active {
+      background-color: $orange-dark;
+      color: #fff;
+
+      &:hover { cursor: default; }
+    }
+  }
+}
+
+.advancedToggler {
+  cursor: pointer;
+  position: absolute;
+  top: 130px;
+  right: 20px;
+}
+
+/* List styles */
+#list {
+  display: none;
+}
+
+.serviceText {
+  border-bottom: 1px solid darken($grey-medium, 20%);
+
+  &.expand {
+    .content {
+      display: block;
+    }
+  }
+
+  header {
+    padding: 10px;
+
+    &:hover { cursor: pointer; }
+
+    * { margin: 0; }
+    > img {
+        float: right;
+        margin: 0 10px 0 10px;
+    }
+    > h3 {
+      display: inline;
+    }
+    > a {
+      margin-left: 6px;
+    }
+  }
+
+  .content {
+    display: none;
+    padding: 0 10px 10px 10px;
+
+    > p {
+      margin: 2px 0;
+    }
+  }
+  .comments {
+    margin-top: 10px;
+  }
+}
+
+/* Marker styles */
+.awesome-marker i {
+  font-size: 24px !important;
+  margin: 2px 0 0 8px !important;
+}
+
+
+
+/* Filter Togglers */
+ul.filter-togglers {
+  font-size: 13px;
+  font-weight: bold;
+  margin: 0 100px 0 0;
+  padding: 0 5px;
+
+  li {
+    float: left;
+    list-style: none outside none;
+  }
+
+  a {
+    color: $grey-medium;
+    display: block;
+    padding: 5px;
+    text-decoration: none;
+
+    &:hover,
+    &.active {
+      color: $grey-dark;
+    }
+  }
+}
+
+/* Filter contents */
+.filter-contents {
+  display: none;
+}
+
+.filter,
+.advanced-search {
+  border-bottom: 1px solid $header-bg-color - #101010;
+  border-top: 1px solid $header-bg-color + #111111;
+  padding: 10px;
+}
+
+/* Activity Category */
+#activityName {
+
+  label {
+    display: inline-block;
+    margin: 5px 0;
+    position: relative;
+    width: 290px;
+  }
+
+  .filter-label-value {
+    margin-left: 23px;
+  }
+
+  .glyph {
+    font-family: FontAwesome;
+    font-weight: normal;
+    font-style: normal;
+    text-decoration: inherit;
+    -webkit-font-smoothing: antialiased;
+
+    font-size: 1.5em;
+    left: 15px;
+    position: absolute;
+    top: -0.01em;
+    width: 18px;
+    height: 18px;
+    line-height: 18px;
+    background-color: white;
+  }
+}
+#activityname-filter-value-all span.glyph { background-color: transparent; }
+#activityname-filter-value-basic-needs span.glyph:before,
+#activityname-filter-value-distribution-for-basic-needs--nfi- span.glyph:before {
+    content: "\f412"; color: #f96a1b;
+}
+#activityname-filter-value-protection-services span.glyph:before,
+#activityname-filter-value-child-protection span.glyph:before,
+#activityname-filter-value-community-focused-protection span.glyph:before,
+#activityname-filter-value-protection span.glyph:before,
+#activityname-filter-value-case-focused-mhpss span.glyph:before,
+#activityname-filter-value-community-focused-mhpss-and-protection span.glyph:before,
+#activityname-filter-value-general-mhpss---protection span.glyph:before,
+#activityname-filter-value-refugee-right span.glyph:before {
+    content: "\f368";
+    color: #1f497d;
+}
+#activityname-filter-value-food-security span.glyph:before,
+#activityname-filter-value-maintain-food-security span.glyph:before,
+#activityname-filter-value-nutritional-status-impovement span.glyph:before,
+#activityname-filter-value-improve-nutritional-status span.glyph:before {
+    content: "\f366";
+    color: #006600;
+}
+#activityname-filter-value-financial-assistance span.glyph:before,
+#activityname-filter-value-need-coverage span.glyph:before {
+    content: "\f32a";
+    color: #a48658;
+}
+#activityname-filter-value-shelter-rehabilitation span.glyph:before,
+#activityname-filter-value-shelter-rehabilitation-jordanians---syrians span.glyph:before,
+#activityname-filter-value-cash-for-rent span.glyph:before,
+#activityname-filter-value-economic-capacity-of-syrian-refugee-families span.glyph:before {
+    content: "\f363";
+    color: #989aac;
+}
+#activityname-filter-value-education span.glyph:before,
+#activityname-filter-value-education-opportunities span.glyph:before,
+#activityname-filter-value-access-to-appropriate-opportunities span.glyph:before,
+#activityname-filter-value-education-for-children-with-disabilities span.glyph:before,
+#activityname-filter-value-support-for-learning--environment span.glyph:before,
+#activityname-filter-value-learning--environment span.glyph:before {
+    content: "\f362";
+    color: #c00000;
+}
+#activityname-filter-value-health span.glyph:before,
+#activityname-filter-value-health-services span.glyph:before,
+#activityname-filter-value-hygiene---hygiene-products-delivery span.glyph:before,
+#activityname-filter-value-psychosocial---mental-health span.glyph:before,
+#activityname-filter-value-community-care---child-health span.glyph:before,
+#activityname-filter-value-community-care---environmental-health span.glyph:before,
+#activityname-filter-value-community-care---nutrition span.glyph:before,
+#activityname-filter-value-community-care---sti---hiv-aids span.glyph:before,
+#activityname-filter-value-primary-care---child-health span.glyph:before,
+#activityname-filter-value-primary-care---non-communicable-diseases span.glyph:before,
+#activityname-filter-value-primary-care---nutrition span.glyph:before,
+#activityname-filter-value-primary-care---sti---hiv-aids span.glyph:before,
+#activityname-filter-value-secondary---tertiary-care---non-communicable span.glyph:before {
+    content: "\f364";
+    color: #08a1d9;
+}
+#activityname-filter-value-wash span.glyph:before,
+#activityname-filter-value-drainage span.glyph:before,
+#activityname-filter-value-hygiene-promotion---hygiene-products-delivery span.glyph:before,
+#activityname-filter-value-sanitation-protection-from-the-spread-of-dise span.glyph:before,
+#activityname-filter-value-water-access span.glyph:before {
+    content: "\f369";
+    color: #7030a0;
+}
+
+/* Referral Required */
+#referralRequired {
+  label {
+    display: inline-block;
+    margin: 5px 10px 5px 0;
+  }
+}
+#referral-required-filter-value-yes { display: none !important; }
+
+/* Advanced Search */
+.advanced-search {
+
+  &.active > h4 i:before {
+    -webkit-transform: rotate(-90deg);
+    transform: rotate(-90deg);
+  }
+
+  > h4 {
+
+    &:hover,
+    &:focus {
+     color: $brown-light;
+     cursor: pointer;
+    }
+  }
+
+  .filter {
+    border-bottom: 0 none;
+    display: none;
+    margin-top: 10px;
+  }
+}
+/* Organization */
+#partnerName {
+  max-height: 300px;
+  overflow: auto;
+
+  label {
+    float: left;
+    height: 40px;
+    //min-width: 210px;
+    position: relative;
+    width: 25%;
+
+    @media only screen and (max-width: 600px) { width: 100%; }
+    @media only screen and (min-width: 601px) and (max-width: 800px) { width: 50%; }
+    @media only screen and (min-width: 801px) and (max-width: 1024px) { width: 33%; }
+    @media only screen and (min-width: 1025px) { width: 25%; }
+  }
+
+  .filter-label-value {
+    display: inline-block;
+    width: 82px;
+  }
+
+  .glyph {
+    background-position: right top;
+    background-size: contain;
+    background-repeat: no-repeat;
+    display: inline-block;
+    left: 6px;
+    height: 30px;
+    position: relative;
+    top: 8px;
+    width: 120px;
+    z-index: 2;
+  }
+}
+
+i.glyphicon { font-size: 24px; margin-right: -13px; }
+i.glyphicon.icon-ocha-item-reliefgood { color: #f96a1b; }
+i.glyphicon.icon-ocha-sector-cash { color: #a48658; }
+i.glyphicon.icon-ocha-sector-protection { color: #1f497d; }
+i.glyphicon.icon-ocha-sector-health { color: #08a1d9; }
+i.glyphicon.icon-ocha-sector-wash { color: #7030a0; }
+i.glyphicon.icon-ocha-sector-foodsecurity { color: #006600; }
+i.glyphicon.icon-ocha-sector-education { color: #c00000; margin-right: -5px; }
+i.glyphicon.icon-ocha-sector-shelter { color: #989aac; }
+
+#partnername-filter-value-acf span.glyph { background-image: url("../src/images/partner/acf.jpg"); }
+#partnername-filter-value-acted span.glyph { background-image: url("../src/images/partner/acted.jpg"); }
+#partnername-filter-value-actionaid span.glyph { background-image: url("../src/images/partner/actionaid.jpg"); }
+#partnername-filter-value-adra span.glyph { background-image: url("../src/images/partner/adra.jpg"); }
+#partnername-filter-value-avsi span.glyph { background-image: url("../src/images/partner/avsi.jpg"); }
+#partnername-filter-value-care span.glyph { background-image: url("../src/images/partner/care.jpg"); }
+#partnername-filter-value-chf span.glyph { background-image: url("../src/images/partner/chf.jpg"); }
+#partnername-filter-value-cvt span.glyph { background-image: url("../src/images/partner/cvt.jpg"); }
+#partnername-filter-value-drc span.glyph { background-image: url("../src/images/partner/drc.jpg"); }
+#partnername-filter-value-fao span.glyph { background-image: url("../src/images/partner/fao.jpg"); }
+#partnername-filter-value-fca span.glyph { background-image: url("../src/images/partner/fca.jpg"); }
+#partnername-filter-value-fpsc span.glyph { background-image: url("../src/images/partner/fpsci.jpg"); }
+#partnername-filter-value-hi span.glyph { background-image: url("../src/images/partner/hi.jpg"); }
+#partnername-filter-value-icmc span.glyph { background-image: url("../src/images/partner/icmc.jpg"); }
+#partnername-filter-value-ifh span.glyph { background-image: url("../src/images/partner/ifh.jpg"); }
+#partnername-filter-value-ilo span.glyph { background-image: url("../src/images/partner/ilo.jpg"); }
+#partnername-filter-value-imc span.glyph { background-image: url("../src/images/partner/imc.jpg"); }
+#partnername-filter-value-intersos span.glyph { background-image: url("../src/images/partner/intersos.jpg"); }
+#partnername-filter-value-iocc span.glyph { background-image: url("../src/images/partner/iocc.jpg"); }
+#partnername-filter-value-iom span.glyph { background-image: url("../src/images/partner/iom.jpg"); }
+#partnername-filter-value-irc span.glyph { background-image: url("../src/images/partner/irc.jpg"); }
+#partnername-filter-value-ird span.glyph { background-image: url("../src/images/partner/ird.jpg"); }
+#partnername-filter-value-irw span.glyph { background-image: url("../src/images/partner/irw.jpg"); }
+#partnername-filter-value-jen span.glyph { background-image: url("../src/images/partner/jen.jpg"); }
+#partnername-filter-value-jhas span.glyph { background-image: url("../src/images/partner/jhas.jpg"); }
+#partnername-filter-value-jhco span.glyph { background-image: url("../src/images/partner/jhco.jpg"); }
+#partnername-filter-value-jrs span.glyph { background-image: url("../src/images/partner/jrs.jpg"); }
+#partnername-filter-value-knk span.glyph { background-image: url("../src/images/partner/knk.jpg"); }
+#partnername-filter-value-la span.glyph { background-image: url("../src/images/partner/la.jpg"); }
+#partnername-filter-value-lwf span.glyph { background-image: url("../src/images/partner/lwf.jpg"); }
+#partnername-filter-value-mc span.glyph { background-image: url("../src/images/partner/mc.jpg"); }
+#partnername-filter-value-mdm span.glyph { background-image: url("../src/images/partner/mdm.jpg"); }
+#partnername-filter-value-medair span.glyph { background-image: url("../src/images/partner/medair.jpg"); }
+#partnername-filter-value-po-la-paz span.glyph { background-image: url("../src/images/partner/movimiento-po-la-paz.jpg"); }
+#partnername-filter-value-msf span.glyph { background-image: url("../src/images/partner/msf.jpg"); }
+#partnername-filter-value-niccod span.glyph { background-image: url("../src/images/partner/niccod.jpg"); }
+#partnername-filter-value-nrc span.glyph { background-image: url("../src/images/partner/nrc.jpg"); }
+#partnername-filter-value-opm span.glyph { background-image: url("../src/images/partner/operation-mercy.jpg"); }
+#partnername-filter-value-oxfam span.glyph { background-image: url("../src/images/partner/oxfam.jpg"); }
+#partnername-filter-value-pu-ami span.glyph { background-image: url("../src/images/partner/pu-ami.jpg"); }
+#partnername-filter-value-qrc span.glyph { background-image: url("../src/images/partner/qrc.jpg"); }
+#partnername-filter-value-questcope span.glyph { background-image: url("../src/images/partner/quetscope.jpg"); }
+#partnername-filter-value-ri span.glyph { background-image: url("../src/images/partner/ri.jpg"); }
+#partnername-filter-value-sc-jordan span.glyph { background-image: url("../src/images/partner/scjordan.jpg"); }
+#partnername-filter-value-sci span.glyph { background-image: url("../src/images/partner/sci.jpg"); }
+#partnername-filter-value-taghyeer span.glyph { background-image: url("../src/images/partner/taghyeer.jpg"); }
+#partnername-filter-value-tdh span.glyph { background-image: url("../src/images/partner/tdh.jpg"); }
+#partnername-filter-value-tdhi span.glyph { background-image: url("../src/images/partner/tdh-it.jpg"); }
+#partnername-filter-value-thw span.glyph { background-image: url("../src/images/partner/thw.jpg"); }
+#partnername-filter-value-tgh span.glyph { background-image: url("../src/images/partner/triangle.jpg"); }
+#partnername-filter-value-undp span.glyph { background-image: url("../src/images/partner/undp.jpg"); }
+#partnername-filter-value-unesco span.glyph { background-image: url("../src/images/partner/unesco.jpg"); }
+#partnername-filter-value-unfpa span.glyph { background-image: url("../src/images/partner/unfpa.jpg"); }
+#partnername-filter-value-unhabitat span.glyph { background-image: url("../src/images/partner/unhabitat.jpg"); }
+#partnername-filter-value-unhcr span.glyph { background-image: url("../src/images/partner/unhcr.jpg"); }
+#partnername-filter-value-unicef span.glyph { background-image: url("../src/images/partner/unicef.jpg"); }
+#partnername-filter-value-unops span.glyph { background-image: url("../src/images/partner/unops.jpg"); }
+#partnername-filter-value-upp span.glyph { background-image: url("../src/images/partner/upp.jpg"); }
+#partnername-filter-value-warchild span.glyph { background-image: url("../src/images/partner/warchild.jpg"); }
+#partnername-filter-value-wfp span.glyph { background-image: url("../src/images/partner/wfp.jpg"); }
+#partnername-filter-value-who span.glyph { background-image: url("../src/images/partner/who.jpg"); }
+#partnername-filter-value-wvi span.glyph { background-image: url("../src/images/partner/wvi.jpg"); }
+
+#proximity .leaflet-control-filter-fieldset {
+  width: 50%; display: inline-block;
+  .filter-option { width: 200px; display: inline-block; }
+}
+
+.pfc-custom-pointer { cursor: crosshair; }
+
+#region .filter-option { display: inline-block; width: 170px; }

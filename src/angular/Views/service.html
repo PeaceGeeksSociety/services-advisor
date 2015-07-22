@@ -1,0 +1,72 @@
+
+<div data-ng-controller="ServiceCtrl">
+  
+  <div class="row">   
+   
+    <div class="col-xs-6">
+      <button id="backButton" type="button" class="btn btn-default" href="#" 
+          onclick="$('#mapContainer').trigger('toggleMapEvent'); history.back(); return false;">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> {{ 'BACK' | translate }}
+      </button>
+    </div> <!-- /col-xs-6 -->
+
+    <div class="col-xs-6">
+      <button id="toggleMapButton" type="button" class="btn btn-default visible-xs pull-right" 
+          onclick="$('#mapContainer').toggleClass('map-hide');">
+        {{ 'TOGGLE_MAP' | translate }}
+      </button>
+    </div> <!-- /col-xs-6 -->
+
+  </div> <!-- /row -->
+
+  <div class="row">          
+    <!-- service details header section -->
+    <div class="col-xs-12">
+      <img class="service-details-partner-logo" ng-src="{{service.partnerLogoUrl}}" onError="this.onerror=null;this.style.display='none'"/>
+      <div>
+        <h1>{{service.locationName}}</h1>
+        <p> {{service.activityName}}</p>
+      </div>
+    </div>        
+    <!-- service details information section -->
+    <div id="serviceDetails" class="panel panel-default col-xs-12">
+       
+        <!-- First row  -->
+        <div class="col-xs-6 service-details-container-row-1">
+          <h2>{{ 'HOURS' | translate }}</h2>
+          <p data-ng-repeat="hour in hours">Open at {{hour}}</p>
+        </div>
+        <div class="col-xs-6 service-details-container-row-1">
+          <h2>{{ 'ACTIVITY_DETAILS' | translate }}</h2>
+          <p>{{service.activityDetails}}</p>
+        </div>
+
+        
+        <!-- Second row (Table display) -->  
+        <table class="table table-striped col-xs-12">
+          <tbody>
+            <tr class="col-xs-12">
+              <td class="col-xs-6 pull-left">{{ 'START_DATE' | translate }}</td>  
+              <td class="col-xs-6  pull-right">{{service.startDate}}</td>                     
+            </tr>
+            <tr class="col-xs-12">
+              <td class="col-xs-6 pull-left">{{ 'END_DATE' | translate }}</td>                   
+              <td class="col-xs-6 pull-right">{{service.endDate}}</td>
+            </tr>                               
+            <tr class="col-xs-12" data-ng-repeat="property in service.properties">
+              <td class="col-xs-6 pull-left">{{property.key}}</td>
+              <td class="col-xs-6 pull-right">{{property.value}}</td>
+            </tr>
+          </tbody>
+        </table>   
+
+        <!-- third row -->    
+        <div class="col-xs-12">    
+          <a target="_blank" href="https://www.syrianrefugeeresponse.org/resources/sites/points?feature={{service.id}}">{{ 'SHOW_ON_ACTIVITYINFO' | translate }}</a>  
+        </div>
+
+    </div> <!-- /service-details -->
+
+  </div> <!-- /row -->
+
+</div> <!-- /div ServiceCtrl -->

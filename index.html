@@ -1,84 +1,82 @@
 <!DOCTYPE html>
-
 <!-- This is an HTML5 boilerplate. -->
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" ng-app="servicesAdvisorApp"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" ng-app="servicesAdvisorApp"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" ng-app="servicesAdvisorApp"> <![endif]-->
+<!--[if gt IE 8]><!--><html lang="en" class="no-js" ng-app="servicesAdvisorApp"><!--<![endif]-->
 
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Services Advisor</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="node_modules/mapbox.js/theme/style.css">
+  <link rel="stylesheet" href="css/leaflet.awesome-markers.css">
+  <link rel="stylesheet" href="humanfont/assets/css/font-humanitarian.css">
+  <link rel="stylesheet" href="node_modules/leaflet.markercluster/dist/MarkerCluster.css">
+  <link rel="stylesheet" href="node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css">
+</head>
 
-        <link rel="stylesheet" href="css/normalize.css">
-        <link rel="stylesheet" href="css/main.css">
-        <link rel="stylesheet" href="node_modules/mapbox.js/theme/style.css">
-        <link rel="stylesheet" href="css/leaflet.awesome-markers.css">
-        <link rel="stylesheet" href="humanfont/assets/css/font-humanitarian.css">
-        <link rel="stylesheet" href="selectusercontrolfont/font.css">
-        <link rel="stylesheet" href="node_modules/leaflet.markercluster/dist/MarkerCluster.css">
-        <link rel="stylesheet" href="node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css">
-    </head>
+<body ng-cloak translate-cloak>
+  <!-- search navigation bar -->
+  <ng-include src="'/src/angular/Views/navbar.html'"></ng-include>
 
-    <body>
-        <!-- IE7 warning - maybe take this out, it's probably unhelpful in this case -->
-        <!--[if lt IE 7]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
+  <!-- Right navigation bar to select filters -->
+  <main role="main">
+    <div id="filters" class="col-xs-12 col-md-8 hidden">
+      <div ng-controller="FilterCtrl">
+        <ng-include src="'/src/angular/Views/filters.html'"></ng-include>
+      </div>
+    </div>
+    <section id="mapContainer" class="col-xs-12 col-sm-7" ng-controller="MapCtrl"></section>
+    <section id="serviceList" class="col-xs-12 col-sm-5">
+      <!-- IE7 warning - maybe take this out, it's probably unhelpful in this case -->
+      <!--[if lt IE 7]>
+              <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+          <![endif]-->
+      <div ng-view class="container-fluid"></div>
 
-        <main role="main">
-          <header class="map-actions clearfix">
-            <div id="search-map">
-              <a href="#map-filters">Search</a>
-            </div>
-            <div id="map-filters" class="filter-contents">
-              <div class="filter" id="activityName">
-                <h4><i class="icon-circle-arrow-right"></i> <span>Activity Category</span></h4>
-              </div>
-              <div class="filter" id="referralRequired">
-                <h4><i class="icon-circle-arrow-right"></i> <span>Referral required?</span></h4>
-              </div>
-              <div class="advanced-search">
-                <h4><i class="icon-circle-arrow-right"></i> <span>Advanced Search</span></h4>
-                <div class="filter" id="partnerName">
-                  <h4><span>Organizations</span></h4>
-                </div>
-                <div class="filter" id="proximity">
-                  <h4><i class="icon-circle-arrow-right"></i> <span>Proximity</span></h4>
-                </div>
-                <div class="filter" id="region">
-                    <h4><i class="icon-circle-arrow-right"></i> <span>Region</span></h4>
-                </div>
-              </div>
-            </div>
-            <div id="map-list-toggler">
-              <span id="mapToggle">Map</span><span id="listToggle">List</span>
-            </div>
-          </header>
+      <div class="hide">
+        <div id="activityName" />
+        <div id="referralRequired" />
+        <div id="partnerName" />
+        <div id="proximity" />
+        <div id="region" />
+      </div>
+    </section>
+  </main>
 
-          <section id="map"><h3 class="hide">Map</h3></section>
-          <section id="list"></section>
-        </main>
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular-route.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular-resource.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-translate/2.6.1/angular-translate.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+  <!-- app.js is the main, browserified, minified application JS for the UNHCR map. -->
+  <script src="js/app.js"></script>
+  <!-- Google Analytics, in case we need it: change UA-XXXXX-X to be your site's ID. -->
+  <script>
+  (function(b, o, i, l, e, r) {
+    b.GoogleAnalyticsObject = l;
+    b[l] || (b[l] =
+      function() {
+        (b[l].q = b[l].q || []).push(arguments)
+      });
+    b[l].l = +new Date;
+    e = o.createElement(i);
+    r = o.getElementsByTagName(i)[0];
+    e.src = '//www.google-analytics.com/analytics.js';
+    r.parentNode.insertBefore(e, r)
+  }(window, document, 'script', 'ga'));
+  ga('create', 'UA-XXXXX-X');
+  ga('send', 'pageview');
+  </script>
+</body>
 
-        <!-- Include jquery -->
-        <script src="node_modules/jquery/dist/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="node_modules/jquery/dist/jquery.min.js"><\/script>')</script>
-
-        <!-- app.js is the main, browserified, minified application JS for the UNHCR map. -->
-        <script src="js/app.js"></script>
-
-        <!-- Google Analytics, in case we need it: change UA-XXXXX-X to be your site's ID. -->
-        <script>
-            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-            e.src='//www.google-analytics.com/analytics.js';
-            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-            ga('create','UA-XXXXX-X');ga('send','pageview');
-        </script>
-
-    </body>
 </html>
