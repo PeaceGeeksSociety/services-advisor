@@ -33,6 +33,7 @@ servicesAdvisorApp.config(['$translateProvider', function ($translateProvider) {
     'SHELTER': 'SHELTER',
     'WASH': 'WASH',
     "REFERRAL_METHOD": "Referral Method",
+    "CREATE_REVIEW": "Create Review",
     "ACTIVITY_DETAIL": "Activity Detail",
     "SHOW_DETAILS": "Show details",
     "SERVICES_ADVISOR": "Services Advisor",
