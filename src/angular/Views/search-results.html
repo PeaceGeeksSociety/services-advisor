@@ -18,10 +18,10 @@
         </div>
         <div class="row">
           <h4 class="x-search-result-header">{{ 'SEARCH_RESULTS' | translate }}</h4>
-          <ul class="list-group-result">
+          <ul class="list-group list-group-padding">
 
             <div ng-repeat="result in results">
-              <a class="list-group-result-item" ng-click="selectService(result.id);">
+              <a class="list-group-item" ng-click="selectService(result.id);">
                 
                 <!-- location name section -->
                 <div class="row media-body">
@@ -47,7 +47,7 @@
                   </div>
                     
                 </div><!--  /row  -->
-              </a> <!-- /list-group-result-items -->
+              </a> <!-- /list-group-items-result -->
             </div>
 
           </ul>

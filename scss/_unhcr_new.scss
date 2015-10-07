@@ -342,35 +342,8 @@ h3 {
     font-family: FontAwesome, sans-serif;
   }
 
-//--main list
-  .list-group {
-    :first-child, 
-    :last-child {  
-      margin-top: 5px;
-    }
-  }
-  .list-group-item {
-    background-color: $grey-medium;
-    border: 1px solid $grey-light;
-    color: black;
-    cursor: pointer;
-
-    .badge {
-      background: none;
-      font-weight: normal;
-      color: black;
-    }
-
-    .icon {
-      padding: 3px;
-    }
-
-  }
-
-
-
-//--search results lists
-  .list-group-result {
+ //--search results lists
+  .list-group-padding {
     :first-child, 
     :last-child {  
       margin-top: 5px;
@@ -378,11 +351,30 @@ h3 {
       padding-top: 0px;
     }
   }
-  .list-group-item-result {
+
+  //--main list
+  .list-group {
+    :first-child, 
+    :last-child {  
+      margin-top: 5px;
+    }
+  }
+
+  .list-group-item{
     background-color: $grey-medium;
     border: 1px solid $grey-light;
     color: black;
     cursor: pointer;
+
+    .icon {
+      padding: 3px;
+    }
+    
+    .badge {
+      background: none;
+      font-weight: normal;
+      color: black;
+    }
 
     .media-heading{
       margin-bottom: 5px;
@@ -393,7 +385,6 @@ h3 {
       display: block;
       padding-right: 5px;
     }
-
 
   }
 
