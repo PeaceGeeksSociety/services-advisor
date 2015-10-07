@@ -308,27 +308,33 @@ h3 {
   div.col-xs-5 {
     background-color: white;
     padding: 5px;
+    text-align: center;
 
     &:first-child {
-      border-left: 20px solid $grey-medium;
-      border-right: 20px solid $grey-medium;
+      border-left: 10px solid $grey-medium;
+      border-right: 10px solid $grey-medium;
+      padding: 10px;
     }
     &:last-child {
-      border-right: 20px solid $grey-medium;
+      border-right: 10px solid $grey-medium;
       margin-bottom: 10px;
+      padding: 10px;
     }
   }
 
    div.col-xs-7 {
     background-color: white;
     padding: 5px;
+    text-align: center;
 
     &:first-child {
-      border-left: 20px solid $grey-medium;
+      border-left: 10px solid $grey-medium;
+      padding: 10px;
     }
     &:last-child {
-      border-right: 20px solid $grey-medium;
+      border-right: 10px solid $grey-medium;
       margin-bottom: 10px;
+      padding: 10px;
     }
   }
 
@@ -336,33 +342,51 @@ h3 {
     font-family: FontAwesome, sans-serif;
   }
 
+//--main list
   .list-group {
     :first-child, 
     :last-child {  
-      border-radius: 0px;
       margin-top: 5px;
     }
   }
   .list-group-item {
     background-color: $grey-medium;
     border: 1px solid $grey-light;
-    font-weight: bold;
     color: black;
     cursor: pointer;
+
+    .badge {
+      background: none;
+      font-weight: normal;
+      color: black;
+    }
 
     .icon {
       padding: 3px;
     }
 
-    .badge {
-    background: none;
-    font-weight: normal;
-    color: black;
+  }
+
+
+
+//--search results lists
+  .list-group-result {
+    :first-child, 
+    :last-child {  
+      margin-top: 5px;
+      padding-bottom: 0px;
+      padding-top: 0px;
     }
+  }
+  .list-group-item-result {
+    background-color: $grey-medium;
+    border: 1px solid $grey-light;
+    color: black;
+    cursor: pointer;
 
     .media-heading{
       margin-bottom: 5px;
-      padding: 5px 5px 0px 5px;
+      padding-top: 10px;
     }
 
     .media-object {
@@ -447,16 +471,6 @@ h3 {
     text-align:center;
   }
 }
-
-
-
-
-
-
-
-
-
-
 
 
 

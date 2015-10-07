@@ -18,14 +18,15 @@
         </div>
         <div class="row">
           <h4 class="x-search-result-header">{{ 'SEARCH_RESULTS' | translate }}</h4>
-          <ul class="list-group">
+          <ul class="list-group-result">
 
             <div ng-repeat="result in results">
-              <a class="list-group-item" ng-click="selectService(result.id);">
+              <a class="list-group-result-item" ng-click="selectService(result.id);">
                 
                 <!-- location name section -->
                 <div class="row media-body">
-                  <h2 class="media-heading">{{result.properties.locationName}}: {{result.properties.activityName}}</h2>
+                  <h2 class="media-heading">{{result.properties.locationName}}</h2>
+                  <p> {{result.properties.activityName}}</p>
                   <img class="media-object pull-right" ng-src="{{getPartnerLogoUrl(result)}}" onError="this.onerror=null;this.style.display='none'">
                 </div>
 
@@ -33,20 +34,20 @@
 
                   <!-- hours section -->
                   <div class="col-xs-5">
-                    <h3>{{ 'HOURS' | translate }}</h3>
+                    <h2>{{ 'Hours' | translate }}</h2>
                     <p> {{ getOpeningTime(result) || 'N/A' }} - {{ getClosingTime(result) || 'N/A' }} </p>
                   </div>
 
                   <!-- activites detail section -->
                   <div class="col-xs-7">
-                    <h3>{{ 'ACTIVITY_DETAILS' | translate }}</h3>
+                    <h2>{{ 'Activity Details' | translate }}</h2>
                     <div ng-repeat="activity in getActivityDetails(result)">
                       <p> {{ activity }}</p>
                     </div>
                   </div>
                     
                 </div><!--  /row  -->
-              </a> <!-- /list-group-items -->
+              </a> <!-- /list-group-result-items -->
             </div>
 
           </ul>
