@@ -389,7 +389,7 @@ h3 {
   }
 
   button {
-    margin: 25px 0px 20px -15px;
+    margin: 25px 0px 5px -15px;
     padding: 7px 15px 6px 10px;
     font-size: 1em;
     border: 1px solid $grey-medium;
@@ -635,6 +635,8 @@ ul.filter-togglers {
   text-decoration: inherit;
   -webkit-font-smoothing: antialiased;
   font-size: 1.5em;
+  vertical-align: sub;
+  padding-left: 15px;
 }
 
 .activityname-filter-value-all span.glyph { background-color: transparent; }
