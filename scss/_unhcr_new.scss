@@ -404,6 +404,24 @@ h3 {
   }
 }
 
+//-- flexbox
+.list-result-wrapper{
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;  
+  
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.list-result-title{
+  flex-flow: row wrap;
+}
+.list-result-image{
+  flex-flow: column wrap;
+}
 
 
 .service-details-partner-logo {

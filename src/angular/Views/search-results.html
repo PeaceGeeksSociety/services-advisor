@@ -24,10 +24,12 @@
               <a class="list-group-item" ng-click="selectService(result.id);">
                 
                 <!-- location name section -->
-                <div class="row media-body">
-                  <h2 class="media-heading">{{result.properties.locationName}}</h2>
-                  <p> {{result.properties.activityName}}</p>
-                  <img class="media-object pull-right" ng-src="{{getPartnerLogoUrl(result)}}" onError="this.onerror=null;this.style.display='none'">
+                <div class="list-result-wrapper">
+                  <div class="list-result-title">
+                    <h1>{{result.properties.locationName}}</h1>
+                    <p> {{result.properties.activityName}}</p>
+                  </div>
+                  <img class="list-result-image" ng-src="{{getPartnerLogoUrl(result)}}" onError="this.onerror=null;this.style.display='none'">
                 </div>
 
                 <div class="row">
