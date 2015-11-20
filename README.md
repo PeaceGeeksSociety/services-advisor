@@ -2,6 +2,10 @@
 
 This build uses npm, gulp, and browserify to manage dependencies.
 
+Versions of node and npm we know work:
+`npm 3.3.12`
+`node 5.1.0`
+
 To install gulp:
 
 - run `npm install -g gulp`
