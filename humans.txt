@@ -7,6 +7,13 @@
     Tom Nightingale -- JS developer
     Alberto Trujillo Gonzales -- front-end developer
     Edouard Legoupil, UNHCR -- design & plan
+    Luke Kysow (https://github.com/lkysow) -- developer
+    Cynthia Lee (https://github.com/cynthialee) -- developer
+    Tucker Buchy (https://github.com/tuckerbuchy) -- developer
+    Amy Ngai (https://github.com/amyngai) -- designer
+    Jerry Chang (https://github.com/Jareechang) -- developer
+    Amogh Agrawal -- developer
+    
 
 # TECHNOLOGY COLOPHON
 
@@ -19,6 +26,7 @@
     Leaflet.markercluster - https://github.com/Leaflet/Leaflet.markercluster
     crossfilter - http://square.github.io/crossfilter/
     vinyl-source-stream - https://www.npmjs.org/package/vinyl-source-stream
-    split - https://www.npmjs.org/package/split 
+    split - https://www.npmjs.org/package/split
+    Angular
 
 
