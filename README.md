@@ -1,3 +1,50 @@
+# How to contribute
+
+## Initial Setup
+- create a github account and click the "Fork" button at the top right to fork this repository
+- copy the ssh address (ex. `git@github.com:PeaceGeeksSociety/services-advisor.git`) and use it to clone the project
+```
+git clone <ssh address here>
+```
+- add services advisor as an upstream remote
+```
+git remote add upstream git@github.com:PeaceGeeksSociety/services-advisor.git
+```
+
+## Adding Features
+**No new feature code should be merged into master**
+
+All new feature code should be pull requested into a feature branch. We want to leave `master` for bugfixes until we are ready to do a full new release to http://advisor.unhcr.jo/.
+
+To create a new branch in the main repo
+```
+git checkout -b feature_name
+git push upstream feature_name
+```
+
+To create a pull request, make your changes and commit. Then
+```bash
+git push origin # will push your branch to YOUR fork
+```
+Go to your fork: https://github.com/your-username-here/services-advisor and you should see a button for your recently pushed branch that you can click to make a pull request.
+
+**Make sure that the branch you're pull requesting into is the feature branch, not master**.
+
+## Updating with what others have written
+Since the updates go into the main repository and not your fork, you'll occasionally need to get the latest changes from the main repo.
+```
+git fetch upstream
+```
+Then you can merge or rebase those changes onto your branches.
+```bash
+git checkout master
+git rebase upstream/master
+
+# or
+git checkout feature
+git merge upstream/feature
+```
+
 # Building
 
 This build uses npm, gulp, and browserify to manage dependencies.
@@ -19,39 +66,11 @@ To build the js/css:
 - when preparing for production:
     - run `gulp dist` to create minified `js.app.js` and `css/main.css` files.
 
-To run the project:
+# To run the project
 - run `npm install -g http-server`
 - run `http-server`
 - go to `http://localhost:8080`
 - in the future, since you've already installed http-server you can just run `http-server`
-
-Files:
-
-- LICENSE.txt - the MIT license
-- README.md - this help file
-- crossdomain.xml
-- css/
-  - images/ - contains the marker image files for AwesomeMarkers
-  - leaflet.awesome-markers.css - CSS for AwesomeMarkers Leaflet plugin
-  - normalize.css - cross-browser CSS, derived from HTML5 Boilerplate
-  - main.css - the single CSS file that the browser uses, compiled from the SASS files in scss/
-- gulpfile.js - the gulp file.  This file tells gulp how to compile app.js from the various libraries and src files.
-- humanfont/ - HumanitarianFont, the font we use for the markers.
-- humans.txt - the credits.  Add yourself!
-- index.html - the sole HTML file that serves to convey all of this JS
-- js/app.js - the single minified JS file that the browser uses, compiled from the other JS files and libraries.
-- node-modules/ - the libraries that are installed by npm.  If the build has run successfully, this folder should contain:
-   - crossfilter
-   - gulp
-   - gulp-sas
-   - gulp-util
-   - jquery
-   - leaflet
-   - leaflet.markercluster
-   - mapbox.js
-   - split
-   - vinyl-source-stream
-   - watchify
 
 # How Services Data Is Loaded and Translated
 
@@ -61,10 +80,4 @@ Files:
 - `node LoadJSON.js`
   - this takes the json from `services.json` and removes all the `comments` fields (which aren't translated) to output `js/services_EN.json`
 - `node ParseEn_AR_JSON.js`
-  - uses `data.csv` to regex replace the English strings in `js/services_EN.json` with their Arabic translations. This outputs `js/services_AR.json`.
-
-## Arabic Site (http://data.unhcr.org/jordan/services-advisor/index_AR.html)
-
-- uses a modified `index.html` with Arabic translations
-- this in turn requires `app_AR.js` instead of `app.js`
-- `app_AR.js` loads `compiled_AR.json`
+  - uses `data.csv` to regex replace the English strings in `js/services_EN.json` with their Arabic translations. This outputs `js/services_AR.json`
