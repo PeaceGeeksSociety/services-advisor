@@ -308,27 +308,33 @@ h3 {
   div.col-xs-5 {
     background-color: white;
     padding: 5px;
+    text-align: center;
 
     &:first-child {
-      border-left: 20px solid $grey-medium;
-      border-right: 20px solid $grey-medium;
+      border-left: 10px solid $grey-medium;
+      border-right: 10px solid $grey-medium;
+      padding: 10px;
     }
     &:last-child {
-      border-right: 20px solid $grey-medium;
+      border-right: 10px solid $grey-medium;
       margin-bottom: 10px;
+      padding: 10px;
     }
   }
 
    div.col-xs-7 {
     background-color: white;
     padding: 5px;
+    text-align: center;
 
     &:first-child {
-      border-left: 20px solid $grey-medium;
+      border-left: 10px solid $grey-medium;
+      padding: 10px;
     }
     &:last-child {
-      border-right: 20px solid $grey-medium;
+      border-right: 10px solid $grey-medium;
       margin-bottom: 10px;
+      padding: 10px;
     }
   }
 
@@ -336,33 +342,43 @@ h3 {
     font-family: FontAwesome, sans-serif;
   }
 
+ //--search results lists
+  .list-group-padding {
+    :first-child, 
+    :last-child {  
+      margin-top: 5px;
+      padding-bottom: 0px;
+      padding-top: 0px;
+    }
+  }
+
+  //--main list
   .list-group {
     :first-child, 
     :last-child {  
-      border-radius: 0px;
       margin-top: 5px;
     }
   }
-  .list-group-item {
+
+  .list-group-item{
     background-color: $grey-medium;
     border: 1px solid $grey-light;
-    font-weight: bold;
     color: black;
     cursor: pointer;
 
     .icon {
       padding: 3px;
     }
-
+    
     .badge {
-    background: none;
-    font-weight: normal;
-    color: black;
+      background: none;
+      font-weight: normal;
+      color: black;
     }
 
     .media-heading{
       margin-bottom: 5px;
-      padding: 5px 5px 0px 5px;
+      padding-top: 10px;
     }
 
     .media-object {
@@ -370,11 +386,10 @@ h3 {
       padding-right: 5px;
     }
 
-
   }
 
   button {
-    margin: 25px 0px 20px -15px;
+    margin: 25px 0px 5px -15px;
     padding: 7px 15px 6px 10px;
     font-size: 1em;
     border: 1px solid $grey-medium;
@@ -389,6 +404,24 @@ h3 {
   }
 }
 
+//-- flexbox
+.list-result-wrapper{
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;  
+  
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.list-result-title{
+  flex-flow: row wrap;
+}
+.list-result-image{
+  flex-flow: column wrap;
+}
 
 
 .service-details-partner-logo {
@@ -447,16 +480,6 @@ h3 {
     text-align:center;
   }
 }
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -612,6 +635,8 @@ ul.filter-togglers {
   text-decoration: inherit;
   -webkit-font-smoothing: antialiased;
   font-size: 1.5em;
+  vertical-align: sub;
+  padding-left: 15px;
 }
 
 .activityname-filter-value-all span.glyph { background-color: transparent; }
