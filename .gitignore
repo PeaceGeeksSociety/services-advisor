@@ -7,3 +7,6 @@ css/main.css
 bower_components/
 js/app.js
 .DS_Store
+
+# people running the site will copy the .dist to this location
+src/site-specific-config.js

@@ -1,0 +1,27 @@
+/**
+ * Each site deployment needs to copy this file to src/site-specific-config.js.
+ * The format is:
+ *  "Language Key" : {
+ *      "languageDirection": "rtl or ltr" // for example english is left to right but arabic is right to left
+ *      "servicesUrl": // where we pull the services data from. This can be a local (ex. js/a.json) or an external url (ex. http://my-website/a.json)
+ *      "amani": true or false // whether this source is from amani. If it is, we convert their json schema into ours otherwise we expect it will be our format
+ *  }
+ *
+ *  Delete everything between lines 15 and 24 inclusive and write your own.
+ */
+var services = angular.module('services');
+services.factory('SiteSpecificConfig', [function () {
+    return {
+        "AR": {
+            "languageDirection": "rtl",
+            "servicesUrl": "js/services_AR.json",
+            "amani": false
+        },
+        "EN": {
+            "languageDirection": "ltr",
+            "servicesUrl": "js/services_EN.json",
+            "amani": false
+        }
+    };
+}
+]);
