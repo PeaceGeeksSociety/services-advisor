@@ -1,5 +1,4 @@
 var gulp = require('gulp'),
-    gutil = require('gulp-util'),
     cssmin = require('gulp-cssmin'),
     sass = require('gulp-sass'),
     uglify = require('gulp-uglify'),
