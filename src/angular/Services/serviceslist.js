@@ -3,15 +3,18 @@ var services = angular.module('services');
 /**
  * Provides the list of services (compiled.json)
  */
-services.factory('ServicesList', ['$http', '$translate', '$location', 'PopupBuilder', 'Cookies', function ($http, $translate, $location, PopupBuilder, Cookies) {
+services.factory('ServicesList', ['$http', '$translate', '$location', 'PopupBuilder', 'Cookies', 'SiteSpecificConfig', "_", function ($http, $translate, $location, PopupBuilder, Cookies, SiteSpecificConfig, _) {
     var servicesById = null;
 
     // doing this here because we need it right before we load the data
-    var language = Cookies.getCookie('LANGUAGE') || 'AR';
+    var language = Cookies.getCookie('LANGUAGE') || _.keys(SiteSpecificConfig)[0] || alert("ERROR: site-specific-config.js doesn't have any keys in it!");
     $translate.use(language);
     $('body').addClass('lang-' + language);
 
-    var servicesList = $translate.use() === 'AR' ? 'js/services_AR.json' : 'js/services_EN.json';
+    if (!_.has(SiteSpecificConfig[language], "servicesUrl")) {
+        alert("ERROR: No servicesUrl key set for language " + language);
+    }
+    var servicesList = SiteSpecificConfig[language].servicesUrl;
 
     var services = $http.get(servicesList, {cache: true}).then(function (data) {
             data = data.data.filter(function (feature) {
