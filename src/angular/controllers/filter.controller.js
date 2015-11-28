@@ -96,8 +96,8 @@ controllers.controller('FilterCtrl', ['$scope', '$rootScope', '$location', 'Sear
 $scope.toggleSelection = function toggleSelection(organization) {
     var parameters = $location.search();
     if (_.has(parameters, 'organization')){
-    // Added conditional because sometimes the parameters.organization are strings separated by comma
-    // ex. "UNHCR,IFC....etc"
+        // Added conditional because sometimes the parameters.organization are strings separated by comma
+        // ex. "UNHCR,IFC....etc"
         if(typeof(parameters.organization) == "string"){
             var organizations = parameters.organization.split(',');
         }else {
@@ -122,9 +122,9 @@ $scope.toggleSelection = function toggleSelection(organization) {
     Search.filterByUrlParameters();
     
     $timeout(function () {
-    // hack to reset body padding height so if the size of the filter bar grows we can
-    // still see the rest of the UI. Wrapped in timeout because need angular to refresh the UI
-    // so we can read the height and couldn't figure out how to hook into that event
+        // hack to reset body padding height so if the size of the filter bar grows we can
+        // still see the rest of the UI. Wrapped in timeout because need angular to refresh the UI
+        // so we can read the height and couldn't figure out how to hook into that event
     $("body").css("padding-top", $("#searchNav").height() + "px");
     }, 2);
 };
