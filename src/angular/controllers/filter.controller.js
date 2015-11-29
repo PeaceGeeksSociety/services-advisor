@@ -92,40 +92,42 @@ controllers.controller('FilterCtrl', ['$scope', '$rootScope', '$location', 'Sear
       selection: 'all'
   };
 
-  // toggle selection for a given organization by name
-  $scope.toggleSelection = function toggleSelection(organization) {
-    
+// toggle selection for a given organization by name
+$scope.toggleSelection = function toggleSelection(organization) {
     var parameters = $location.search();
-
     if (_.has(parameters, 'organization')){
-      var organizations = parameters.organization;
-      var idx = organizations.indexOf(organization);
-      // is currently selected - splice that organization from selected array
-      if (idx > -1) {
-        organizations.splice(idx, 1);
-      }
-      // is newly selected - push organization into the selection array
-      else {
-        organizations.push(organization);
-      }
-      parameters.organization = organizations;
+        // Added conditional because sometimes the parameters.organization are strings separated by comma
+        // ex. "UNHCR,IFC....etc"
+        if(typeof(parameters.organization) == "string"){
+            var organizations = parameters.organization.split(',');
+        }else {
+            var organizations = parameters.organization;
+        }
+        var idx = organizations.indexOf(organization);
+        // is currently selected - splice that organization from selected array
+        if (idx > -1) {
+            organizations.splice(idx, 1);
+        }
+        // is newly selected - push organization into the selection array
+        else {
+            organizations.push(organization);
+        }
+        parameters.organization = organizations;
     } else {
-      parameters.organization = [organization];
+        parameters.organization = [organization];
     }
     // still binding the pills to filterSeletion.
     $rootScope.filterSelection = parameters.organization;
-
     $location.search(parameters);
-
     Search.filterByUrlParameters();
-
+    
     $timeout(function () {
         // hack to reset body padding height so if the size of the filter bar grows we can
         // still see the rest of the UI. Wrapped in timeout because need angular to refresh the UI
         // so we can read the height and couldn't figure out how to hook into that event
-        $("body").css("padding-top", $("#searchNav").height() + "px");
+    $("body").css("padding-top", $("#searchNav").height() + "px");
     }, 2);
-  };
+};
 
   $scope.toggleFilters = toggleFilters;
 
