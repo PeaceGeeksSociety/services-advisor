@@ -77,7 +77,8 @@ To build the js/css:
 - `cd service-list-retrieval`
 - `cat sources.txt | node getJSON.js`
   - this will call all the urls in `sources.txt` and then concatenate all the json responses into `services.json`
-- `node LoadJSON.js`
-  - this takes the json from `services.json` and removes all the `comments` fields (which aren't translated) to output `js/services_EN.json`
+- `node transformJSON.js`
+  - This will take all the json in `services.json` and transform the schema from ActivityInfo's data format to one that Services Advisor
+    will understand. It also removes all the `comments` fields (which aren't translated). The result is `js/services_EN.json`
 - `node ParseEn_AR_JSON.js`
   - uses `data.csv` to regex replace the English strings in `js/services_EN.json` with their Arabic translations. This outputs `js/services_AR.json`
