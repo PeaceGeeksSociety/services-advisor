@@ -18,11 +18,62 @@ controllers.controller('NavbarCtrl', ['$scope', 'Cookies', function ($scope, Coo
     event.stopPropagation();
   });
 
-  $scope.toggleFilters = toggleFilters;
+  $scope.toggleFilters = toggleFilter;
+
 }]);
+
+toggleFilter = (function(){
+
+    // Local variables defined 
+    var $filter = $('#filters');
+    var $body = $('body');        
+    // check for 'active' class from the #filter DOM element
+    var activeClass = $('#filters').attr('class').split(/ /)[1];  
+    
+    var _reloadVariables = function(){
+        $filter = $('#filters');                
+        activeClass = $('#filters').attr('class').split(/ /)[1];       
+    }
+    
+    var _toggleFilter = function(){                
+        $body.on('click',function(event){            
+            if (activeClass !== 'active' && event.target.id == 'filtersButton'){
+                $filter.addClass('active');                     
+            }
+            else {             
+                $filter.removeClass('active');                                          
+            }                        
+        })
+    }
+
+    var _exec = function(){        
+        _reloadVariables();      
+        // wait for DOM variable reload
+        setTimeout(_toggleFilter(), 250);
+    }
+
+    return {
+        exec : _exec
+    }
+
+})()
 
 // Global so that filters.controller can access this via its scope
 // TODO: Should probably put this somewhere else
-toggleFilters = function() {
-  $('#filters').toggleClass('hidden');
-};
+// toggleFilters = function() {
+//     var $filter = $('#filters');
+
+//     $('body').on('click',function(e){
+//         var targetElementId = e.target.id;
+//         var activeClass = $filter.attr('class').split(/ /)[1];
+                        
+//         if (targetElementId == 'filtersButton' && activeClass !== 'active'){
+//             $filter.addClass('active');            
+//             console.log('active again.....');
+//         }else {             
+//             $('#filters').removeClass('active').removeClass('active');             
+//             console.log(activeClass);
+//         }
+
+//     })
+// };
