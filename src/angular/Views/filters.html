@@ -8,20 +8,20 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-xs-12 col-md-6">
-              <label for="referral-all" class="col-xs-12 col-md-12 control-label">
+            <div class="col-xs-12 col-md-12">
+              <label for="referral-all" class="col-xs-12 col-md-4 control-label">
                 {{ 'ALL' | translate }}
                 <div class="pull-right">
                   <input type="radio" name="referral-radio" ng-model="referral.selection" ng-click="toggleReferral(this)" id="referral-all" value="all">
                 </div>
               </label>
-              <label for="referral-required" class="col-xs-12 col-md-12 pull-left control-label">
+              <label for="referral-required" class="col-xs-12 col-md-4 pull-left control-label">
                 {{ 'REFERRAL_REQUIRED' | translate }}
                 <div class="pull-right">
                   <input type="radio" name="referral-radio" ng-model="referral.selection" ng-click="toggleReferral(this)" id="referral-required" value="referral-required">
                 </div>
               </label>
-              <label for="referral-not-required" class="col-xs-12 col-md-12 pull-left control-label">
+              <label for="referral-not-required" class="col-xs-12 col-md-4 pull-left control-label">
                 {{ 'REFERRAL_NOT_REQUIRED' | translate }}
                 <div class="pull-right">
                   <input type="radio" name="referral-radio" ng-model="referral.selection" ng-click="toggleReferral(this)" id="referral-not-required" value="referral-not-required">
