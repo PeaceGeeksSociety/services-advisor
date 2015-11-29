@@ -102,15 +102,16 @@ var transformServiceDetails = function(service) {
                     _.each(service.properties[property_name], function (val, value) {
                         if (value) {
                             hours.push(val);
+							// service.hours = value;
                         }
                     });
                 }
             }
         }
 	});
-	return propList;
-	// console.log(propList);
-	// console.log(hours);
+	service.servicesProvided = propList;
+    service.hours = hours;
+	return service;
 }
 
 
@@ -176,7 +177,7 @@ for (var i = 0; i < services.length; i++) {
     delete services[i].comments;
 }
 
-var outputFilename = '../js/services_EN_new.json';
+var outputFilename = '../js/services_EN.json';
 
 fs.writeFile(outputFilename, JSON.stringify(services), function (err) {
     if (err) {

@@ -3,6 +3,31 @@
   "organization": {
     "name": "UNHCR"
   },
+  "servicesProvided": [{
+    "Registration Type Requirement": "UNHCR ASC"
+  }, {
+    "Nationality": "Other nationalities only"
+  }, {
+    "Intake Criteria": "Open to all"
+  }, {
+    "Feedback Mechanism": "Event entered in RAIS"
+  }, {
+    "Response delay after referrals": "Case by case basis"
+  }, {
+    "Feedback delay": "Delay on Case by case"
+  }, {
+    "Immediate Next step  response after referal": "Follow up call"
+  }, {
+    "Referral Method": "Referrals not accepted"
+  }, {
+    "Coverage": "City where the service is located"
+  }, {
+    "Accessibility": "All the above"
+  }, {
+    "Availability": "One Off"
+  }],
+  "hours": ["8:30AM"],
+
 
   "type":"Feature",
   "id":603983240,
@@ -40,15 +65,6 @@
     },
     "10. Referral Method":{
       "Referrals not accepted":true
-    },
-    "5. Coverage":{
-      "City where the service is located":true
-    },
-    "4. Accessibility":{
-      "All the above":true
-    },
-    "6. Availability":{
-      "One Off":true
     },
     "Referral required":"Yes"
   },

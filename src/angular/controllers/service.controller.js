@@ -62,6 +62,25 @@ controllers.controller('ServiceCtrl', ['$scope', '$routeParams', '$location', 'S
         });
         $scope.service.properties = propList;
 
+        var detailsList = []
+
+        for (var i = 0; i < service.servicesProvided.length; i++){
+            var serviceDetails = service.servicesProvided[i];
+
+            var details = {}
+
+            $.each(serviceDetails, function(val, key){
+                details.first = val;
+                details.second = key;
+            });
+
+            detailsList.push(details);
+        }
+
+        $scope.service.servicesProvided = detailsList;
+        $scope.hours = service.hours;
+
+
         $scope.goBackFromService = function() {
             var parameters = $location.search();
             if (_.has(parameters, 'category') || _.has(parameters, 'region')){
