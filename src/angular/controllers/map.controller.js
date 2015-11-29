@@ -16,6 +16,15 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
         L.marker(e.latlng).addTo(map);
     });
 
+    // Geolocation object to input user's location and the selected locations
+    geoLocationObject = {
+        latitude: 35.7333333333333,
+        longitude: 30.2, 
+        radius: 1000
+    }
+    // Filter by proximity 
+    Search.filterByProxmity(geoLocationObject);
+
     // Initialize the empty layer for the markers, and add it to the map.
     // TODO: don't use global var here
     clusterLayer = new L.MarkerClusterGroup({
