@@ -64,7 +64,7 @@
             <!-- Looping second split array  -->
             <div ng-repeat="organization3 in organizationsArray[2]">
               <label class="col-xs-12 col-md-4 control-label organization-label">
-                {{organization2}}
+                {{organization3}}
                 <div class="pull-right">
                    <img class="organization-logo" ng-src="{{partnerLogoUrl[organization3]}}" onError="this.onerror=null;this.style.display='none';"/>
                   <input ng-checked="filterSelection.indexOf(organization3) > -1" ng-click="toggleSelection(organization3)" type="checkbox" value=""> 
