@@ -20,8 +20,17 @@
       {"التغطية": "البلد كله"},
       {"مدى التوفر": "كل يوم"}
     ],
+    "location": {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          38.318316,
+          32.42128
+        ]
+      }
+    },
 
-    "type": "Feature",
     "id": 57556693,
     "properties": {
       "activity": 5611,
@@ -56,13 +65,6 @@
         "حالة صحية خطيرة": true
       },
       "Referral required": "referral-required"
-    },
-    "geometry": {
-      "type": "Point",
-      "coordinates": [
-        38.318316,
-        32.42128
-      ]
     }
   }
 ]
