@@ -8,7 +8,7 @@ services.factory('PopupBuilder', ['$translate', function ($translate) {
         buildPopup: function(feature) {
             // TODO: incredible hack here, just pasting in what's from the old app so we can render the popup
 
-            var partnerName = feature.properties.partnerName;
+            var partnerName = feature.organization.name;
             var logoUrl = './src/images/partner/' + partnerName.toLowerCase().replace(' ', '') + '.jpg';
 
             // we add an onerror callback so that if the image 404's we just set it to display:none

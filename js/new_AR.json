@@ -1,11 +1,13 @@
 [
   {
     "region": "محافظة المفرق",
+    "organization": {
+      "name": "UNHCR"
+    },
 
     "type": "Feature",
     "id": 57556693,
     "properties": {
-      "partnerName": "WVI",
       "activity": 5611,
       "activityCategory": "المياه والصرف الصحي",
       "activityName": "الصرف الصحي",
