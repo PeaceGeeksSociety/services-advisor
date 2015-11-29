@@ -39,22 +39,24 @@
     "School Uniforms",
     "Another service"
   ],
+  "location": {
+    "type":"Feature",
+    "geometry":{
+      "type":"Point",
+      "coordinates":[
+        35.945705,
+        31.956582
+      ]
+    }
+  },
 
 
 
 
-  "type":"Feature",
   "id":603983240,
   "properties":{
     "comments":"School Kits include:\n\n- school uniforms\n- shool fees\n- text books\n- stationary\n- school bag\n\n\nNationality: Non-syrians and non-iraqis",
     "activity":5575,
     "Referral required":"Yes"
-  },
-  "geometry":{
-    "type":"Point",
-    "coordinates":[
-      35.945705,
-      31.956582
-    ]
   }
 }]

@@ -27,7 +27,7 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', function 
     });
 
     var regionDimension = crossfilter.dimension(function (f) {
-        return f.geometry.coordinates[0] + "," + f.geometry.coordinates[1] || "";
+        return f.location.geometry.coordinates[0] + "," + f.location.geometry.coordinates[1] || "";
     });
 
     var idDimension = crossfilter.dimension(function (f) {
