@@ -19,7 +19,7 @@ services.factory('ServicesList', ['$http', '$translate', '$location', 'PopupBuil
     var services = $http.get(servicesList, {cache: true}).then(function (data) {
             data = data.data.filter(function (feature) {
                 // We want to remove features that are past the endDate.
-                var featureEndDate = new Date(feature.properties.endDate);
+                var featureEndDate = new Date(feature.endDate);
                 var featureEndDateUTC = new Date(featureEndDate.getUTCFullYear(), featureEndDate.getUTCMonth(), featureEndDate.getUTCDate());
 
                 var today = new Date();

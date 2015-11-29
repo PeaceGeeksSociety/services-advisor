@@ -22,8 +22,8 @@ controllers.controller('ServiceCtrl', ['$scope', '$routeParams', '$location', 'S
                 name: service.category.subCategory.name
             }
         };
-        $scope.service.startDate = service.properties.startDate;
-        $scope.service.endDate = service.properties.endDate;
+        $scope.service.startDate = service.startDate;
+        $scope.service.endDate = service.endDate;
 
         // TODO: reuse functionality in results controller to parse this info
         var partnerName = service.organization.name.toLowerCase().replace(' ', '');

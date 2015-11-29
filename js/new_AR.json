@@ -10,13 +10,13 @@
         "name": "الصرف الصحي"
       }
     },
+    "startDate": "2014-01-01",
+    "endDate": "2016-12-31",
 
     "type": "Feature",
     "id": 57556693,
     "properties": {
       "activity": 5611,
-      "startDate": "2014-01-01",
-      "endDate": "2016-12-31",
       "indicators": {
         "رفع مستوى الصرف الصحي وتحسين الطرق": 1
       },
