@@ -113,7 +113,6 @@ var transformServiceDetails = function(service) {
 	// console.log(hours);
 }
 
-transformServiceDetails(sample_service);
 
 /*
 Transforms the data from activity info into a format that services
@@ -177,7 +176,7 @@ for (var i = 0; i < services.length; i++) {
     delete services[i].comments;
 }
 
-var outputFilename = '../js/services_EN.json';
+var outputFilename = '../js/services_EN_new.json';
 
 fs.writeFile(outputFilename, JSON.stringify(services), function (err) {
     if (err) {
