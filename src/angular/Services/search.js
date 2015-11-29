@@ -23,7 +23,7 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', function 
         return f.properties['activityName'] || undefined;
     });
     var partnerDimension = crossfilter.dimension(function (f) {
-        return f.properties['partnerName'] || undefined;
+        return f.organization.name || undefined;
     });
 
     var regionDimension = crossfilter.dimension(function (f) {
@@ -172,7 +172,7 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', function 
 
             if (_.has(parameters, 'category')) {
                 _selectCategory(parameters.category);
-            } 
+            }
 
             if (_.has(parameters, 'region')){
                 _selectRegion(parameters.region);

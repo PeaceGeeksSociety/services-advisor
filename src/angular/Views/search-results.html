@@ -4,10 +4,10 @@
         <div class="row">
           <div class="col-xs-6">
             <button id="backButton" type="button" class="btn btn-default" ng-click="goBackFromResults();">
-              <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> 
+              <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
               {{ 'BACK' | translate }}
             </button>
-          </div>          
+          </div>
             <div class="col-xs-6">
               <!-- TODO: huge hack here using global variable to be able to call map.invalidateSize() on map so it resizes -->
             <button id="toggleMapButton" type="button" class="btn btn-default visible-xs pull-right"
@@ -22,10 +22,10 @@
 
             <div ng-repeat="result in results">
               <a class="list-group-item" ng-click="selectService(result.id);">
-                
+
                 <!-- location name section -->
                 <div class="row media-body">
-                  <h2 class="media-heading">{{result.properties.locationName}}: {{result.properties.activityName}}</h2>
+                  <h2 class="media-heading">{{result.region}}: {{result.properties.activityName}}</h2>
                   <img class="media-object pull-right" ng-src="{{getPartnerLogoUrl(result)}}" onError="this.onerror=null;this.style.display='none'">
                 </div>
 
@@ -44,7 +44,7 @@
                       <p> {{ activity }}</p>
                     </div>
                   </div>
-                    
+
                 </div><!--  /row  -->
               </a> <!-- /list-group-items -->
             </div>

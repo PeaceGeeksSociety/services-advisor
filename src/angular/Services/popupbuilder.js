@@ -8,7 +8,7 @@ services.factory('PopupBuilder', ['$translate', function ($translate) {
         buildPopup: function(feature) {
             // TODO: incredible hack here, just pasting in what's from the old app so we can render the popup
 
-            var partnerName = feature.properties.partnerName;
+            var partnerName = feature.organization.name;
             var logoUrl = './src/images/partner/' + partnerName.toLowerCase().replace(' ', '') + '.jpg';
 
             // we add an onerror callback so that if the image 404's we just set it to display:none
@@ -100,7 +100,7 @@ services.factory('PopupBuilder', ['$translate', function ($translate) {
             var articleIDattribute = '';
 
             // Assemble the article header.
-            var header = '<header>' + logo + '<h3>' + glyph + feature.properties.locationName + ': ' + feature.properties.activityName + '</h3>' + '<p class="hours">' + hours + '</p>' + headerOutput + '</header>';
+            var header = '<header>' + logo + '<h3>' + glyph + feature.region + ': ' + feature.properties.activityName + '</h3>' + '<p class="hours">' + hours + '</p>' + headerOutput + '</header>';
 
             return '<article class="serviceText"' + articleIDattribute + '>' + header + '</article>';
         }

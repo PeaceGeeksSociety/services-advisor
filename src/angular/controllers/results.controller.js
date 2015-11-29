@@ -9,49 +9,49 @@ controllers.controller('ResultsCtrl', ['$scope', '$location', '$translate', 'Sea
     // ServicesList.get will only load the services if they haven't been loaded already.
     ServicesList.get(
         function(services){
-            // ****** RESULTS OBJECT ********* 
+            // ****** RESULTS OBJECT *********
             $scope.results = Search.filterByUrlParameters();
         }
     )
 
-    // the methods below serves to get the key value in the object between each ng-repeat loop. 
-    // The object is passed in from the view, manipulated then returned back.  
+    // the methods below serves to get the key value in the object between each ng-repeat loop.
+    // The object is passed in from the view, manipulated then returned back.
 
-    // gets the opening time of the service 
+    // gets the opening time of the service
     $scope.getOpeningTime = function(result){
         //define a variable to store the 'opening time'
         var openingTime = null;
 
         var timeObject = result.properties[$translate.instant('OFFICE_OPEN_AT')];
-        // Run this if the office opening time exists 
+        // Run this if the office opening time exists
         if(timeObject){
             // Grabs the key value from the nested object which results in time in string
             openingTime = Object.keys(timeObject)[0];
-        } 
+        }
 
         return openingTime;
     }
 
-    // gets the closing time of the service 
+    // gets the closing time of the service
     $scope.getClosingTime = function(result){
         //define a variable to store the 'closing time'
         var closingTime = null;
         var timeObject = result.properties[$translate.instant('OFFICE_CLOSE_AT')];
-        // Run this if the office closing time exists 
+        // Run this if the office closing time exists
         if(timeObject){
             // Grabs the key value from the nested object which results in time in string
             closingTime = Object.keys(timeObject)[0];
-        } 
+        }
 
         return closingTime;
     }
 
     $scope.getPartnerLogoUrl = function(result) {
-        var partnerName = result.properties.partnerName.toLowerCase().replace(' ', '');
+        var partnerName = result.organization.name.toLowerCase().replace(' ', '');
         return './src/images/partner/' + partnerName + '.jpg';
     };
 
-    // gets the activity details of the service 
+    // gets the activity details of the service
     $scope.getActivityDetails = function(result){
         // Define a default variable value for activity details
         var activityDetails = [$translate.instant("UNKNOWN")];
@@ -65,7 +65,7 @@ controllers.controller('ResultsCtrl', ['$scope', '$location', '$translate', 'Sea
         // if the activity exists we'll assign it to the store variable
         if(Object.keys(activities).length > 0){
              activityDetails = Object.keys(activities);
-        } 
+        }
 
         return activityDetails;
     };
