@@ -53,21 +53,7 @@ controllers.controller('ResultsCtrl', ['$scope', '$location', '$translate', 'Sea
 
     // gets the activity details of the service
     $scope.getActivityDetails = function(result){
-        // Define a default variable value for activity details
-        var activityDetails = [$translate.instant("UNKNOWN")];
-        var activities = result.properties["indicators"];
-        // filters out the activites with zero count first
-        for(key in activities){
-            if(activities[key] === 0){
-               delete activities[key];
-            }
-        }
-        // if the activity exists we'll assign it to the store variable
-        if(Object.keys(activities).length > 0){
-             activityDetails = Object.keys(activities);
-        }
-
-        return activityDetails;
+        return result.servicesProvided || [$translate.instant("UNKNOWN")];
     };
 
     $scope.selectService = function(service_id) {

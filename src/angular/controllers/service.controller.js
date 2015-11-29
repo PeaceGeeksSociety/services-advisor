@@ -29,11 +29,8 @@ controllers.controller('ServiceCtrl', ['$scope', '$routeParams', '$location', 'S
         var partnerName = service.organization.name.toLowerCase().replace(' ', '');
         $scope.service.partnerLogoUrl = './src/images/partner/' + partnerName + '.jpg';
 
-        $.each(service.properties.indicators, function (index, value) {
-            if (value) {
-                $scope.service.activityDetails = index;
-            }
-        });
+        $scope.service.servicesProvided = service.servicesProvided;
+
         var propList = [];
         $scope.hours = [];
         $.each(service.properties, function (index) {

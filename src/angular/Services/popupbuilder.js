@@ -42,8 +42,8 @@ services.factory('PopupBuilder', ['$translate', function ($translate) {
                 hours = hourClosed ? hours += hourClosed : hours + $translate.instant('UNKNOWN');
             }
 
-            // Create meta-field for better display of indicators.
-            feature.properties["x. Activity Details"] = feature.properties.indicators;
+            // Create meta-field for better display of activity details.
+            feature.properties["x. Activity Details"] = feature.servicesProvided;
 
             // Make a list of the fields we want to show - lots of fields for this list view,
             // not so many for the map-marker-popup view.

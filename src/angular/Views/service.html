@@ -39,7 +39,7 @@
         </div>
         <div class="col-xs-6 service-details-container-row-1">
           <h2>{{ 'ACTIVITY_DETAILS' | translate }}</h2>
-          <p>{{service.activityDetails}}</p>
+          <p data-ng-repeat="serviceProvided in service.servicesProvided">{{serviceProvided}}</p>
         </div>
 
 
