@@ -157,8 +157,7 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
 
             var requiredArgumentGiven =  _.has(geoLocation, 'latitude') &&
                                         _.has(geoLocation, 'longitude') &&
-                                        _.has(geoLocation, 'radius');
-            console.log(geoLocation);
+                                        _.has(geoLocation, 'radius');            
             if(requiredArgumentGiven){                
                 var center = gju.rectangleCentroid({
                   "type": "Polygon",
