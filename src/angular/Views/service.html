@@ -54,7 +54,7 @@
               <td class="col-xs-6 pull-left">{{ 'END_DATE' | translate }}</td>
               <td class="col-xs-6 pull-right">{{service.endDate}}</td>
             </tr>
-            <tr class="col-xs-12" data-ng-repeat="object in service.servicesProvided">
+            <tr class="col-xs-12" data-ng-repeat="object in service.details">
               <td class="col-xs-6 pull-left">{{object.first}}</td>
               <td class="col-xs-6 pull-right">{{object.second}}</td>
             </tr>

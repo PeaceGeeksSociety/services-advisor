@@ -52,7 +52,7 @@ controllers.controller('ResultsCtrl', ['$scope', '$location', '$translate', 'Sea
     };
 
     // gets the activity details of the service
-    $scope.getActivityDetails = function(result){
+    $scope.getServicesProvided = function(result){
         return result.servicesProvided || [$translate.instant("UNKNOWN")];
     };
 

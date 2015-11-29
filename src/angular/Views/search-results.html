@@ -40,8 +40,8 @@
                   <!-- activites detail section -->
                   <div class="col-xs-7">
                     <h3>{{ 'ACTIVITY_DETAILS' | translate }}</h3>
-                    <div ng-repeat="activity in getActivityDetails(result)">
-                      <p> {{ activity }}</p>
+                    <div data-ng-repeat="serviceProvided in getServicesProvided(result)">
+                      <p> {{ serviceProvided }}</p>
                     </div>
                   </div>
 

@@ -65,8 +65,8 @@ controllers.controller('ServiceCtrl', ['$scope', '$routeParams', '$location', 'S
 
         var detailsList = []
 
-        for (var i = 0; i < service.servicesProvided.length; i++){
-            var serviceDetails = service.servicesProvided[i];
+        for (var i = 0; i < service.details.length; i++){
+            var serviceDetails = service.details[i];
 
             var details = {}
 
@@ -78,7 +78,7 @@ controllers.controller('ServiceCtrl', ['$scope', '$routeParams', '$location', 'S
             detailsList.push(details);
         }
 
-        $scope.service.servicesProvided = detailsList;
+        $scope.service.details = detailsList;
         $scope.hours = service.hours;
 
 
