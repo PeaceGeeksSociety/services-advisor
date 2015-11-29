@@ -6,21 +6,21 @@ var controllers = angular.module('controllers');
 controllers.controller('SearchCtrl', ['$scope', '$http', '$location', '$rootScope', 'ServicesList', 'Search', '_', function ($scope, $http, $location, $rootScope, ServicesList, Search, _) {
 
     var renderView = function(services) {
-        
+
         // Here we're going to extract the list of categories and display them in a simple template
         // use an object to collect service information since object keys won't allow
         // for duplicates (this basically acts as a set)
         var categories = {};
         angular.forEach(services, function (service) {
             // add activity and its category to list, and increment counter of this category's available services
-            var category = service.properties ? service.properties.activityCategory : null;
+            var category = service.category.name;
             if (category) {
                 if (categories[category] == null) {
                     categories[category] = {activities:{}, count: 0};
                 }
                 categories[category].count++;
 
-                var activity = service.properties.activityName;
+                var activity = service.category.subCategory.name;
                 if (activity) {
                     if (categories[category].activities[activity] == null) {
                         categories[category].activities[activity] = {name: activity, count: 0};
@@ -51,13 +51,13 @@ controllers.controller('SearchCtrl', ['$scope', '$http', '$location', '$rootScop
         });
     };
 
-    // Had to put renderView() in a function callback otherwise Watch won't make changes 
+    // Had to put renderView() in a function callback otherwise Watch won't make changes
     $rootScope.$on('FILTER_CHANGED',function(){
         renderView(Search.currResults());
     });
 
     if ($scope.categories){
-        // // Set up the watch function to watches for changes in $scope.categories 
+        // // Set up the watch function to watches for changes in $scope.categories
         $scope.$watch($scope.categories);
     }
 
