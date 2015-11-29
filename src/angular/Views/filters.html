@@ -41,7 +41,7 @@
           
             <!-- Looping first split array  -->
             <div ng-repeat="organization1 in organizationsArray[0]">
-              <label class="col-xs-12 col-md-6 control-label organization-label">
+              <label class="col-xs-12 col-md-4 control-label organization-label">
                 {{organization1}}
                 <div class="pull-right">
                   <img class="organization-logo" ng-src="{{partnerLogoUrl[organization1]}}" onError="this.onerror=null;this.style.display='none';"/>
@@ -52,11 +52,22 @@
 
             <!-- Looping second split array  -->
             <div ng-repeat="organization2 in organizationsArray[1]">
-              <label class="col-xs-12 col-md-6 control-label organization-label">
+              <label class="col-xs-12 col-md-4 control-label organization-label">
                 {{organization2}}
                 <div class="pull-right">
                    <img class="organization-logo" ng-src="{{partnerLogoUrl[organization2]}}" onError="this.onerror=null;this.style.display='none';"/>
                   <input ng-checked="filterSelection.indexOf(organization2) > -1" ng-click="toggleSelection(organization2)" type="checkbox" value=""> 
+                </div>
+              </label>  
+            </div>
+
+            <!-- Looping second split array  -->
+            <div ng-repeat="organization3 in organizationsArray[2]">
+              <label class="col-xs-12 col-md-4 control-label organization-label">
+                {{organization2}}
+                <div class="pull-right">
+                   <img class="organization-logo" ng-src="{{partnerLogoUrl[organization3]}}" onError="this.onerror=null;this.style.display='none';"/>
+                  <input ng-checked="filterSelection.indexOf(organization3) > -1" ng-click="toggleSelection(organization3)" type="checkbox" value=""> 
                 </div>
               </label>  
             </div>
