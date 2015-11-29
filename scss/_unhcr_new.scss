@@ -204,15 +204,22 @@ h3 {
 }
 
 #filters {
+  z-index: 9999;
+  position: fixed;
   @media (min-width: $screen-md-min) {
-    position: fixed;
     height:400px;
-    overflow:scroll;
+    overflow-y:scroll;
+    overflow-x:hidden;
     top: -554px;
-    /*left: 15vw;*/
-    z-index: 9999;
     background-color: white;
     box-shadow: 0px 5px 15px rgba(0,0,0,.15);
+  }
+
+  @media screen and (max-width: 480px) {      
+    background-color:white;
+    top:54px;
+    left:-300px;
+    width:85%;   
   }
 
   label {
@@ -253,10 +260,26 @@ h3 {
   -moz-transition: all 0.75s;
   -o-transition: all 0.75s;
   transition: all 0.75s;
+
+  @media screen and (max-width: 480px) {
+    -webkit-transition: all 1s;
+    -moz-transition: all 1s;
+    -o-transition: all 1s;
+    transition: all 1s;
+    overflow: scroll;
+    height: 510px;
+  }
 }
 
 #filters.active { 
   top: 55.2px!important;
+  @media screen and (max-width: 480px) {
+    left:-4px;       
+  }
+}
+
+.filterCtrl {
+  overflow-x:hidden;
 }
 
 .organization-label {
