@@ -30,7 +30,7 @@ services.factory('ServicesList', ['$http', '$translate', '$location', 'PopupBuil
 
                 // TODO: adding markers to the map here is a hack. Should be done somewhere it makes sense
                 var serviceMarker = L.marker(feature.geometry.coordinates.reverse(),
-                    {icon: iconObjects[feature.properties.activityCategory]});
+                    {icon: iconObjects[feature.category.name]});
                 serviceMarker.addTo(clusterLayer);
 
                 // Make the popup, and bind it to the marker.  Add the service's unique ID

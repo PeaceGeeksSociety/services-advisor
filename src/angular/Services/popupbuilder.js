@@ -92,7 +92,7 @@ services.factory('PopupBuilder', ['$translate', function ($translate) {
             }
 
             // Get the activity-category icon.
-            activityCategory = feature.properties.activityCategory; // eg "CASH"
+            activityCategory = feature.category.name; // eg "CASH"
             var glyph = '<i class="glyphicon icon-' + iconGlyphs[activityCategory].glyph + '"></i>';
 
             // In the list view only, the articles must have unique IDs so that we can scroll directly to them
