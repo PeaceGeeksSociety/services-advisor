@@ -111,7 +111,6 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
                     type: "Point",
                     coordinates: [parseFloat(pp[1]), parseFloat(pp[0])]
                 };
-
                 return gju.pointInPolygon(point, activeRegionLayer.toGeoJSON().geometry);
             })
         }

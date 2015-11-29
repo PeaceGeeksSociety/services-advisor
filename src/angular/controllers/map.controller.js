@@ -17,11 +17,12 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
     });
 
     // Geolocation object to input user's location and the selected locations
-    geoLocationObject = {
+    var geoLocationObject = {
         latitude: 35.7333333333333,
         longitude: 30.2, 
-        radius: 1000
+        radius: 1000000
     }
+
     // Filter by proximity 
     Search.filterByProxmity(geoLocationObject);
 
