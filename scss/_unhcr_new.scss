@@ -267,7 +267,7 @@ h3 {
     -o-transition: all 1s;
     transition: all 1s;
     overflow: scroll;
-    height: 510px;
+    height: 100%;
   }
 }
 
@@ -280,6 +280,7 @@ h3 {
 
 .filterCtrl {
   overflow-x:hidden;
+  height:90%;
 }
 
 .organization-label {
