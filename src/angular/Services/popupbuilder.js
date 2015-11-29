@@ -92,7 +92,7 @@ services.factory('PopupBuilder', ['$translate', function ($translate) {
             }
 
             // Get the activity-category icon.
-            activityCategory = feature.properties.activityCategory; // eg "CASH"
+            activityCategory = feature.category.name; // eg "CASH"
             var glyph = '<i class="glyphicon icon-' + iconGlyphs[activityCategory].glyph + '"></i>';
 
             // In the list view only, the articles must have unique IDs so that we can scroll directly to them
@@ -100,7 +100,7 @@ services.factory('PopupBuilder', ['$translate', function ($translate) {
             var articleIDattribute = '';
 
             // Assemble the article header.
-            var header = '<header>' + logo + '<h3>' + glyph + feature.region + ': ' + feature.properties.activityName + '</h3>' + '<p class="hours">' + hours + '</p>' + headerOutput + '</header>';
+            var header = '<header>' + logo + '<h3>' + glyph + feature.region + ': ' + feature.category.subCategory.name + '</h3>' + '<p class="hours">' + hours + '</p>' + headerOutput + '</header>';
 
             return '<article class="serviceText"' + articleIDattribute + '>' + header + '</article>';
         }

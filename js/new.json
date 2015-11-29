@@ -3,14 +3,18 @@
   "organization": {
     "name": "UNHCR"
   },
+  "category": {
+    "name": "EDUCATION",
+    "subCategory": {
+      "name":"Education opportunities"
+    }
+  },
 
   "type":"Feature",
   "id":603983240,
   "properties":{
     "comments":"School Kits include:\n\n- school uniforms\n- shool fees\n- text books\n- stationary\n- school bag\n\n\nNationality: Non-syrians and non-iraqis",
     "activity":5575,
-    "activityCategory":"EDUCATION",
-    "activityName":"Education opportunities",
     "startDate":"2014-01-01",
     "endDate":"2016-12-31",
     "indicators":{
