@@ -20,7 +20,7 @@ controllers.controller('SearchCtrl', ['$scope', '$http', '$location', '$rootScop
                 }
                 categories[category].count++;
 
-                var activity = service.properties.activityName;
+                var activity = service.category.subCategory.name;
                 if (activity) {
                     if (categories[category].activities[activity] == null) {
                         categories[category].activities[activity] = {name: activity, count: 0};

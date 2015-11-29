@@ -5,14 +5,16 @@
       "name": "UNHCR"
     },
     "category": {
-      "name": "المياه والصرف الصحي"
+      "name": "المياه والصرف الصحي",
+      "subCategory": {
+        "name": "الصرف الصحي"
+      }
     },
 
     "type": "Feature",
     "id": 57556693,
     "properties": {
       "activity": 5611,
-      "activityName": "الصرف الصحي",
       "startDate": "2014-01-01",
       "endDate": "2016-12-31",
       "indicators": {

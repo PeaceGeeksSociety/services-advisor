@@ -25,7 +25,7 @@
 
                 <!-- location name section -->
                 <div class="row media-body">
-                  <h2 class="media-heading">{{result.region}}: {{result.properties.activityName}}</h2>
+                  <h2 class="media-heading">{{result.region}}: {{result.category.subCategory.name}}</h2>
                   <img class="media-object pull-right" ng-src="{{getPartnerLogoUrl(result)}}" onError="this.onerror=null;this.style.display='none'">
                 </div>
 

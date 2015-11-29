@@ -20,7 +20,7 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', function 
 
     // TODO: not sure why they do || undefined, but previously they had "|| option.empty" where empty was never defined
     var categoryDimension = crossfilter.dimension(function (f) {
-        return f.properties['activityName'] || undefined;
+        return f.category.subCategory.name || undefined;
     });
     var partnerDimension = crossfilter.dimension(function (f) {
         return f.organization.name || undefined;
@@ -39,7 +39,7 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', function 
     });
 
     /** Used to get list of currently filtered services rather than re-using an existing dimension **/
-    var metaDimension = crossfilter.dimension(function (f) { return f.properties.activityName; });
+    var metaDimension = crossfilter.dimension(function (f) { return f.category.subCategory.name; });
 
     var allDimensions = [categoryDimension, partnerDimension, regionDimension, idDimension, referralsDimension];
 

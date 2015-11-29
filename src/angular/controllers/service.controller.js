@@ -17,9 +17,11 @@ controllers.controller('ServiceCtrl', ['$scope', '$routeParams', '$location', 'S
         };
         $scope.service.comments = service.properties.comments;
         $scope.service.category = {
-            name: service.category.name
+            name: service.category.name,
+            subCategory: {
+                name: service.category.subCategory.name
+            }
         };
-        $scope.service.activityName = service.properties.activityName;
         $scope.service.startDate = service.properties.startDate;
         $scope.service.endDate = service.properties.endDate;
 
