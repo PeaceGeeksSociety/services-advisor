@@ -44,30 +44,6 @@
       "Remedial Tutoring":0,
       "School Uniforms":1
     },
-    "1. Registration Type Requirement":{
-      "UNHCR ASC":true
-    },
-    "2. Nationality":{
-      "Other nationalities only":true
-    },
-    "3. Intake Criteria":{
-      "Open to all":true
-    },
-    "13. Feedback Mechanism":{
-      "Event entered in RAIS":true
-    },
-    "12. Response delay after referrals":{
-      "Case by case basis":true
-    },
-    "14. Feedback delay":{
-      "Delay on Case by case":true
-    },
-    "11. Immediate Next step  response after referal":{
-      "Follow up call":true
-    },
-    "10. Referral Method":{
-      "Referrals not accepted":true
-    },
     "Referral required":"Yes"
   },
   "geometry":{
