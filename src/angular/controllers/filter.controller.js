@@ -127,23 +127,7 @@ controllers.controller('FilterCtrl', ['$scope', '$rootScope', '$location', 'Sear
     }, 2);
   };
 
-  $scope.toggleFilters = function() {
-    var $filter = $('#filters');
-    console.log('with love from filter controllers');
-    $('body').on('click',function(e){
-        var targetElementId = e.target.id;
-        var activeClass = $filter.attr('class').split(/ /)[1];
-                        
-        if (targetElementId == 'filtersButton' && activeClass !== 'active'){
-            $filter.addClass('active');            
-            console.log('active again.....');
-        }else {             
-            $('#filters').removeClass('active').removeClass('active');             
-            console.log(activeClass);
-        }
-
-    })
-};
+  $scope.toggleFilters = toggleFilters;
 
 
 }]);

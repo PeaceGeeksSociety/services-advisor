@@ -18,38 +18,61 @@ controllers.controller('NavbarCtrl', ['$scope', 'Cookies', function ($scope, Coo
     event.stopPropagation();
   });
 
-  $scope.toggleFilters = toggleFilter;
+  $scope.toggleFilters = toggleFilters;
 
 }]);
 
-toggleFilter = (function(){
+toggleFilters = (function(){
 
     // Local variables defined 
     var $filter = $('#filters');
-    var $body = $('body');        
+    var $body = $('body');     
+    var $mapContainer  = $('#mapContainer');
+    var $serviceList  = $('#serviceList');
     // check for 'active' class from the #filter DOM element
     var activeClass = $('#filters').attr('class').split(/ /)[1];  
     
     var _reloadVariables = function(){
+
         $filter = $('#filters');                
         activeClass = $('#filters').attr('class').split(/ /)[1];       
+
     }
-    
-    var _toggleFilter = function(){                
-        $body.on('click',function(event){            
-            if (activeClass !== 'active' && event.target.id == 'filtersButton'){
-                $filter.addClass('active');                     
-            }
-            else {             
-                $filter.removeClass('active');                                          
-            }                        
+
+    var _bindcloseListners = function(){
+        $mapContainer.on('click',function(){
+            $filter.removeClass('active');
+        })
+
+        $serviceList.on('click',function(){
+            $filter.removeClass('active');
         })
     }
 
-    var _exec = function(){        
+    _bindcloseListners();
+
+    var _toggleFilter = function(){ 
+
+        $body.on('click',function(event){    
+            var nonActiveFilterBtn =  activeClass !== 'active' && event.target.id == 'filtersButton';
+            var activeFilterBtn =  activeClass == 'active' && event.target.id == 'filtersButton';
+            var activeApplyFilterBtn = activeClass == 'active' && event.target.id == 'applyFilter';
+            var toggleCheckBox = event.target.id.length == 0 && event.target.type !== 'checkbox';
+
+            if (nonActiveFilterBtn)
+                { $filter.addClass('active'); }
+            else 
+                if(activeFilterBtn || activeApplyFilterBtn)
+                    { $filter.removeClass('active'); }                   
+        })
+    }
+
+    var _exec = function(){    
+
         _reloadVariables();      
         // wait for DOM variable reload
         setTimeout(_toggleFilter(), 250);
+
     }
 
     return {

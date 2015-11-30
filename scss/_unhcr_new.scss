@@ -205,7 +205,7 @@ h3 {
 
 #filters {
   z-index: 9999;
-  position: fixed;
+  position: fixed;  
   @media (min-width: $screen-md-min) {
     height:400px;
     overflow-y:scroll;
@@ -218,7 +218,7 @@ h3 {
   @media screen and (max-width: 480px) {      
     background-color:white;
     top:54px;
-    left:-300px;
+    left:-320px;
     width:85%;   
   }
 
@@ -272,8 +272,9 @@ h3 {
 }
 
 #filters.active { 
-  top: 55.2px!important;
+  top:54.2px;
   @media screen and (max-width: 480px) {
+    top: 51.6px;
     left:-4px;       
   }
 }
