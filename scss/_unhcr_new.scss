@@ -216,16 +216,27 @@ h3 {
     box-shadow: 0px 5px 15px rgba(0,0,0,.15);
   }
 
-  @media screen and (max-width: 480px) {          
-    top:51.6px;
-    left:-350px;
+  @media screen and (max-width: 1000px) {              
+    left:-1000px;
     width:85%;   
   }
 
-  @media screen and (min-width: 480px) and (max-width: 985px) {
-    top:55.8px;
-    left:-440px;
+  @media screen and (max-width: 480px) {
+    top:51.6px;          
   }
+
+  @media screen and (min-width: 480px) and (max-width: 770px) {          
+    top:51.8px;  
+  }
+
+  @media screen and (min-width: 770px) and (max-width: 985px) {
+    top:55.8px;       
+  }
+
+/*  @media screen and (min-width: 480px) and (max-width: 985px) {
+    top:51.8px;
+    left:-440px;
+  }*/
 
   label {
     text-align: left;
@@ -261,31 +272,25 @@ h3 {
       }
     }
   }
-  -webkit-transition: all 0.75s;
-  -moz-transition: all 0.75s;
-  -o-transition: all 0.75s;
-  transition: all 0.75s;
+  -webkit-transition: all 1s;
+  -moz-transition: all 1s;
+  -o-transition: all 1s;
+  transition: all 1s;
+  overflow: scroll;
 
-  @media screen and (max-width: 480px) {
-    -webkit-transition: all 1s;
-    -moz-transition: all 1s;
-    -o-transition: all 1s;
-    transition: all 1s;
-    overflow: scroll;
+  @media screen and (max-width: 800px) {
     height: 100%;
   }
 }
 
 #filters.active { 
-  top:54.2px;
-  @media screen and (max-width: 480px) {
-    top: 51.6px;
-    left:-4px;       
+  
+  @media screen and (max-width: 985px) {    
+    left:-4px;    
   }
 
-  @media screen and (min-width: 480px) and (max-width: 985px) {
-      top:55.8px;      
-      left:-4px;    
+  @media screen and (min-width: 1100px) {
+    top:54px;
   }
 }
 
