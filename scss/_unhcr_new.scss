@@ -278,8 +278,8 @@ h3 {
   transition: all 1s;
   overflow: scroll;
 
-  @media screen and (max-width: 800px) {
-    height: 100%;
+  @media screen and (max-width: 900px) {
+    height: 95%;
   }
 }
 
@@ -312,8 +312,8 @@ h3 {
   clear: both;
   direction: ltr;
 
-  @media (max-width: $screen-md-min) {
-    height: 100%;
+  @media screen and (max-width: 768px) {
+    height: 75%;
   }
 }
 
