@@ -95,23 +95,23 @@ var transformServiceDetails = function(service) {
                             obj[detailsKey] = details_description;
                         }
                     });
-                    // console.log(integerPrefix);
-                    // console.log(obj);
                     propList.push(obj);
                 } else {
                     _.each(service.properties[property_name], function (val, value) {
                         if (value) {
                             hours.push(val);
-							// service.hours = value;
                         }
                     });
                 }
             }
         }
 	});
-	service.servicesProvided = propList;
-    service.hours = hours;
-	return service;
+
+    var service_properties = {
+        "details": propList,
+        "hours": hours
+    }
+	return service_properties;
 }
 
 
@@ -147,18 +147,20 @@ var transformActivityInfoServices = function(services, language){
 		serviceTransformed.startDate = serviceUntransformed.properties.startDate;
 		serviceTransformed.endDate = serviceUntransformed.properties.endDate;
 		
-		var details = [];
+		var servicesProvided = [];
 		for (indicator in serviceUntransformed.properties.indicators) {
-			details.push(indicator);
+			servicesProvided.push(indicator);
 		}
-		serviceTransformed.details = details;
+		serviceTransformed.servicesProvided = servicesProvided;
 
 		var locationFeature = new Object();
 		locationFeature.type = "Feature";
 		locationFeature.geometry = serviceUntransformed.geometry;
 		serviceTransformed.location = locationFeature;
 
-		serviceTransformed.servicesProvided = transformServiceDetails(serviceUntransformed);
+		var service_properties = transformServiceDetails(serviceUntransformed);
+        serviceTransformed.details = service_properties.details;
+        serviceTransformed.hours = service_properties.hours;
 
 		serviceTransformed.referral = transformReferralMethod(serviceUntransformed);
 
