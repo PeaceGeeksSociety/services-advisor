@@ -19,7 +19,7 @@ services.factory('ServicesList', ['$http', '$translate', '$location', 'PopupBuil
     var services = $http.get(servicesList, {cache: true}).then(function (data) {
             data = data.data.filter(function (feature) {
                 // We want to remove features that are past the endDate.
-                var featureEndDate = new Date(feature.properties.endDate);
+                var featureEndDate = new Date(feature.endDate);
                 var featureEndDateUTC = new Date(featureEndDate.getUTCFullYear(), featureEndDate.getUTCMonth(), featureEndDate.getUTCDate());
 
                 var today = new Date();
@@ -29,7 +29,7 @@ services.factory('ServicesList', ['$http', '$translate', '$location', 'PopupBuil
             angular.forEach(data, function (feature) {
 
                 // TODO: adding markers to the map here is a hack. Should be done somewhere it makes sense
-                var serviceMarker = L.marker(feature.geometry.coordinates.reverse(),
+                var serviceMarker = L.marker(feature.location.geometry.coordinates.reverse(),
                     {icon: iconObjects[feature.category.name]});
                 serviceMarker.addTo(clusterLayer);
 

@@ -22,18 +22,15 @@ controllers.controller('ServiceCtrl', ['$scope', '$routeParams', '$location', 'S
                 name: service.category.subCategory.name
             }
         };
-        $scope.service.startDate = service.properties.startDate;
-        $scope.service.endDate = service.properties.endDate;
+        $scope.service.startDate = service.startDate;
+        $scope.service.endDate = service.endDate;
 
         // TODO: reuse functionality in results controller to parse this info
         var partnerName = service.organization.name.toLowerCase().replace(' ', '');
         $scope.service.partnerLogoUrl = './src/images/partner/' + partnerName + '.jpg';
 
-        $.each(service.properties.indicators, function (index, value) {
-            if (value) {
-                $scope.service.activityDetails = index;
-            }
-        });
+        $scope.service.servicesProvided = service.servicesProvided;
+
         var propList = [];
         $scope.hours = [];
         $.each(service.properties, function (index) {
@@ -68,8 +65,8 @@ controllers.controller('ServiceCtrl', ['$scope', '$routeParams', '$location', 'S
 
         var detailsList = []
 
-        for (var i = 0; i < service.servicesProvided.length; i++){
-            var serviceDetails = service.servicesProvided[i];
+        for (var i = 0; i < service.details.length; i++){
+            var serviceDetails = service.details[i];
 
             var details = {}
 
@@ -81,7 +78,7 @@ controllers.controller('ServiceCtrl', ['$scope', '$routeParams', '$location', 'S
             detailsList.push(details);
         }
 
-        $scope.service.servicesProvided = detailsList;
+        $scope.service.details = detailsList;
         $scope.hours = service.hours;
 
 

@@ -9,7 +9,7 @@
       "name":"Education opportunities"
     }
   },
-  "servicesProvided": [{
+  "details": [{
     "Registration Type Requirement": "UNHCR ASC"
   }, {
     "Nationality": "Other nationalities only"
@@ -33,24 +33,27 @@
     "Availability": "One Off"
   }],
   "hours": ["8:30AM"],
-  "type":"Feature",
-  "id":603983240,
-  "properties":{
-    "comments":"School Kits include:\n\n- school uniforms\n- shool fees\n- text books\n- stationary\n- school bag\n\n\nNationality: Non-syrians and non-iraqis",
-    "activity":5575,
-    "startDate":"2014-01-01",
-    "endDate":"2016-12-31",
-    "indicators":{
-      "Remedial Tutoring":0,
-      "School Uniforms":1
-    },
-    "Referral required":"Yes"
+  "startDate":"2014-01-01",
+  "endDate":"2016-12-31",
+  "servicesProvided": [
+    "School Uniforms",
+    "Another service"
+  ],
+  "location": {
+    "type":"Feature",
+    "geometry":{
+      "type":"Point",
+      "coordinates":[
+        35.945705,
+        31.956582
+      ]
+    }
   },
-  "geometry":{
-    "type":"Point",
-    "coordinates":[
-      35.945705,
-      31.956582
-    ]
+  "id":603983240,
+
+
+
+  "properties":{
+    "Referral required":"Yes"
   }
 }]
