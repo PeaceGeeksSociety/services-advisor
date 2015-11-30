@@ -33,46 +33,36 @@ toggleFilters = (function(){
     var activeClass = $('#filters').attr('class').split(/ /)[1];  
     
     var _reloadVariables = function(){
-
         $filter = $('#filters');                
         activeClass = $('#filters').attr('class').split(/ /)[1];       
-
     }
 
-    var _bindcloseListners = function(){
+    var _bindCloseListners = function(){
         $mapContainer.on('click',function(){
             $filter.removeClass('active');
         })
-
         $serviceList.on('click',function(){
             $filter.removeClass('active');
         })
     }
 
-    _bindcloseListners();
+    _bindCloseListners();
 
     var _toggleFilter = function(){ 
-
         $body.on('click',function(event){    
             var nonActiveFilterBtn =  activeClass !== 'active' && event.target.id == 'filtersButton';
             var activeFilterBtn =  activeClass == 'active' && event.target.id == 'filtersButton';
-            var activeApplyFilterBtn = activeClass == 'active' && event.target.id == 'applyFilter';
-            var toggleCheckBox = event.target.id.length == 0 && event.target.type !== 'checkbox';
+            var activeApplyFilterBtn = activeClass == 'active' && event.target.id == 'applyFilter';            
 
-            if (nonActiveFilterBtn)
-                { $filter.addClass('active'); }
-            else 
-                if(activeFilterBtn || activeApplyFilterBtn)
-                    { $filter.removeClass('active'); }                   
+            if (nonActiveFilterBtn){ $filter.addClass('active'); }
+            else if(activeFilterBtn || activeApplyFilterBtn){ $filter.removeClass('active'); }                   
         })
     }
 
     var _exec = function(){    
-
         _reloadVariables();      
         // wait for DOM variable reload
         setTimeout(_toggleFilter(), 250);
-
     }
 
     return {
