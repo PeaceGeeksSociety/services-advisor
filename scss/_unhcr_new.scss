@@ -206,6 +206,7 @@ h3 {
 #filters {
   z-index: 9999;
   position: fixed;  
+  background-color:white;
   @media (min-width: $screen-md-min) {
     height:400px;
     overflow-y:scroll;
@@ -215,11 +216,15 @@ h3 {
     box-shadow: 0px 5px 15px rgba(0,0,0,.15);
   }
 
-  @media screen and (max-width: 480px) {      
-    background-color:white;
-    top:54px;
-    left:-320px;
+  @media screen and (max-width: 480px) {          
+    top:51.6px;
+    left:-350px;
     width:85%;   
+  }
+
+  @media screen and (min-width: 480px) and (max-width: 985px) {
+    top:55.8px;
+    left:-440px;
   }
 
   label {
@@ -277,6 +282,11 @@ h3 {
     top: 51.6px;
     left:-4px;       
   }
+
+  @media screen and (min-width: 480px) and (max-width: 985px) {
+      top:55.8px;      
+      left:-4px;    
+  }
 }
 
 .filterCtrl {  
@@ -298,11 +308,7 @@ h3 {
   direction: ltr;
 
   @media (max-width: $screen-md-min) {
-    height: 75%;
-
-    &.map-hide {
-      height: 0%; /* hide by setting height so that map is still loaded correctly */
-    }
+    height: 100%;
   }
 }
 
