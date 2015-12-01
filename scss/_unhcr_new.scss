@@ -221,22 +221,13 @@ h3 {
     width:85%;   
   }
 
-  @media screen and (max-width: 480px) {
-    top:51.6px;          
-  }
-
-  @media screen and (min-width: 480px) and (max-width: 770px) {          
-    top:51.8px;  
+  @media screen and (max-width: 770px) {          
+    top:54.6px;     
   }
 
   @media screen and (min-width: 770px) and (max-width: 985px) {
-    top:55.8px;       
+    top:57.5px;       
   }
-
-/*  @media screen and (min-width: 480px) and (max-width: 985px) {
-    top:51.8px;
-    left:-440px;
-  }*/
 
   label {
     text-align: left;
@@ -289,7 +280,7 @@ h3 {
     left:-4px;    
   }
 
-  @media screen and (min-width: 1100px) {
+  @media (min-width: 990px) {
     top:54px;
   }
 }
@@ -314,6 +305,9 @@ h3 {
 
   @media screen and (max-width: 768px) {
     height: 75%;
+     &.map-hide {
+      height: 0%; /* hide by setting height so that map is still loaded correctly */
+    }
   }
 }
 
