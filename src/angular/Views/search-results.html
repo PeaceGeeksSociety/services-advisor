@@ -34,7 +34,7 @@
                   <!-- hours section -->
                   <div class="col-xs-5">
                     <h3>{{ 'HOURS' | translate }}</h3>
-                    <p> {{ getOpeningTime(result) || 'N/A' }} - {{ getClosingTime(result) || 'N/A' }} </p>
+                    <p> {{ result.hours.openAt || 'N/A' }} - {{ result.hours.closedAt || 'N/A' }} </p>
                   </div>
 
                   <!-- activites detail section -->

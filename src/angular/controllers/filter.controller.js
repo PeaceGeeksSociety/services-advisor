@@ -84,7 +84,6 @@ controllers.controller('FilterCtrl', ['$scope', '$rootScope', '$location', 'Sear
     }
     $location.search(parameters);
     Search.filterByUrlParameters();
-    // Search.selectReferrals($scope.referral.selection);
   };
 
   $scope.referral = {

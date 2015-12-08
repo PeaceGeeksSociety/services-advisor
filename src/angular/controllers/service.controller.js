@@ -31,38 +31,6 @@ controllers.controller('ServiceCtrl', ['$scope', '$routeParams', '$location', 'S
 
         $scope.service.servicesProvided = service.servicesProvided;
 
-        var propList = [];
-        $scope.hours = [];
-        $.each(service.properties, function (index) {
-            var tempArray = index.split(".");
-            if (index != 'comments' && tempArray.length > 1) {
-                if ($.isNumeric(tempArray[0])) {
-                    //TODO: Let's see if we can print it from index rather than creating new object for it again.
-                    var obj = {};
-                    var level = parseInt(tempArray[0], 10);
-                    if (level != 8) {
-                        obj.key = $.trim(tempArray[1]);
-                        $.each(service.properties[index], function (index, value) {
-                            if (value) {
-                                obj.value = index;
-                            }
-                        });
-                        propList[level] = obj;
-                    } else {
-                        $.each(service.properties[index], function (index, value) {
-                            if (value) {
-                                $scope.hours.push(index);
-                            }
-                        });
-                    }
-                }
-            }
-        });
-        propList = $.grep(propList, function (n) {
-            return (n)
-        });
-        $scope.service.properties = propList;
-
         var detailsList = []
 
         for (var i = 0; i < service.details.length; i++){

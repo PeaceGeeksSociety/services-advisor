@@ -76,18 +76,15 @@ The result of this is a list of dictionaries like:
  */
 var transformServiceDetails = function(service) {
 	var propList = [];
-	var hours = []
+	var hours = {}
 	_.each(service.properties, function(key, property_name) {
         var tempArray = property_name.split(".");
         if (property_name != 'comments' && tempArray.length > 1) {
-        	// console.log(tempArray[0]);
         	var integerPrefix = parseInt(tempArray[0], 10);
             if (integerPrefix) {
-            	// console.log('is number');
-                //TODO: Let's see if we can print it from index rather than creating new object for it again.
                 var obj = {};
-                // var level = integerPrefix;
-                if (integerPrefix != 8) {
+				// Properties starting with 8 or 9 relate to opening hours/closing hours
+                if (integerPrefix != 8 && integerPrefix != 9) {
                     var detailsKey = tempArray[1].trim();
                     // console.log(detailsKey);
                     _.each(service.properties[property_name], function (val, details_description) {
@@ -97,10 +94,17 @@ var transformServiceDetails = function(service) {
                     });
                     propList.push(obj);
                 } else {
+					var hoursKey;
+					if (integerPrefix == 8){
+						hoursKey = "openAt"
+					} else if (integerPrefix == 9) {
+						hoursKey = "closedAt"
+					}
                     _.each(service.properties[property_name], function (val, value) {
-                        if (value) {
-                            hours.push(val);
-                        }
+						if (hoursKey == "closedAt") {
+							value = value.replace('Close at ','');
+						}
+						hours[hoursKey] = value;
                     });
                 }
             }
@@ -137,7 +141,7 @@ var transformActivityInfoServices = function(services, language){
 
 		//Init the category
 		var category = new Object();
-		category.id = serviceUntransformed.properties.activityCategory;
+		category.name = serviceUntransformed.properties.activityCategory;
 		
 		var subCategory = new Object();
 		subCategory.name = serviceUntransformed.properties.activityName;
