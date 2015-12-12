@@ -7,3 +7,5 @@ css/main.css
 bower_components/
 js/app.js
 .DS_Store
+js/services_AR.json.bak
+js/services_EN.json.bak

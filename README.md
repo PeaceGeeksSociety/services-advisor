@@ -72,12 +72,8 @@ To build the js/css:
 - go to `http://localhost:8080`
 - in the future, since you've already installed http-server you can just run `http-server`
 
-# How Services Data Is Loaded and Translated
-
-- `cd service-list-retrieval`
-- `cat sources.txt | node getJSON.js`
-  - this will call all the urls in `sources.txt` and then concatenate all the json responses into `services.json`
-- `node LoadJSON.js`
-  - this takes the json from `services.json` and removes all the `comments` fields (which aren't translated) to output `js/services_EN.json`
-- `node ParseEn_AR_JSON.js`
-  - uses `data.csv` to regex replace the English strings in `js/services_EN.json` with their Arabic translations. This outputs `js/services_AR.json`
+# To update services data
+Run this script. Must have node installed, and have run `npm install`
+```bash
+service-list-retrieval/update-services.sh
+```
