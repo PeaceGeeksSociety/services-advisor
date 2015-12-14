@@ -265,10 +265,10 @@ h3 {
       }
     }
   }
-  -webkit-transition: all 1s;
-  -moz-transition: all 1s;
-  -o-transition: all 1s;
-  transition: all 1s;
+  -webkit-transition: all 0.65s;
+  -moz-transition: all 0.65s;
+  -o-transition: all 0.65s;
+  transition: all 0.65s;
   overflow: scroll;
 
   @media screen and (max-width: 900px) {
