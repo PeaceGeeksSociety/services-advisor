@@ -26,6 +26,7 @@ toggleFilters = (function(){
 
     // Local variables defined 
     var $filter = $('#filters');
+    var $overlay = $('.overlay-tint');
     var $body = $('body');     
     var $mapContainer  = $('#mapContainer');
     var $serviceList  = $('#serviceList');
@@ -40,9 +41,16 @@ toggleFilters = (function(){
     var _bindCloseListners = function(){
         $mapContainer.on('click',function(){
             $filter.removeClass('active');
+            $overlay.removeClass('active');
         })
         $serviceList.on('click',function(){
             $filter.removeClass('active');
+            $overlay.removeClass('active');
+        })
+
+        $overlay.on('click', function(){
+            $filter.removeClass('active');
+            $overlay.removeClass('active');  
         })
     }
 
@@ -54,8 +62,14 @@ toggleFilters = (function(){
             var activeFilterBtn =  activeClass == 'active' && event.target.id == 'filtersButton';
             var activeApplyFilterBtn = activeClass == 'active' && event.target.id == 'applyFilter';            
 
-            if (nonActiveFilterBtn){ $filter.addClass('active'); }
-            else if(activeFilterBtn || activeApplyFilterBtn){ $filter.removeClass('active'); }                   
+            if (nonActiveFilterBtn){ 
+                $filter.addClass('active'); 
+                $overlay.addClass('active');
+            }
+            else if(activeFilterBtn || activeApplyFilterBtn){ 
+                $filter.removeClass('active'); 
+                  $overlay.removeClass('active');
+            }                   
         })
     }
 

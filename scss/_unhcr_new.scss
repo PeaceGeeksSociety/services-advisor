@@ -292,6 +292,30 @@ h3 {
   }
 }
 
+.overlay-tint {
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.4);    
+    position: fixed;
+    bottom: 0;    
+    left:0;
+    opacity:0;
+    visibility:hidden;
+
+    -webkit-transition: opacity 0.8s;
+    -moz-transition: opacity 0.8s;
+    -o-transition: opacity 0.8s;
+    transition: opacity 0.8s;
+
+    @media screen and (max-width:985px){
+        &.active {             
+            visibility:visible;            
+            opacity:1;
+            cursor: pointer;
+        }        
+    }
+}
+
 .filterCtrl {  
   height:90%;
 }
