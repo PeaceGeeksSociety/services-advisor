@@ -112,6 +112,7 @@ h3 {
 #searchNav {
   background-color: $dark-blue;
   min-height: $navbar-height;
+  z-index: 99px;  
 
   #filterSummary {    
     background-color: white;
@@ -204,7 +205,7 @@ h3 {
 }
 
 #filters {
-  z-index: 9999;
+  z-index: 10;
   position: fixed;  
   background-color:white;
   @media (min-width: $screen-md-min) {
