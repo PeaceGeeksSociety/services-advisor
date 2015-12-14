@@ -112,6 +112,7 @@ h3 {
 #searchNav {
   background-color: $dark-blue;
   min-height: $navbar-height;  
+  box-shadow:0px 1px 10px rgba(0, 0, 0, 0.35);
 
   #filterSummary {    
     background-color: white;
