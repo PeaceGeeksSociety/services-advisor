@@ -336,6 +336,10 @@ h3 {
   }
 }
 
+.leaflet-top.leaflet-left {
+  z-index:5;
+}
+
 .leaflet-popup-content .serviceText header { padding: 0 !important; }
 .leaflet-popup-content .serviceText p { margin: 2px 0 !important; }
 .leaflet-popup-content .serviceText img { width: 100px; }
