@@ -208,14 +208,13 @@ h3 {
   z-index: 10;
   box-shadow: 0px 5px 100px rgba(0, 0, 0, 0.15);
   position: fixed;  
-  background-color: #F8FAFB;
+  background-color: $grey-light;
   
   @media (min-width: $screen-md-min) {
     height:400px;
     overflow-y:scroll;
     overflow-x:hidden;
-    top: -554px;
-    background-color: white;
+    top: -554px;    
     box-shadow: 0px 5px 15px rgba(0,0,0,.15);
   }
 
