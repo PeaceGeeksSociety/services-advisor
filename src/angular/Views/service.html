@@ -1,4 +1,3 @@
-
 <div data-ng-controller="ServiceCtrl">
 
   <div class="row">
@@ -35,9 +34,9 @@
         <!-- First row  -->
         <div class="col-xs-6 service-details-container-row-1">
           <h2>{{ 'HOURS' | translate }}</h2>
-          <p data-ng-repeat="hour in hours">{{ 'OPEN_AT' | translate }} {{hour}}</p>
+          <p ng-show="hours.openAt">{{ 'OPEN_AT' | translate }} {{hours.openAt}}</p>
         </div>
-        <div class="col-xs-6 service-details-container-row-1">
+        <div id="activity-details" class="col-xs-6 service-details-container-row-1">
           <h2>{{ 'ACTIVITY_DETAILS' | translate }}</h2>
           <p data-ng-repeat="serviceProvided in service.servicesProvided">{{serviceProvided}}</p>
         </div>
