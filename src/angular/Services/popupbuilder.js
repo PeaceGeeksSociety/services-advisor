@@ -54,8 +54,6 @@ services.factory('PopupBuilder', ['$translate', function ($translate) {
     return {
 
         buildPopup: function(service) {
-            // TODO: incredible hack here, just pasting in what's from the old app so we can render the popup
-
             // Loop through our list of fields, preparing output for display.
             var headerOutput = '';
 
