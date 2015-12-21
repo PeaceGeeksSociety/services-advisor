@@ -24,8 +24,6 @@ controllers.controller('NavbarCtrl', ['$scope', 'Cookies', function ($scope, Coo
 }]);
 
 toggleFilters = function () {
-  $('#filters').toggleClass('active');
-  if ( $(window).width() < 981) {
-      $('.overlay-tint').toggleClass('active');
-  }
+  $('#filters').toggleClass('active');  
+  $('.overlay-tint').toggleClass('active');
 };
