@@ -4,7 +4,7 @@ var services = angular.module('services');
 /**
  * Holds the state of the current search and the current results of that search
  */
-services.factory('Search', ['$location', 'ServicesList', '$rootScope', function ($location, ServicesList, $rootScope) {
+services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', function ($location, ServicesList, $rootScope, _) {
     var gju = require('../../../node_modules/geojson-utils');
 
     // asynchronously initialize crossfilter
@@ -111,7 +111,6 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', function 
                     type: "Point",
                     coordinates: [parseFloat(pp[1]), parseFloat(pp[0])]
                 };
-
                 return gju.pointInPolygon(point, activeRegionLayer.toGeoJSON().geometry);
             })
         }
@@ -153,6 +152,34 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', function 
                     return gju.pointInPolygon(point, activeRegionLayer.toGeoJSON().geometry);
                 })
             }
+        }),
+        filterByProxmity: withClearAndEmit(function(geoLocation){
+
+            var requiredArgumentGiven =  _.has(geoLocation, 'latitude') &&
+                                        _.has(geoLocation, 'longitude') &&
+                                        _.has(geoLocation, 'radius');            
+            if(requiredArgumentGiven){                
+                var center = gju.rectangleCentroid({
+                  "type": "Polygon",
+                  "coordinates": [[ [geoLocation.latitude, geoLocation.longitude], 
+                                    [geoLocation.latitude, geoLocation.longitude],
+                                    [geoLocation.latitude, geoLocation.longitude]
+                                ]]
+                })
+                var radius = geoLocation.radius
+                regionDimension.filter(function(servicePoint) {
+                    var pp = servicePoint.split(',');
+                    var point = {
+                        type: "Point",
+                        coordinates: [parseFloat(pp[1]), parseFloat(pp[0])]
+                    };
+
+                    return gju.geometryWithinRadius(point, center, radius)
+                })                
+            }else {
+                console.log(' Please provide the pass in object into filterByProxmity method with the following keys: latitude, longitude, and radius');
+            }
+
         }),
         selectReferrals : _selectReferrals,
         clearAll: withClearAndEmit(function(){}),
