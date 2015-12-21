@@ -19,9 +19,8 @@ controllers.controller('FilterCtrl', ['$scope', '$rootScope', '$location', 'Sear
          Sample: ["IOCC", "UNHCR", "WVI", "JRS", ...,  "NHF"]
     */
      organizationsArray   = _.chain(data)
-                             .pluck("properties")
-                             // partnerName is same as 'Organization'
-                             .pluck("partnerName")
+                             .pluck("organization")
+                             .pluck("name")
                              .unique()
                              .value();
      /*
@@ -85,15 +84,15 @@ controllers.controller('FilterCtrl', ['$scope', '$rootScope', '$location', 'Sear
     }
     $location.search(parameters);
     Search.filterByUrlParameters();
-    // Search.selectReferrals($scope.referral.selection);
   };
 
   $scope.referral = {
       selection: 'all'
   };
 
-// toggle selection for a given organization by name
-$scope.toggleSelection = function toggleSelection(organization) {
+  // toggle selection for a given organization by name
+  $scope.toggleSelection = function toggleSelection(organization) {
+
     var parameters = $location.search();
     if (_.has(parameters, 'organization')){
         var organizations = typeof(parameters.organization) == "string" ? parameters.organization.split(',') : parameters.organization;

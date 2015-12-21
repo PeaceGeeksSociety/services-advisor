@@ -20,14 +20,14 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
 
     // TODO: not sure why they do || undefined, but previously they had "|| option.empty" where empty was never defined
     var categoryDimension = crossfilter.dimension(function (f) {
-        return f.properties['activityName'] || undefined;
+        return f.category.subCategory.name || undefined;
     });
     var partnerDimension = crossfilter.dimension(function (f) {
-        return f.properties['partnerName'] || undefined;
+        return f.organization.name || undefined;
     });
 
     var regionDimension = crossfilter.dimension(function (f) {
-        return f.geometry.coordinates[0] + "," + f.geometry.coordinates[1] || "";
+        return f.location.geometry.coordinates[0] + "," + f.location.geometry.coordinates[1] || "";
     });
 
     var idDimension = crossfilter.dimension(function (f) {
@@ -35,11 +35,11 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
     });
 
     var referralsDimension = crossfilter.dimension(function (f) {
-        return f.properties["Referral required"];
+        return f.referral["required"];
     });
 
     /** Used to get list of currently filtered services rather than re-using an existing dimension **/
-    var metaDimension = crossfilter.dimension(function (f) { return f.properties.activityName; });
+    var metaDimension = crossfilter.dimension(function (f) { return f.category.subCategory.name; });
 
     var allDimensions = [categoryDimension, partnerDimension, regionDimension, idDimension, referralsDimension];
 
@@ -84,9 +84,17 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
     };
 
     var _selectReferrals = function (selection) {
-        referralsDimension.filter(function(service) {
+        referralsDimension.filter(function(service_requires_referral) {
             // if they've selected all, then we return everything, otherwise we try to match
-            return selection == 'all' ? true : service == selection;
+            if (selection == 'all'){
+                return true;
+            } else if (service_requires_referral && selection == 'referral-required'){
+                return true;
+            } else if (!service_requires_referral && selection == 'referral-not-required'){
+                return true;
+            } else {
+                return false;
+            }
         });
     }
 
@@ -199,7 +207,7 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
 
             if (_.has(parameters, 'category')) {
                 _selectCategory(parameters.category);
-            } 
+            }
 
             if (_.has(parameters, 'region')){
                 _selectRegion(parameters.region);

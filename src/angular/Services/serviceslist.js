@@ -3,20 +3,23 @@ var services = angular.module('services');
 /**
  * Provides the list of services (compiled.json)
  */
-services.factory('ServicesList', ['$http', '$translate', '$location', 'PopupBuilder', 'Cookies', function ($http, $translate, $location, PopupBuilder, Cookies) {
+services.factory('ServicesList', ['$http', '$translate', '$location', 'PopupBuilder', 'Cookies', 'SiteSpecificConfig', "_", function ($http, $translate, $location, PopupBuilder, Cookies, SiteSpecificConfig, _) {
     var servicesById = null;
 
     // doing this here because we need it right before we load the data
-    var language = Cookies.getCookie('LANGUAGE') || 'AR';
+    var language = Cookies.getCookie('LANGUAGE') || _.keys(SiteSpecificConfig)[0] || alert("ERROR: site-specific-config.js doesn't have any keys in it!");
     $translate.use(language);
     $('body').addClass('lang-' + language);
 
-    var servicesList = $translate.use() === 'AR' ? 'js/services_AR.json' : 'js/services_EN.json';
+    if (!_.has(SiteSpecificConfig[language], "servicesUrl")) {
+        alert("ERROR: No servicesUrl key set for language " + language);
+    }
+    var servicesList = SiteSpecificConfig[language].servicesUrl;
 
     var services = $http.get(servicesList, {cache: true}).then(function (data) {
             data = data.data.filter(function (feature) {
                 // We want to remove features that are past the endDate.
-                var featureEndDate = new Date(feature.properties.endDate);
+                var featureEndDate = new Date(feature.endDate);
                 var featureEndDateUTC = new Date(featureEndDate.getUTCFullYear(), featureEndDate.getUTCMonth(), featureEndDate.getUTCDate());
 
                 var today = new Date();
@@ -26,8 +29,8 @@ services.factory('ServicesList', ['$http', '$translate', '$location', 'PopupBuil
             angular.forEach(data, function (feature) {
 
                 // TODO: adding markers to the map here is a hack. Should be done somewhere it makes sense
-                var serviceMarker = L.marker(feature.geometry.coordinates.reverse(),
-                    {icon: iconObjects[feature.properties.activityCategory]});
+                var serviceMarker = L.marker(feature.location.geometry.coordinates.reverse(),
+                    {icon: iconObjects[feature.category.name]});
                 serviceMarker.addTo(clusterLayer);
 
                 // Make the popup, and bind it to the marker.  Add the service's unique ID
@@ -55,7 +58,7 @@ services.factory('ServicesList', ['$http', '$translate', '$location', 'PopupBuil
                 });
 
                 // Add the marker to the feature object, so we can re-use the same marker during render().
-                feature.properties.marker = serviceMarker;
+                feature.marker = serviceMarker;
                 // TODO: end TODO
             });
 

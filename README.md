@@ -45,6 +45,11 @@ git checkout feature
 git merge upstream/feature
 ```
 
+# If you want to run your own version with different service data
+- Modify `src/site-specific-config.js` to specify your languages and the urls for your service data
+- If you're using Amani, then be sure to specify `"amani": true`
+- If you're not using Amani and you want to generate your own data look at our schema here: TODO
+
 # Building
 
 This build uses npm, gulp, and browserify to manage dependencies.
@@ -60,6 +65,7 @@ To install gulp:
 To build the js/css:
 
 - run `npm install` to download the 3rd party libs in `package.json`
+- `cp src/site-specific-config.js.dist src/site-specific-config.js` to use the default config
 - during development:
     - run `gulp` in the background, i.e. run `gulp` in a terminal and leave it running. It will automatically recompile
       `js/app.js` and `css.main.css` files as you edit the src files.

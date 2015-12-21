@@ -26,7 +26,8 @@
     "underscore": "^1.8.3",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^0.1.1",
-    "watchify": "^3.2.0"
+    "watchify": "^3.2.0",
+    "underscore": "*"
   },
   "dependencies": {
     "crossfilter": "^1.3.7",
@@ -35,6 +36,7 @@
     "leaflet": "^0.7.2",
     "leaflet.markercluster": "https://github.com/Leaflet/Leaflet.markercluster/archive/master.tar.gz",
     "mapbox.js": "^1.6.3",
-    "split": "^0.3.0"
+    "split": "^0.3.0",
+    "underscore": "*"
   }
 }

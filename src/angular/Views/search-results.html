@@ -26,8 +26,7 @@
                 <!-- location name section -->
                 <div class="list-result-wrapper">
                   <div class="list-result-title">
-                    <h1>{{result.properties.locationName}}</h1>
-                    <p> {{result.properties.activityName}}</p>
+                    <h1>{{result.region}}: {{result.category.subCategory.name}}</h1>
                   </div>
                   <img class="list-result-image" ng-src="{{getPartnerLogoUrl(result)}}" onError="this.onerror=null;this.style.display='none'">
                 </div>
@@ -37,14 +36,14 @@
                   <!-- hours section -->
                   <div class="col-xs-5">
                     <h2>{{ 'HOURS' | translate }}</h2>
-                    <p> {{ getOpeningTime(result) || 'N/A' }} - {{ getClosingTime(result) || 'N/A' }} </p>
+                    <p>{{ result.hours.openAt || 'N/A' }} - {{ result.hours.closedAt || 'N/A' }}</p>
                   </div>
 
                   <!-- activites detail section -->
                   <div class="col-xs-7">
-                    <h2>{{ 'ACTIVITY_DETAILS' | translate }}</h2>
-                    <div ng-repeat="activity in getActivityDetails(result)">
-                      <p> {{ activity }}</p>
+                    <h3>{{ 'ACTIVITY_DETAILS' | translate }}</h3>
+                    <div data-ng-repeat="serviceProvided in getServicesProvided(result)">
+                      <p> {{ serviceProvided }}</p>
                     </div>
                   </div>
 
