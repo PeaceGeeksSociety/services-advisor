@@ -302,14 +302,13 @@ h3 {
       -moz-transition: opacity 0.8s;
       -o-transition: opacity 0.8s;
       transition: opacity 0.8s;
-
-      @media screen and (max-width:985px){
-          &.active {             
-              visibility:visible;            
-              opacity:1;
-              cursor: pointer;
-          }        
-      }
+      
+      &.active {             
+          visibility:visible;            
+          opacity:1;
+          cursor: pointer;
+      }        
+      
   }
 }
 

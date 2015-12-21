@@ -21,6 +21,9 @@ controllers.controller('NavbarCtrl', ['$scope', 'Cookies', function ($scope, Coo
       $("#filters").removeClass('active')
     }
   })
+  $('.overlay-tint').on('click', function(){
+    $('.overlay-tint').toggleClass('active');
+  })
 }]);
 
 toggleFilters = function () {
