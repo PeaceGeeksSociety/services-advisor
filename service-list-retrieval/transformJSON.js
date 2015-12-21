@@ -21,9 +21,9 @@ transform it into an object like:
 @param service:  the service we want to transform referral info for.
  */
 var transformReferralMethod = function(service) {
-	// Check if this feature has referral method "No Referral" 
-    referralData = service.properties["10. Referral Method"];    
-     /* 
+	// Check if this feature has referral method "No Referral"
+    referralData = service.properties["10. Referral Method"];
+     /*
      *  There are 7 possible values:
      *  "Email on a per case basis"
      *  "Referrals not accepted"       <-- marked as referral-not-required
@@ -50,7 +50,7 @@ var transformReferralMethod = function(service) {
     		referralType = type_description;
         });
     }
- 
+
     var referral = new Object();
     referral.required = referralRequired;
     referral.type = referralType;
@@ -133,7 +133,7 @@ var transformActivityInfoServices = function(services, language){
 		var serviceTransformed = new Object();
 		serviceTransformed.id = serviceUntransformed.id;
 		serviceTransformed.region = serviceUntransformed.properties.locationName;
-		
+
 		//Init the organization
 		var organization = new Object();
 		organization.name = serviceUntransformed.properties.partnerName;
@@ -142,18 +142,20 @@ var transformActivityInfoServices = function(services, language){
 		//Init the category
 		var category = new Object();
 		category.name = serviceUntransformed.properties.activityCategory;
-		
+
 		var subCategory = new Object();
 		subCategory.name = serviceUntransformed.properties.activityName;
 		category.subCategory = subCategory;
 		serviceTransformed.category = category;
-		
+
 		serviceTransformed.startDate = serviceUntransformed.properties.startDate;
 		serviceTransformed.endDate = serviceUntransformed.properties.endDate;
-		
+
 		var servicesProvided = [];
 		for (indicator in serviceUntransformed.properties.indicators) {
-			servicesProvided.push(indicator);
+			if(serviceUntransformed.properties.indicators[indicator] === 1) {
+				servicesProvided.push(indicator);
+			}
 		}
 		serviceTransformed.servicesProvided = servicesProvided;
 
@@ -189,6 +191,6 @@ fs.writeFile(outputFilename, JSON.stringify(services), function (err) {
     if (err) {
         console.log(err);
     }
-}); 
+});
 
 

@@ -9,8 +9,8 @@ cp ../js/services_EN.json ../js/services_EN.json.bak
 echo "Getting latest service data and writing to services.json"
 cat sources.txt | node getJSON.js
 
-echo "Removing comments and writing to services_EN.json"
-node LoadJSON.js
+echo "Transforming json to our schema and writing to services_EN.json"
+node transformJSON.js
 
 echo "Using translations from data.csv and writing to services_AR.json"
 node ParseEn_AR_JSON.js

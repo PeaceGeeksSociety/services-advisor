@@ -15,7 +15,6 @@ controllers.controller('ServiceCtrl', ['$scope', '$routeParams', '$location', 'S
         $scope.service.organization = {
             name: service.organization.name
         };
-        $scope.service.comments = service.properties.comments;
         $scope.service.category = {
             name: service.category.name,
             subCategory: {

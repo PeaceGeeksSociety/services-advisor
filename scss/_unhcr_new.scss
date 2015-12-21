@@ -96,8 +96,8 @@ h3 {
 }
 
 .arrow-right {
-  width: 0; 
-  height: 0; 
+  width: 0;
+  height: 0;
   border-top: 17px solid transparent;
   border-bottom: 16px solid transparent;
   border-left: 12px solid #5ED9DB;
@@ -113,7 +113,7 @@ h3 {
   background-color: $dark-blue;
   min-height: $navbar-height;
 
-  #filterSummary {    
+  #filterSummary {
     background-color: white;
     min-height: 40px;
   }
@@ -154,7 +154,7 @@ h3 {
       padding-top: 8px
     }
 
-    #filterSummary {        
+    #filterSummary {
       margin-left: -3px; /* to align with map zoom buttons */
       /* overwrite Bootstrap well styling*/
       margin-bottom: 5px;
@@ -172,12 +172,12 @@ h3 {
       padding: 10px;
       float: right;
     }
-  } 
+  }
 
   @media (max-width: $screen-xs-max) {
-    #filterSummary {  
+    #filterSummary {
       padding: 3px 3px 0px;
-      margin: 5px 0px 5px -3px; 
+      margin: 5px 0px 5px -3px;
     }
 
     #preferences {
@@ -232,7 +232,7 @@ h3 {
         border-right-width: 10px;
         border-left-width: 0;
       }
-    }    
+    }
 
     div.pull-right {
       margin: -10px -5px -5px;
@@ -344,8 +344,8 @@ h3 {
 
  //--search results lists
   .list-group-padding {
-    :first-child, 
-    :last-child {  
+    :first-child,
+    :last-child {
       margin-top: 5px;
       padding-bottom: 0px;
       padding-top: 0px;
@@ -354,8 +354,8 @@ h3 {
 
   //--main list
   .list-group {
-    :first-child, 
-    :last-child {  
+    :first-child,
+    :last-child {
       margin-top: 5px;
     }
   }
@@ -369,7 +369,7 @@ h3 {
     .icon {
       padding: 3px;
     }
-    
+
     .badge {
       background: none;
       font-weight: normal;
@@ -410,8 +410,8 @@ h3 {
   display: -moz-box;
   display: -ms-flexbox;
   display: -webkit-flex;
-  display: flex;  
-  
+  display: flex;
+
   justify-content: space-between;
   align-items: flex-start;
 }
@@ -436,8 +436,7 @@ h3 {
   padding: 10px;
 
   .service-details-container-row-1 {
-    padding:5px; 
-    height:100px;
+    padding:5px;
   }
 
   div.col-xs-6 {
@@ -456,11 +455,11 @@ h3 {
   .row {
     margin: 0px;
     background-color: $grey-medium;
-  }  
+  }
 
   table {
     margin-top:1em;
-    margin-bottom: 0px; 
+    margin-bottom: 0px;
 
     td {
       border-top: 0px;
