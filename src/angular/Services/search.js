@@ -35,7 +35,7 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
     });
 
     var referralsDimension = crossfilter.dimension(function (f) {
-        return f.properties["Referral required"];
+        return f.referral["required"];
     });
 
     /** Used to get list of currently filtered services rather than re-using an existing dimension **/
@@ -84,9 +84,17 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
     };
 
     var _selectReferrals = function (selection) {
-        referralsDimension.filter(function(service) {
+        referralsDimension.filter(function(service_requires_referral) {
             // if they've selected all, then we return everything, otherwise we try to match
-            return selection == 'all' ? true : service == selection;
+            if (selection == 'all'){
+                return true;
+            } else if (service_requires_referral && selection == 'referral-required'){
+                return true;
+            } else if (!service_requires_referral && selection == 'referral-not-required'){
+                return true;
+            } else {
+                return false;
+            }
         });
     }
 

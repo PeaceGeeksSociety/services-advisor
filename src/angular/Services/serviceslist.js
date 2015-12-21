@@ -58,7 +58,7 @@ services.factory('ServicesList', ['$http', '$translate', '$location', 'PopupBuil
                 });
 
                 // Add the marker to the feature object, so we can re-use the same marker during render().
-                feature.properties.marker = serviceMarker;
+                feature.marker = serviceMarker;
                 // TODO: end TODO
             });
 

@@ -133,9 +133,9 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
         // Loop through the filtered results, adding the markers back to the map.
         results.forEach( function (feature) {
             // Add the filtered markers back to the map's data layer
-            clusterLayer.addLayer(feature.properties.marker);
+            clusterLayer.addLayer(feature.marker);
             // Store the marker for easy reference.
-            markers[feature.id] = feature.properties.marker;
+            markers[feature.id] = feature.marker;
             // Build the output for the filtered list view
         } );
 
