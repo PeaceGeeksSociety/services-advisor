@@ -4,10 +4,10 @@
         <div class="row">
           <div class="col-xs-6">
             <button id="backButton" type="button" class="btn btn-default" ng-click="goBackFromResults();">
-              <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> 
+              <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
               {{ 'BACK' | translate }}
             </button>
-          </div>          
+          </div>
             <div class="col-xs-6">
               <!-- TODO: huge hack here using global variable to be able to call map.invalidateSize() on map so it resizes -->
             <button id="toggleMapButton" type="button" class="btn btn-default visible-xs pull-right"
@@ -22,7 +22,7 @@
 
             <div ng-repeat="result in results">
               <a class="list-group-item" ng-click="selectService(result.id);">
-                
+
                 <!-- location name section -->
                 <div class="list-result-wrapper">
                   <div class="list-result-title">
@@ -36,18 +36,18 @@
 
                   <!-- hours section -->
                   <div class="col-xs-5">
-                    <h2>{{ 'Hours' | translate }}</h2>
+                    <h2>{{ 'HOURS' | translate }}</h2>
                     <p> {{ getOpeningTime(result) || 'N/A' }} - {{ getClosingTime(result) || 'N/A' }} </p>
                   </div>
 
                   <!-- activites detail section -->
                   <div class="col-xs-7">
-                    <h2>{{ 'Activity Details' | translate }}</h2>
+                    <h2>{{ 'ACTIVITY_DETAILS' | translate }}</h2>
                     <div ng-repeat="activity in getActivityDetails(result)">
                       <p> {{ activity }}</p>
                     </div>
                   </div>
-                    
+
                 </div><!--  /row  -->
               </a> <!-- /list-group-items-result -->
             </div>
