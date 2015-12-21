@@ -18,22 +18,24 @@
         </div>
         <div class="row">
           <h4 class="x-search-result-header">{{ 'SEARCH_RESULTS' | translate }}</h4>
-          <ul class="list-group">
+          <ul class="list-group list-group-padding">
 
             <div ng-repeat="result in results">
               <a class="list-group-item" ng-click="selectService(result.id);">
 
                 <!-- location name section -->
-                <div class="row media-body">
-                  <h2 class="media-heading">{{result.region}}: {{result.category.subCategory.name}}</h2>
-                  <img class="media-object pull-right" ng-src="{{getPartnerLogoUrl(result)}}" onError="this.onerror=null;this.style.display='none'">
+                <div class="list-result-wrapper">
+                  <div class="list-result-title">
+                    <h1>{{result.region}}: {{result.category.subCategory.name}}</h1>
+                  </div>
+                  <img class="list-result-image" ng-src="{{getPartnerLogoUrl(result)}}" onError="this.onerror=null;this.style.display='none'">
                 </div>
 
                 <div class="row">
 
                   <!-- hours section -->
                   <div class="col-xs-5">
-                    <h3>{{ 'HOURS' | translate }}</h3>
+                    <h2>{{ 'HOURS' | translate }}</h2>
                     <p> {{ getOpeningTime(result) || 'N/A' }} - {{ getClosingTime(result) || 'N/A' }} </p>
                   </div>
 
@@ -46,7 +48,7 @@
                   </div>
 
                 </div><!--  /row  -->
-              </a> <!-- /list-group-items -->
+              </a> <!-- /list-group-items-result -->
             </div>
 
           </ul>

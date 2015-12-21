@@ -23,6 +23,7 @@
     "gulp-util": "^2.2.14",
     "gulp-watchify": "^0.5.0",
     "lazy": "1.0.11",
+    "underscore": "^1.8.3",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^0.1.1",
     "watchify": "^3.2.0",
