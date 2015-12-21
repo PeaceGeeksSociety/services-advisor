@@ -2,7 +2,7 @@
         <div class="form-group">
           <div class="col-xs-12 col-md-6 pull-right">
             <div class="pull-right">
-              <button id="applyFilter" type="button" class="btn btn-secondary" ng-click="toggleFilters.exec();">
+              <button id="applyFilter" type="button" class="btn btn-secondary" ng-click="toggleFilters();">
                 {{ 'OK' | translate }}
               </button>
             </div>
@@ -34,11 +34,11 @@
         <h3>{{ 'ORGANIZATIONS' | translate }}</h3>
 
         <!-- use this as a skeleton for a ng-repeat once we figure out getting the organization list -->
-        
+
         <div class="form-group organizations-form-group">
 
           <!-- Note organization1 and organization2 are from the same source but are just split into two for separate column   -->
-          
+
             <!-- Looping first split array  -->
             <div ng-repeat="organization1 in organizationsArray[0]">
               <label class="col-xs-12 col-md-4 control-label organization-label">
@@ -47,7 +47,7 @@
                   <img class="organization-logo" ng-src="{{partnerLogoUrl[organization1]}}" onError="this.onerror=null;this.style.display='none';"/>
                   <input ng-checked="filterSelection.indexOf(organization1) > -1" ng-click="toggleSelection(organization1)" type="checkbox" value="">
                 </div>
-              </label>  
+              </label>
             </div>
 
             <!-- Looping second split array  -->
@@ -56,9 +56,9 @@
                 {{organization2}}
                 <div class="pull-right">
                    <img class="organization-logo" ng-src="{{partnerLogoUrl[organization2]}}" onError="this.onerror=null;this.style.display='none';"/>
-                  <input ng-checked="filterSelection.indexOf(organization2) > -1" ng-click="toggleSelection(organization2)" type="checkbox" value=""> 
+                  <input ng-checked="filterSelection.indexOf(organization2) > -1" ng-click="toggleSelection(organization2)" type="checkbox" value="">
                 </div>
-              </label>  
+              </label>
             </div>
 
             <!-- Looping second split array  -->
@@ -67,10 +67,10 @@
                 {{organization3}}
                 <div class="pull-right">
                    <img class="organization-logo" ng-src="{{partnerLogoUrl[organization3]}}" onError="this.onerror=null;this.style.display='none';"/>
-                  <input ng-checked="filterSelection.indexOf(organization3) > -1" ng-click="toggleSelection(organization3)" type="checkbox" value=""> 
+                  <input ng-checked="filterSelection.indexOf(organization3) > -1" ng-click="toggleSelection(organization3)" type="checkbox" value="">
                 </div>
-              </label>  
+              </label>
             </div>
-  
+
         </div>
       </form>
