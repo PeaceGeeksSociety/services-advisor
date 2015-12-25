@@ -27,12 +27,10 @@ controllers.controller('FilterCtrl', ['$scope', '$rootScope', '$location', 'Sear
 
       2. Spliting the Array into two arrays (For Column Display)
 
-         Divide the organization names by half since we have two columns
-
-     */
-    var splitValue = organizationsArray.length/2;
-
-    // Using the split value, we divide the array evenly into two separate arrays
+     */                             
+    var splitValue = organizationsArray.length/3;    
+    
+    // Using the split value, we divide the array evenly into two separate arrays 
     // Resulting array = [ ['UNHCR', 'stuff '], ['stuff', 'stuff'] ]
     $scope.organizationsArray = _.chain(organizationsArray)
                                   // Converts the array into an even Split
@@ -123,6 +121,7 @@ controllers.controller('FilterCtrl', ['$scope', '$rootScope', '$location', 'Sear
 };
 
   $scope.toggleFilters = toggleFilters;
+
 
 }]);
 

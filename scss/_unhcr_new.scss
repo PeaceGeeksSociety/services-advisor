@@ -111,7 +111,8 @@ h3 {
 /* Header */
 #searchNav {
   background-color: $dark-blue;
-  min-height: $navbar-height;
+  min-height: $navbar-height;  
+  box-shadow:0px 1px 10px rgba(0, 0, 0, 0.35);
 
   #filterSummary {
     background-color: white;
@@ -204,13 +205,30 @@ h3 {
 }
 
 #filters {
+  z-index: 10;
+  box-shadow: 0px 5px 100px rgba(0, 0, 0, 0.15);
+  position: fixed;  
+  background-color: $grey-light;
+  
   @media (min-width: $screen-md-min) {
-    position: absolute;
-    top: 12px;
-    left: 15vw;
-    z-index: 9999;
-    background-color: white;
+    height:400px;
+    overflow-y:scroll;
+    overflow-x:hidden;
+    top: -554px;    
     box-shadow: 0px 5px 15px rgba(0,0,0,.15);
+  }
+
+  #applyFilter {
+    margin-bottom:10px;
+  }
+
+  @media screen and (max-width: 1000px) {              
+    left:-1000px;
+    width:85%;   
+  }
+
+  @media screen and (min-width: 770px) and (max-width: 985px) {
+    top:57.5px;       
   }
 
   label {
@@ -247,6 +265,55 @@ h3 {
       }
     }
   }
+  -webkit-transition: all 0.65s;
+  -moz-transition: all 0.65s;
+  -o-transition: all 0.65s;
+  transition: all 0.65s;
+  overflow: scroll;
+
+  @media screen and (max-width: 900px) {
+    height: 95%;
+  }
+}
+
+#filters.active { 
+  
+  @media screen and (max-width: 985px) {    
+    left:-4px;    
+  }
+
+  @media (min-width: 990px) {
+    top:54px;
+  }
+}
+
+@media screen and (max-width: 981px){  
+  .overlay-tint {
+      height: 100%;
+      width: 100%;
+      background-color: rgba(0, 0, 0, 0.4);    
+      position: fixed;
+      bottom: 0;    
+      left:0;
+      opacity:0;
+      visibility:hidden;
+
+      -webkit-transition: opacity 0.8s;
+      -moz-transition: opacity 0.8s;
+      -o-transition: opacity 0.8s;
+      transition: opacity 0.8s;
+      
+      &.active {             
+          visibility:visible;            
+          opacity:1;
+          cursor: pointer;
+      }        
+      
+  }
+}
+
+.filterCtrl {  
+  height:90%;
 }
 
 .organization-label {
@@ -263,10 +330,9 @@ h3 {
   clear: both;
   direction: ltr;
 
-  @media (max-width: $screen-md-min) {
+  @media screen and (max-width: 768px) {
     height: 75%;
-
-    &.map-hide {
+     &.map-hide {
       height: 0%; /* hide by setting height so that map is still loaded correctly */
     }
   }
@@ -294,6 +360,10 @@ h3 {
       margin: 0;
       border-bottom: none;
   }
+}
+
+.leaflet-top.leaflet-left {
+  z-index:5;
 }
 
 .leaflet-popup-content .serviceText header { padding: 0 !important; }
