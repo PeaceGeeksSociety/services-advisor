@@ -31,7 +31,7 @@ controllers.controller('FilterCtrl', ['$scope', '$rootScope', '$location', 'Sear
          Divide the organization names by half since we have two columns                         
 
      */                             
-    var splitValue = organizationsArray.length/2;    
+    var splitValue = organizationsArray.length/3;    
     
     // Using the split value, we divide the array evenly into two separate arrays 
     // Resulting array = [ ['UNHCR', 'stuff '], ['stuff', 'stuff'] ]
@@ -130,6 +130,7 @@ $scope.toggleSelection = function toggleSelection(organization) {
 };
 
   $scope.toggleFilters = toggleFilters;
+
 
 }]);
 

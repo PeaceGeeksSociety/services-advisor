@@ -25,9 +25,9 @@
 
   <!-- Right navigation bar to select filters -->
   <main role="main">
-    <div id="filters" class="col-xs-12 col-md-8 hidden">
-      <div ng-controller="FilterCtrl">
-        <ng-include src="'/src/angular/Views/filters.html'"></ng-include>
+    <div id="filters" class="col-md-12">
+      <div ng-controller="FilterCtrl" class="filterCtrl">
+        <ng-include src="'/src/angular/Views/filters.html'" class="filterCtrl"></ng-include>
       </div>
     </div>
     <section id="mapContainer" class="col-xs-12 col-sm-7" ng-controller="MapCtrl"></section>
@@ -47,6 +47,8 @@
       </div>
     </section>
   </main>
+
+  <div class="overlay-tint"></div>
 
 
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
