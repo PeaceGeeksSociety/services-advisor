@@ -8,20 +8,20 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-xs-12 col-md-6">
-              <label for="referral-all" class="col-xs-12 col-md-12 control-label">
+            <div class="col-xs-12 col-md-12">
+              <label for="referral-all" class="col-xs-12 col-md-4 control-label">
                 {{ 'ALL' | translate }}
                 <div class="pull-right">
                   <input type="radio" name="referral-radio" ng-model="referral.selection" ng-click="toggleReferral(this)" id="referral-all" value="all">
                 </div>
               </label>
-              <label for="referral-required" class="col-xs-12 col-md-12 pull-left control-label">
+              <label for="referral-required" class="col-xs-12 col-md-4 pull-left control-label">
                 {{ 'REFERRAL_REQUIRED' | translate }}
                 <div class="pull-right">
                   <input type="radio" name="referral-radio" ng-model="referral.selection" ng-click="toggleReferral(this)" id="referral-required" value="referral-required">
                 </div>
               </label>
-              <label for="referral-not-required" class="col-xs-12 col-md-12 pull-left control-label">
+              <label for="referral-not-required" class="col-xs-12 col-md-4 pull-left control-label">
                 {{ 'REFERRAL_NOT_REQUIRED' | translate }}
                 <div class="pull-right">
                   <input type="radio" name="referral-radio" ng-model="referral.selection" ng-click="toggleReferral(this)" id="referral-not-required" value="referral-not-required">
@@ -34,32 +34,43 @@
         <h3>{{ 'ORGANIZATIONS' | translate }}</h3>
 
         <!-- use this as a skeleton for a ng-repeat once we figure out getting the organization list -->
-        
-        <div class="form-group">
+
+        <div class="form-group organizations-form-group">
 
           <!-- Note organization1 and organization2 are from the same source but are just split into two for separate column   -->
-          
+
             <!-- Looping first split array  -->
             <div ng-repeat="organization1 in organizationsArray[0]">
-              <label class="col-xs-12 col-md-6 control-label organization-label">
+              <label class="col-xs-12 col-md-4 control-label organization-label">
                 {{organization1}}
                 <div class="pull-right">
                   <img class="organization-logo" ng-src="{{partnerLogoUrl[organization1]}}" onError="this.onerror=null;this.style.display='none';"/>
                   <input ng-checked="filterSelection.indexOf(organization1) > -1" ng-click="toggleSelection(organization1)" type="checkbox" value="">
                 </div>
-              </label>  
+              </label>
             </div>
 
             <!-- Looping second split array  -->
             <div ng-repeat="organization2 in organizationsArray[1]">
-              <label class="col-xs-12 col-md-6 control-label organization-label">
+              <label class="col-xs-12 col-md-4 control-label organization-label">
                 {{organization2}}
                 <div class="pull-right">
                    <img class="organization-logo" ng-src="{{partnerLogoUrl[organization2]}}" onError="this.onerror=null;this.style.display='none';"/>
-                  <input ng-checked="filterSelection.indexOf(organization2) > -1" ng-click="toggleSelection(organization2)" type="checkbox" value=""> 
+                  <input ng-checked="filterSelection.indexOf(organization2) > -1" ng-click="toggleSelection(organization2)" type="checkbox" value="">
                 </div>
-              </label>  
+              </label>
             </div>
-  
+
+            <!-- Looping second split array  -->
+            <div ng-repeat="organization3 in organizationsArray[2]">
+              <label class="col-xs-12 col-md-4 control-label organization-label">
+                {{organization3}}
+                <div class="pull-right">
+                   <img class="organization-logo" ng-src="{{partnerLogoUrl[organization3]}}" onError="this.onerror=null;this.style.display='none';"/>
+                  <input ng-checked="filterSelection.indexOf(organization3) > -1" ng-click="toggleSelection(organization3)" type="checkbox" value="">
+                </div>
+              </label>
+            </div>
+
         </div>
       </form>
