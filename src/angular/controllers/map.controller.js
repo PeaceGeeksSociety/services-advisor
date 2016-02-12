@@ -6,7 +6,7 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
     // Use Awesome Markers lib to produce font-icon map markers
     require('../../../src/leaflet.awesome-markers.js');
     // Marker clustering
-    require('../../../node_modules/leaflet.markercluster/dist/leaflet.markercluster.js');
+    require('../../../node_modules/leaflet-markercluster/leaflet.markercluster.js');
 
     // Initialize the map, using Affinity Bridge's mapbox account.
     map = L.mapbox.map('mapContainer', 'affinitybridge.ia7h38nj');
