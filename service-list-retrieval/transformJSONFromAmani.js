@@ -25,7 +25,7 @@ transform it into an object like:
  */
 var transformReferralMethod = function(service) {
 	// Check if this feature has referral method "No Referral"
-    referralData = service.properties["10. Referral Method"];
+    referralData = service["details:Referral Method"];
      /*
      *  There are 7 possible values:
      *  "Email on a per case basis"
@@ -61,61 +61,27 @@ var transformReferralMethod = function(service) {
     return referral;
 }
 
-
-/*
-
-Helper used to transform the 'details' section of a service. Details are anything
-that is prefixed by a number in the ActivityInfo json format.
-
-The result of this is a list of dictionaries like:
-
-[
- {"Availability": "Every Day"},
- {"Availability Day": "Sun-Thurs"},
- {"Accessibility": "Walk-in & Outreach"}
-]
-
-@param service: the service for which details we want to transform.
- */
 var transformServiceDetails = function(service) {
-	var propList = [];
-	var hours = {}
-	_.each(service.properties, function(key, property_name) {
-        var tempArray = property_name.split(".");
-        if (property_name != 'comments' && tempArray.length > 1) {
-        	var integerPrefix = parseInt(tempArray[0], 10);
-            if (integerPrefix) {
-                var obj = {};
-				// Properties starting with 8 or 9 relate to opening hours/closing hours
-                if (integerPrefix != 8 && integerPrefix != 9) {
-                    var detailsKey = tempArray[1].trim();
-                    // console.log(detailsKey);
-                    _.each(service.properties[property_name], function (val, details_description) {
-                        if (details_description) {
-                            obj[detailsKey] = details_description;
-                        }
-                    });
-                    propList.push(obj);
-                } else {
-					var hoursKey;
-					if (integerPrefix == 8){
-						hoursKey = "openAt"
-					} else if (integerPrefix == 9) {
-						hoursKey = "closedAt"
-					}
-                    _.each(service.properties[property_name], function (val, value) {
-						if (hoursKey == "closedAt") {
-							value = value.replace('Close at ','');
-						}
-						hours[hoursKey] = value;
-                    });
-                }
-            }
-        }
+	var details = [];
+	var hours = {};
+  var tempArray = [];
+
+	_.each(service, function(property_value, property_name) {
+    if  (property_name.substr(0,8) == 'details:'){
+      var obj = {};
+      propname = property_name.replace('details:','');
+      obj[propname] = property_value;
+      details.push(obj);
+    } else if (property_name.substr(0,6) == 'hours:'){
+      hours[property_name.replace('hours:','')] = property_value;
+    } else {
+
+    }
+    return;
 	});
 
     var service_properties = {
-        "details": propList,
+        "details": details,
         "hours": hours
     }
 	return service_properties;
@@ -153,27 +119,18 @@ var transformActivityInfoServices = function(services, language){
 		serviceTransformed.startDate = serviceUntransformed.startDate;
 		serviceTransformed.endDate = serviceUntransformed.endDate;
 
-    // ???
-		// var servicesProvided = [];
-		// for (indicator in serviceUntransformed.properties.indicators) {
-		// 	if(serviceUntransformed.properties.indicators[indicator] === 1) {
-		// 		servicesProvided.push(indicator);
-		// 	}
-		// }
-		// serviceTransformed.servicesProvided = servicesProvided;
+    var servicesProvided = [];
+    servicesProvided.push(serviceUntransformed.servicesProvided);
+		serviceTransformed.servicesProvided = servicesProvided;
 
 		var locationFeature = new Object();
 		locationFeature.type = "Feature";
 		locationFeature.geometry = JSON.parse(serviceUntransformed['location:geometry']);
 		serviceTransformed.location = locationFeature;
 
-   // Here!
-    transformedServices.push(serviceTransformed);
-    continue;
-
 		var service_properties = transformServiceDetails(serviceUntransformed);
-        serviceTransformed.details = service_properties.details;
-        serviceTransformed.hours = service_properties.hours;
+    serviceTransformed.details = service_properties.details;
+    serviceTransformed.hours = service_properties.hours;
 
 		serviceTransformed.referral = transformReferralMethod(serviceUntransformed);
 
@@ -188,9 +145,6 @@ var transformActivityInfoServices = function(services, language){
       (function (language){
         console.log("Transforming " + language.name);
           var untransformedServices = require(language.downloaded_json);
-
-          console.log('do some transformation stuff here');
-          //services = untransformedServices;
 
           services = transformActivityInfoServices(untransformedServices, 'EN');
 
