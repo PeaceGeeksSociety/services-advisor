@@ -11,6 +11,7 @@ Run with `node transformJSON.js`
 
 var fs = require('fs');
 var _ = require('underscore');
+var config = require('./config');
 
 /*
 Helper method used to take a services referral information and
@@ -131,40 +132,44 @@ var transformActivityInfoServices = function(services, language){
 	transformedServices = [];
 
 	for (var i = 0; i < services.length; i++){
-		var serviceUntransformed = services[i];
+		var serviceUntransformed = services[i].node;
 		var serviceTransformed = new Object();
 		serviceTransformed.id = serviceUntransformed.id;
-		serviceTransformed.region = serviceUntransformed.properties.locationName;
+		serviceTransformed.region = serviceUntransformed.region;
 
 		//Init the organization
 		var organization = new Object();
-		organization.name = serviceUntransformed.properties.partnerName;
+		organization.name = serviceUntransformed.organization;
 		serviceTransformed.organization = organization;
 
 		//Init the category
 		var category = new Object();
-		category.name = serviceUntransformed.properties.activityCategory;
-
+		category.name = serviceUntransformed.category.toUpperCase();
 		var subCategory = new Object();
-		subCategory.name = serviceUntransformed.properties.activityName;
+		subCategory.name = serviceUntransformed.subCategory;
 		category.subCategory = subCategory;
 		serviceTransformed.category = category;
 
-		serviceTransformed.startDate = serviceUntransformed.properties.startDate;
-		serviceTransformed.endDate = serviceUntransformed.properties.endDate;
+		serviceTransformed.startDate = serviceUntransformed.startDate;
+		serviceTransformed.endDate = serviceUntransformed.endDate;
 
-		var servicesProvided = [];
-		for (indicator in serviceUntransformed.properties.indicators) {
-			if(serviceUntransformed.properties.indicators[indicator] === 1) {
-				servicesProvided.push(indicator);
-			}
-		}
-		serviceTransformed.servicesProvided = servicesProvided;
+    // ???
+		// var servicesProvided = [];
+		// for (indicator in serviceUntransformed.properties.indicators) {
+		// 	if(serviceUntransformed.properties.indicators[indicator] === 1) {
+		// 		servicesProvided.push(indicator);
+		// 	}
+		// }
+		// serviceTransformed.servicesProvided = servicesProvided;
 
 		var locationFeature = new Object();
 		locationFeature.type = "Feature";
-		locationFeature.geometry = serviceUntransformed.geometry;
+		locationFeature.geometry = JSON.parse(serviceUntransformed['location:geometry']);
 		serviceTransformed.location = locationFeature;
+
+   // Here!
+    transformedServices.push(serviceTransformed);
+    continue;
 
 		var service_properties = transformServiceDetails(serviceUntransformed);
         serviceTransformed.details = service_properties.details;
@@ -177,22 +182,30 @@ var transformActivityInfoServices = function(services, language){
 	return transformedServices;
 }
 
+// **** MAIN - Loop through each language, transform **** //
 
-// Truncate Comments from compile.json file
-var untransformedServices = require('./services.json');
+    for (var i in config.languages) {
+      (function (language){
+        console.log("Transforming " + language.name);
+          var untransformedServices = require(language.downloaded_json);
 
-services = transformActivityInfoServices(untransformedServices, 'EN');
+          console.log('do some transformation stuff here');
+          //services = untransformedServices;
 
-for (var i = 0; i < services.length; i++) {
-    delete services[i].comments;
-}
+          services = transformActivityInfoServices(untransformedServices, 'EN');
 
-var outputFilename = '../js/services_EN.json';
+          var outputFilename = language.transformed_json;
 
-fs.writeFile(outputFilename, JSON.stringify(services), function (err) {
-    if (err) {
-        console.log(err);
+          fs.writeFile(outputFilename, JSON.stringify(services), function (err) {
+              if (err) {
+                  console.log(err);
+              }
+          });
+      })(config.languages[i]);
     }
-});
+
+
+
+
 
 

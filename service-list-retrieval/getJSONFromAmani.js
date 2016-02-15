@@ -1,4 +1,4 @@
-#! /usr/bin/env node
+#!/usr/bin/env node
 
 // This script expects a plaintext file of URLs, one per line, that resolve to valid geoJSON.
 // The input file will usually be sources.txt; the output file is always compiled.json.
@@ -70,9 +70,9 @@ var jsonSources = [],
             // Put all the JSON objects into the jsonSources array.
             jsonSources = data.nodes;
 
-            console.log("Writing to" + language.outfile);
+            console.log("Writing to " + language.downloaded_json);
             // Write the JSON to the output file
-            fs.writeFile(language.outfile, JSON.stringify(jsonSources));
+            fs.writeFile(language.downloaded_json, JSON.stringify(jsonSources));
         });
     },
     onError = function (err) {
