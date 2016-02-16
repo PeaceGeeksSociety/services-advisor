@@ -81,7 +81,7 @@ getTranslations(function (translations) {
         }
     };
 
-    fs.readFile('../js/services_AR.json', 'utf8', function (err, data) {
+    fs.readFile('../js/services_EN.json', 'utf8', function (err, data) {
         if (err) {
             console.log(err);
         } else {

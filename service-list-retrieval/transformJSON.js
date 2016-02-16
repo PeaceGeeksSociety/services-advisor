@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 /*
 
 Responsible for transforming the json data from the format ActivityInfo provides into

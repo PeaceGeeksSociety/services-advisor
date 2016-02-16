@@ -1,4 +1,4 @@
-#! /usr/bin/env node
+#!/usr/bin/env node
 
 // This script expects a plaintext file of URLs, one per line, that resolve to valid geoJSON.
 // The input file will usually be sources.txt; the output file is always compiled.json.

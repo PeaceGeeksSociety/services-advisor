@@ -114,9 +114,6 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
         });
     }
 
-    // add map icons
-
-
     var onChange = function(event) {
         var results = Search.currResults();
 
