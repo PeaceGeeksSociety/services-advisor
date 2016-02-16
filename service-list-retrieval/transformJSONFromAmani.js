@@ -56,7 +56,7 @@ var transformReferralMethod = function(service) {
 
     var referral = new Object();
     referral.required = referralRequired;
-    referral.type = referralType;
+    referral.type = referralData;
     // console.log(referral);
     return referral;
 }
