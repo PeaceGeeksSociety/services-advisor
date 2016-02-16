@@ -17,6 +17,8 @@ services.factory('PopupBuilder', ['$translate', function ($translate) {
     var getIconHtml = function(service) {
         // Get the activity-category icon.
         activityCategory = service.category.name; // eg "CASH"
+        console.log(activityCategory);
+        console.log(iconGlyphs);
         var glyph = '<i class="glyphicon icon-' + iconGlyphs[activityCategory].glyph + '"></i>';
         return glyph;
     }

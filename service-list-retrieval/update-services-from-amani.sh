@@ -12,4 +12,7 @@ node getJSONFromAmani.js
 echo "Transforming JSON"
 node transformJSONFromAmani.js
 
+echo "Finishing translations in services_AR.json"
+node FinishEn_AR_JSON.js
+
 echo "Done!"
