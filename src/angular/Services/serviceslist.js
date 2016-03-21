@@ -28,6 +28,8 @@ services.factory('ServicesList', ['$http', '$translate', '$location', 'PopupBuil
             });
             angular.forEach(data, function (feature) {
 
+              console.log(feature);
+
                 // TODO: adding markers to the map here is a hack. Should be done somewhere it makes sense
                 var serviceMarker = L.marker(feature.location.geometry.coordinates.reverse(),
                     {icon: iconObjects[feature.category.name]});
