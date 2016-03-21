@@ -120,7 +120,12 @@ var transformActivityInfoServices = function(services, language){
 		serviceTransformed.endDate = serviceUntransformed.endDate;
 
     var servicesProvided = [];
-    servicesProvided.push(serviceUntransformed.servicesProvided);
+    if (serviceUntransformed.servicesProvided.match('\|\|')){
+      servicesProvided = serviceUntransformed.servicesProvided.split('||');
+    } else {
+      servicesProvided.push(serviceUntransformed.servicesProvided);
+    }
+
 		serviceTransformed.servicesProvided = servicesProvided;
 
 		var locationFeature = new Object();
