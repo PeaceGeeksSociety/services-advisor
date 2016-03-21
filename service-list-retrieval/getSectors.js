@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+
 // Require some node.js modules
 var fs = require('fs');
 var https = require('https');
@@ -18,17 +19,16 @@ var jsonSources = [],
             buffers.push(chunk);
         });
 
-        // Once all the data has come in from this stream...
         res.on('end', function () {
             // Concatenate it into a string.
             var json = Buffer.concat(buffers).toString();
             // Parse the string into JSON objects.
             var data = JSON.parse(json);
             // Put all the JSON objects into the jsonSources array.
-            jsonSources = data.nodes;
-            console.log("Writing to " + language.downloaded_json);
+            jsonSectors = data.nodes;
+            console.log("Writing to " + language.sectors_file);
             // Write the JSON to the output file
-            fs.writeFile(language.downloaded_json, JSON.stringify(jsonSources));
+            fs.writeFile(language.sectors_file, JSON.stringify(jsonSectors));
         });
     },
     onError = function (err) {
@@ -38,14 +38,14 @@ var jsonSources = [],
 
     for (var i in config.languages) {
       (function (language){
-        console.log("Fetching " + language.name);
-        var splitUrl = language.url.split("://");
+        console.log("Fetching " + language.name + ' Sectors');
+        var splitUrl = language.sectors_url.split("://");
         if (splitUrl[0].toLowerCase() == 'https'){
           $protocol = https;
         } else {
           $protocol = http;
         }
-        var req = $protocol.get(language.url, function (res) { onSuccess(res, language); });
+        var req = $protocol.get(language.sectors_url, function (res) { onSuccess(res, language); });
         req.on('error', onError);
       })(config.languages[i]);
     }
