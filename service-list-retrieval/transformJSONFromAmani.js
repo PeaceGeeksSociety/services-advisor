@@ -130,7 +130,12 @@ var transformActivityInfoServices = function(services, language){
 
 		var locationFeature = new Object();
 		locationFeature.type = "Feature";
-		locationFeature.geometry = JSON.parse(serviceUntransformed['location:geometry']);
+
+    if(serviceUntransformed['locationAlternate:geometry'].length > 0){
+      locationFeature.geometry = JSON.parse(serviceUntransformed['locationAlternate:geometry']);
+    } else {
+      locationFeature.geometry = JSON.parse(serviceUntransformed['location:geometry']);
+    }
 		serviceTransformed.location = locationFeature;
 
 		var service_properties = transformServiceDetails(serviceUntransformed);
