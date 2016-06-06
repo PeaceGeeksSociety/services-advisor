@@ -96,9 +96,15 @@ advisor can understand.
 */
 var transformActivityInfoServices = function(services, language){
 	transformedServices = [];
+  var nids = [];
 
 	for (var i = 0; i < services.length; i++){
 		var serviceUntransformed = services[i].node;
+    if (nids.indexOf(serviceUntransformed.id) >= 0){
+      continue;
+    } else {
+      nids.push(serviceUntransformed.id);
+    }
 		var serviceTransformed = new Object();
 		serviceTransformed.id = serviceUntransformed.id;
 		serviceTransformed.region = serviceUntransformed.region;
