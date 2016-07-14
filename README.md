@@ -1,5 +1,5 @@
 # How to contribute
-
+<a href="https://zenhub.com"><img src="https://raw.githubusercontent.com/ZenHubIO/support/master/zenhub-badge.png"></a>
 ## Initial Setup
 - create a github account and click the "Fork" button at the top right to fork this repository
 - copy the ssh address (ex. `git@github.com:PeaceGeeksSociety/services-advisor.git`) and use it to clone the project
