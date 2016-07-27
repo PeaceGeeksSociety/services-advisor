@@ -46,8 +46,19 @@ controllers.controller('ServiceCtrl', ['$scope', '$routeParams', '$location', 'S
         }
 
         $scope.service.details = detailsList;
-        $scope.hours = service.hours;
 
+        // $scope.hours = service.hours;
+
+        var officeHours = service.officeHours.split(',').filter(function (value) {
+            return value.length > 0;
+        });
+
+        $scope.officeHours = [];
+
+        for (var i = 0; i < officeHours.length; i++) {
+            var dayParts = officeHours[i].split(': ');
+            $scope.officeHours.push({'name': dayParts[0] + ':', 'time': dayParts[1]});
+        }
 
         $scope.goBackFromService = function() {
             var parameters = $location.search();

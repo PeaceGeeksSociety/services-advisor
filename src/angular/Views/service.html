@@ -34,7 +34,11 @@
         <!-- First row  -->
         <div class="col-xs-6 service-details-container-row-1">
           <h2>{{ 'HOURS' | translate }}</h2>
-          <p ng-show="hours.openAt">{{ 'OPEN_AT' | translate }} {{hours.openAt}}</p>
+          <table class="office-hours">
+            <tr data-ng-repeat="day in officeHours">
+              <td class="day-name">{{ day.name }}</td><td class="day-time">{{ day.time }}</td>
+            </tr>
+          </table>
         </div>
         <div id="activity-details" class="col-xs-6 service-details-container-row-1">
           <h2>{{ 'ACTIVITY_DETAILS' | translate }}</h2>

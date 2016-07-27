@@ -548,6 +548,17 @@ h3 {
     padding-top:10px;
     text-align:center;
   }
+
+  table.office-hours {
+    margin: 0 auto;
+    td.day-name {
+      text-align: right;
+      padding-right: 10px;
+    }
+    td.day-time {
+      text-align: left;
+    }
+  }
 }
 
 
