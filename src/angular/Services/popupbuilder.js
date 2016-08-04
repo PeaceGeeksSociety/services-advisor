@@ -23,30 +23,18 @@ services.factory('PopupBuilder', ['$translate', function ($translate) {
 
     var getHoursHtml = function(service) {
         // Prepare the office hours output.
-        var hours = '<strong>' + $translate.instant('HOURS') + ':</strong> ';
-        var hourOpen = '';
-        var hourClosed = '';
-        var serviceHours = service.hours;
-        if (serviceHours.hasOwnProperty('openAt')){
-            hourOpen = serviceHours.openAt;
-        }
-        if (serviceHours.hasOwnProperty('closedAt')){
-            hourClosed = serviceHours.closedAt;
+        var officeHours = service.officeHours.split(',').filter(function (value) {
+            return value.length > 0;
+        });
+
+        var hours = '<strong>' + $translate.instant('HOURS') + ':</strong>';
+        hours += '<ul>';
+
+        for (var i = 0; i < officeHours.length; i++) {
+            hours += '<li>' + officeHours[i] + '</li>';
         }
 
-        // If we have hours, show them as compact as possible.
-        if (hourOpen) {
-            // TODO: translate
-            // If we have open time but no close time, say "Open at X o'clock"; if we
-            // have both, show "X o'clock to X o'clock".
-            hours = hourClosed ?
-                hours += hourOpen + ' - ' + hourClosed.replace('Close at', '') :
-            hours + 'Open at ' + hourOpen;
-        } else {
-            // If we have no open time but yes close time, show close time only; if we have
-            // neither, say "unknown".
-            hours = hourClosed ? hours += hourClosed : hours + $translate.instant('UNKNOWN');
-        }
+        hours += '</ul>';
 
         return hours;
     }

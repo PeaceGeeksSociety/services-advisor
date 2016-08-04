@@ -150,6 +150,8 @@ var transformActivityInfoServices = function(services, language){
 
 		serviceTransformed.referral = transformReferralMethod(serviceUntransformed);
 
+    serviceTransformed.officeHours = serviceUntransformed.officeHours;
+
 		transformedServices.push(serviceTransformed);
 	}
 	return transformedServices;
