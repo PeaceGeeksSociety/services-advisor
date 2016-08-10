@@ -39,6 +39,10 @@ controllers.controller('ResultsCtrl', ['$scope', '$location', '$translate', 'Sea
             delete parameters.region;
             // refilter as we changed the parameters.
             Search.filterByUrlParameters();
+        } else if (_.has(parameters, 'sector')){
+            delete parameters.sector;
+            // refilter as we changed the parameters.
+            Search.filterByUrlParameters();
         }
         $location.path('').search(parameters);
     }
