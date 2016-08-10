@@ -1,0 +1,60 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/Cellar/node/5.6.0/bin/node',
+1 verbose cli   '/usr/local/bin/npm',
+1 verbose cli   'install',
+1 verbose cli   'getSectors.js' ]
+2 info using npm@3.6.0
+3 info using node@v5.6.0
+4 silly loadCurrentTree Starting
+5 silly install loadCurrentTree
+6 silly install readLocalPackageData
+7 silly fetchPackageMetaData getSectors.js
+8 silly fetchOtherPackageData getSectors.js
+9 silly cache add args [ 'getSectors.js', null ]
+10 verbose cache add spec getSectors.js
+11 silly cache add parsed spec Result {
+11 silly cache add   raw: 'getSectors.js',
+11 silly cache add   scope: null,
+11 silly cache add   name: null,
+11 silly cache add   rawSpec: 'getSectors.js',
+11 silly cache add   spec: '/Users/arvandtiv/Sites/sa-front/service-list-retrieval/getSectors.js',
+11 silly cache add   type: 'local' }
+12 silly addLocalTarball shasum (computed) 570c143c20713d70c75f2aee35d7f560175f33e2
+13 verbose addTmpTarball /Users/arvandtiv/Sites/sa-front/service-list-retrieval/getSectors.js not in flight; adding
+14 verbose correctMkdir /Users/arvandtiv/.npm correctMkdir not in flight; initializing
+15 verbose addTmpTarball validating metadata from /Users/arvandtiv/Sites/sa-front/service-list-retrieval/getSectors.js
+16 verbose tar unpack /Users/arvandtiv/Sites/sa-front/service-list-retrieval/getSectors.js
+17 verbose tar unpacking to /var/folders/2g/s5b0br5j3td_2_pq8_l1_b4r0000gn/T/npm-11578-34683681/unpack-79808f25
+18 silly gentlyRm /var/folders/2g/s5b0br5j3td_2_pq8_l1_b4r0000gn/T/npm-11578-34683681/unpack-79808f25 is being purged
+19 verbose gentlyRm don't care about contents; nuking /var/folders/2g/s5b0br5j3td_2_pq8_l1_b4r0000gn/T/npm-11578-34683681/unpack-79808f25
+20 silly gunzTarPerm modes [ '755', '644' ]
+21 error not a package /Users/arvandtiv/Sites/sa-front/service-list-retrieval/getSectors.js
+22 error addLocal Could not install /Users/arvandtiv/Sites/sa-front/service-list-retrieval/getSectors.js
+23 silly fetchPackageMetaData Error: ENOENT: no such file or directory, open '/var/folders/2g/s5b0br5j3td_2_pq8_l1_b4r0000gn/T/npm-11578-34683681/unpack-79808f25/package.json'
+23 silly fetchPackageMetaData     at Error (native)
+23 silly fetchPackageMetaData  error for getSectors.js { [Error: ENOENT: no such file or directory, open '/var/folders/2g/s5b0br5j3td_2_pq8_l1_b4r0000gn/T/npm-11578-34683681/unpack-79808f25/package.json']
+23 silly fetchPackageMetaData   errno: -2,
+23 silly fetchPackageMetaData   code: 'ENOENT',
+23 silly fetchPackageMetaData   syscall: 'open',
+23 silly fetchPackageMetaData   path: '/var/folders/2g/s5b0br5j3td_2_pq8_l1_b4r0000gn/T/npm-11578-34683681/unpack-79808f25/package.json' }
+24 silly rollbackFailedOptional Starting
+25 silly rollbackFailedOptional Finishing
+26 silly runTopLevelLifecycles Starting
+27 silly runTopLevelLifecycles Finishing
+28 silly install printInstalled
+29 verbose stack Error: ENOENT: no such file or directory, open '/var/folders/2g/s5b0br5j3td_2_pq8_l1_b4r0000gn/T/npm-11578-34683681/unpack-79808f25/package.json'
+29 verbose stack     at Error (native)
+30 verbose cwd /Users/arvandtiv/Sites/sa-front/service-list-retrieval
+31 error Darwin 15.5.0
+32 error argv "/usr/local/Cellar/node/5.6.0/bin/node" "/usr/local/bin/npm" "install" "getSectors.js"
+33 error node v5.6.0
+34 error npm  v3.6.0
+35 error path /var/folders/2g/s5b0br5j3td_2_pq8_l1_b4r0000gn/T/npm-11578-34683681/unpack-79808f25/package.json
+36 error code ENOENT
+37 error errno -2
+38 error syscall open
+39 error enoent ENOENT: no such file or directory, open '/var/folders/2g/s5b0br5j3td_2_pq8_l1_b4r0000gn/T/npm-11578-34683681/unpack-79808f25/package.json'
+40 error enoent ENOENT: no such file or directory, open '/var/folders/2g/s5b0br5j3td_2_pq8_l1_b4r0000gn/T/npm-11578-34683681/unpack-79808f25/package.json'
+40 error enoent This is most likely not a problem with npm itself
+40 error enoent and is related to npm not being able to find a file.
+41 verbose exit [ -2, true ]

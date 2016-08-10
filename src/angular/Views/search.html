@@ -13,7 +13,7 @@
   <h3>{{'CATEGORY' | translate}}</h3>
   <div class="list-group">
     <div ng-init="categoryId = 'category-' + $index" id="{{categoryId}}" ng-repeat="category in categories">
-      <a class="list-group-item category" ng-click="toggleCategory(categoryId)">
+      <a class="list-group-item category" ng-click="toggleCategory(categoryId); showSectorResults(category.name)">
           <span class="glyphicon glyphicon-chevron-right"></span>
           {{category.name}} 
           <span class="badge">{{category.count}}</span>

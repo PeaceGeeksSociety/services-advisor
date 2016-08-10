@@ -94,6 +94,12 @@ controllers.controller('SearchCtrl', ['$scope', '$http', '$location', '$rootScop
         $location.path('results').search(parameters);
         Search.filterByUrlParameters();
     }
+    $scope.showSectorResults = function(sector_name) {
+        var parameters = $location.search();
+        parameters.sector = sector_name;
+        $location.path('results').search(parameters);
+        Search.filterByUrlParameters();
+    }
 
     $scope.showRegionResults = function(regionName) {
         var parameters = $location.search();
