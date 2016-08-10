@@ -15,6 +15,7 @@
     <div ng-init="categoryId = 'category-' + $index" id="{{categoryId}}" ng-repeat="category in categories">
       <a class="list-group-item category" ng-click="showSectorResults(category.name); toggleCategory(categoryId); ">
           <span class="glyphicon {{ category.name == activeCategory ? 'glyphicon-chevron-down' : 'glyphicon-chevron-right'}}"></span>
+          <i class="glyphicon sector-glyph icon-{{category.glyph}} "></i>
           {{category.name}}
           <span class="badge">{{category.total}}</span>
       </a>

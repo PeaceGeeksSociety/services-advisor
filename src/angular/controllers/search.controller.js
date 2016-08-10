@@ -3,7 +3,7 @@ var controllers = angular.module('controllers');
 /**
  * For the category/region search view
  */
-controllers.controller('SearchCtrl', ['$scope', '$http', '$location', '$rootScope', 'ServicesList', 'Search', '_', 'Cookies', function ($scope, $http, $location, $rootScope, ServicesList, Search, _, Cookies) {
+controllers.controller('SearchCtrl', ['$scope', '$http', '$location', '$rootScope', 'ServicesList', 'Search', '_', 'Language', function ($scope, $http, $location, $rootScope, ServicesList, Search, _, Language) {
 
     var renderView = function(services) {
 
@@ -21,15 +21,14 @@ controllers.controller('SearchCtrl', ['$scope', '$http', '$location', '$rootScop
           });
         }
 
-        $scope.selectedLanguage = Cookies.getCookie('LANGUAGE') || 'AR';
+        $scope.selectedLanguage = Language.getLanguage();
         var sectors = $scope.selectedLanguage == 'EN' ? require('../../../js/sectors_EN.json') : require('../../../js/sectors_AR.json');
 
         var categories = {};
 
         angular.forEach(sectors, function (sector) {
-          categories[sector.sector.name] = {activities:{}, count: 0, total: $scope.serviceCounts[sector.sector.name].total};
+          categories[sector.sector.name] = {activities:{}, count: 0, total: $scope.serviceCounts[sector.sector.name].total, glyph:sector.sector.glyph};
         });
-
 
         // Here we're going to extract the list of categories and display them in a simple template
         // use an object to collect service information since object keys won't allow

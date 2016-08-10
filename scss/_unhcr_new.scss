@@ -429,7 +429,10 @@ h3 {
 //      margin-top: 5px;
 //    }
 //  }
-
+  .glyphicon.sector-glyph {
+    position:absolute !important;
+    left: 5px;
+  }
   .ng-scope > a.list-group-item {
     margin-top:7px;
     border-radius: 0px !important;
@@ -437,6 +440,8 @@ h3 {
     border: 1px solid $grey-light;
     color: black;
     cursor: pointer;
+    padding-left: 30px;
+    position: relative;
     &.active {
       background-color: $grey-medium !important;
       border-radius: 0px;
@@ -781,7 +786,7 @@ ul.filter-togglers {
 #partnerName {
   max-height: 300px;
   overflow: auto;
-
+  
   label {
     float: left;
     height: 40px;
