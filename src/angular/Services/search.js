@@ -72,14 +72,6 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
         };
     };
 
-    var withoutClearAndEmit = function(fn) {
-        return function () {
-            var results = fn.apply(this, arguments);
-            $rootScope.$emit('FILTER_CHANGED');
-            return results;
-        };
-    };
-
     var _clearOrganizations = function() {
         partnerDimension.filterAll();
     };

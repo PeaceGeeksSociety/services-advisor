@@ -3,14 +3,23 @@ var controllers = angular.module('controllers');
 /**
  * For the category/region search view
  */
-controllers.controller('SearchCtrl', ['$scope', '$http', '$location', '$rootScope', 'ServicesList', 'Search', '_', function ($scope, $http, $location, $rootScope, ServicesList, Search, _) {
+controllers.controller('SearchCtrl', ['$scope', '$http', '$location', '$rootScope', 'ServicesList', 'Search', '_', 'Cookies', function ($scope, $http, $location, $rootScope, ServicesList, Search, _, Cookies) {
 
     var renderView = function(services) {
+
+    $scope.selectedLanguage = Cookies.getCookie('LANGUAGE') || 'AR';
+    var sectors = $scope.selectedLanguage == 'EN' ? require('../../../js/sectors_EN.json') : require('../../../js/sectors_AR.json');
+
+    var categories = {};
+
+    angular.forEach(sectors, function (sector) {
+      categories[sector.sector.name] = {activities:{}, count: 0};
+    });
+
 
         // Here we're going to extract the list of categories and display them in a simple template
         // use an object to collect service information since object keys won't allow
         // for duplicates (this basically acts as a set)
-        var categories = {};
         angular.forEach(services, function (service) {
             // add activity and its category to list, and increment counter of this category's available services
             var category = service.category.name;
@@ -49,6 +58,11 @@ controllers.controller('SearchCtrl', ['$scope', '$http', '$location', '$rootScop
         $scope.regions = unsortedRegions.sort(function (regionA, regionB) {
             return regionA.localeCompare(regionB);
         });
+        var parameters = $location.search();
+
+        if (_.has(parameters, 'sector')) {
+          $scope.activeCategory = parameters.sector;
+        }
     };
 
     // Had to put renderView() in a function callback otherwise Watch won't make changes
@@ -77,6 +91,7 @@ controllers.controller('SearchCtrl', ['$scope', '$http', '$location', '$rootScop
             $( '#' + categoryId + ' > a > .glyphicon').addClass('glyphicon-chevron-down');
             $( '#' + categoryId + ' > a > .glyphicon').removeClass('glyphicon-chevron-right');
         }
+        var classes = $( '#' + categoryId + ' .glyphicon').attr('class').split(/\s+/);
     }
 
     $scope.toCssClass = function (str) {
@@ -97,8 +112,8 @@ controllers.controller('SearchCtrl', ['$scope', '$http', '$location', '$rootScop
     $scope.showSectorResults = function(sector_name) {
         var parameters = $location.search();
         parameters.sector = sector_name;
-        $location.path('results').search(parameters);
-        // Search.filterByUrlParameters();
+        $location.path('').search(parameters);
+        Search.filterByUrlParameters();
     }
 
     $scope.showRegionResults = function(regionName) {
