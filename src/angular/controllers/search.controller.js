@@ -83,6 +83,8 @@ controllers.controller('SearchCtrl', ['$scope', '$http', '$location', '$rootScop
 
     $scope.toggleCategory = function(categoryId) {
         $( '#' + categoryId + ' .activities').toggleClass('hidden');
+        $( '#' + categoryId + ' .list-group-item').toggleClass('active');
+
         var classes = $( '#' + categoryId + ' > a > .glyphicon').attr('class').split(/\s+/);
         if($.inArray('glyphicon-chevron-down', classes) > -1) {
             $( '#' + categoryId + ' > a > .glyphicon').addClass('glyphicon-chevron-right');
@@ -91,7 +93,6 @@ controllers.controller('SearchCtrl', ['$scope', '$http', '$location', '$rootScop
             $( '#' + categoryId + ' > a > .glyphicon').addClass('glyphicon-chevron-down');
             $( '#' + categoryId + ' > a > .glyphicon').removeClass('glyphicon-chevron-right');
         }
-        var classes = $( '#' + categoryId + ' .glyphicon').attr('class').split(/\s+/);
     }
 
     $scope.toCssClass = function (str) {
