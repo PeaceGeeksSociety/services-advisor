@@ -7,14 +7,28 @@ controllers.controller('SearchCtrl', ['$scope', '$http', '$location', '$rootScop
 
     var renderView = function(services) {
 
-    $scope.selectedLanguage = Cookies.getCookie('LANGUAGE') || 'AR';
-    var sectors = $scope.selectedLanguage == 'EN' ? require('../../../js/sectors_EN.json') : require('../../../js/sectors_AR.json');
+        // get total counts
+        if ($scope.serviceCounts == null){
+          $scope.serviceCounts = {};
+          angular.forEach($rootScope.allServices, function (service) {
+              var category = service.category.name;
+              if (category) {
+                  if ($scope.serviceCounts[category] == null) {
+                      $scope.serviceCounts[category] = {total: 0};
+                  }
+                  $scope.serviceCounts[category].total++;
+              }
+          });
+        }
 
-    var categories = {};
+        $scope.selectedLanguage = Cookies.getCookie('LANGUAGE') || 'AR';
+        var sectors = $scope.selectedLanguage == 'EN' ? require('../../../js/sectors_EN.json') : require('../../../js/sectors_AR.json');
 
-    angular.forEach(sectors, function (sector) {
-      categories[sector.sector.name] = {activities:{}, count: 0};
-    });
+        var categories = {};
+
+        angular.forEach(sectors, function (sector) {
+          categories[sector.sector.name] = {activities:{}, count: 0, total: $scope.serviceCounts[sector.sector.name].total};
+        });
 
 
         // Here we're going to extract the list of categories and display them in a simple template
@@ -41,7 +55,7 @@ controllers.controller('SearchCtrl', ['$scope', '$http', '$location', '$rootScop
 
         // now to get an array of categories we just map over the keys of the object
         var unsortedCategories = $.map(categories, function (value, index) {
-            return {name: index, glyph: value.glyph, color: value.color, count: value.count, activities: value.activities};
+            return {name: index, glyph: value.glyph, color: value.color, count: value.count, total: value.total, activities: value.activities};
         });
 
         $scope.categories = unsortedCategories.sort(function (categoryA, categoryB) {

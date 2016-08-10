@@ -16,7 +16,7 @@
       <a class="list-group-item category" ng-click="showSectorResults(category.name); toggleCategory(categoryId); ">
           <span class="glyphicon {{ category.name == activeCategory ? 'glyphicon-chevron-down' : 'glyphicon-chevron-right'}}"></span>
           {{category.name}}
-          <span class="badge">{{category.count}}</span>
+          <span class="badge">{{category.total}}</span>
       </a>
       <div id="{{category.name}}Activities" class="activities {{ category.name == activeCategory ? '' : 'hidden'}}">
         <a ng-repeat="activity in category.activities" ng-click="showCategoryResults(activity.name);" ng-class="'list-group-item activityname-filter-value-' + toCssClass(activity.name)">

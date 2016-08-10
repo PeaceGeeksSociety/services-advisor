@@ -9,6 +9,7 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
 
     // asynchronously initialize crossfilter
     ServicesList.get(function (allServices) {
+        $rootScope.allServices = allServices;
         crossfilter.add(allServices);
 
         // trigger initial map load
