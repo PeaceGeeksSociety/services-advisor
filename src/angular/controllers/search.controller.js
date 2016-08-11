@@ -27,7 +27,10 @@ controllers.controller('SearchCtrl', ['$scope', '$http', '$location', '$rootScop
         var categories = {};
 
         angular.forEach(sectors, function (sector) {
-          categories[sector.sector.name] = {activities:{}, count: 0, total: $scope.serviceCounts[sector.sector.name].total, glyph:sector.sector.glyph};
+          if ($scope.serviceCounts[sector.sector.name] != undefined){
+            var total = $scope.serviceCounts[sector.sector.name].total = 0;
+            categories[sector.sector.name] = {activities:{}, count: 0, total: total, glyph:sector.sector.glyph};
+          }
         });
 
         // Here we're going to extract the list of categories and display them in a simple template
