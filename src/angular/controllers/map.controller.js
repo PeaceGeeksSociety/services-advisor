@@ -136,6 +136,8 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
             // Build the output for the filtered list view
         } );
 
+        map.fitBounds(clusterLayer.getBounds());
+
         // TODO: do this zooming when someone clicks into the service detailed view
 
         // Bind "show on map" behavior.  Do this here because now the list exists.
