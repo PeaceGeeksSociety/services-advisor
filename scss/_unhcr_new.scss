@@ -432,6 +432,10 @@ h3 {
   .glyphicon.sector-glyph {
     position:absolute !important;
     left: 5px;
+    .lang-AR & {
+      left:auto;
+      right:5px;
+    }
   }
   .ng-scope > a.list-group-item {
     margin-top:7px;
@@ -441,6 +445,10 @@ h3 {
     color: black;
     cursor: pointer;
     padding-left: 30px;
+    .lang-AR & {
+      padding-left: 0px;
+      padding-right: 35px;
+    }
     position: relative;
     &.active {
       background-color: $grey-medium !important;
@@ -455,6 +463,9 @@ h3 {
       background: none;
       font-weight: normal;
       color: black;
+      .lang-AR & {
+        float:left !important;
+      }
     }
 
     .media-heading{
@@ -843,4 +854,7 @@ body.lang-EN {
   .x-search-result-header {
     font-size: 14px;
   }
+}
+.lang-AR .glyphicon-chevron-right.glyphicon{
+      transform: scaleX(-1) !important;
 }
