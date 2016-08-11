@@ -74,6 +74,9 @@ controllers.controller('SearchCtrl', ['$scope', '$http', '$location', '$rootScop
         var parameters = $location.search();
 
         if (_.has(parameters, 'sector')) {
+          if ($scope.activeCategory != undefined){
+            $scope.previousCategory == $scope.activeCategory;
+          }
           $scope.activeCategory = parameters.sector;
         }
     };
@@ -94,7 +97,7 @@ controllers.controller('SearchCtrl', ['$scope', '$http', '$location', '$rootScop
         renderView(Search.currResults());
     });
 
-    $scope.toggleCategory = function(categoryId) {
+    $scope.toggleCategory = function(categoryId, categoryName) {
         $( '#' + categoryId + ' .activities').toggleClass('hidden');
         $( '#' + categoryId + ' .list-group-item').toggleClass('active');
 
@@ -123,15 +126,22 @@ controllers.controller('SearchCtrl', ['$scope', '$http', '$location', '$rootScop
         $location.path('results').search(parameters);
         Search.filterByUrlParameters();
     }
-    $scope.showSectorResults = function(sector_name) {
+    $scope.toggleSectorResults = function(sector_name) {
         var parameters = $location.search();
-        parameters.sector = sector_name;
+
+        if (parameters.sector != undefined && parameters.sector == sector_name){
+            delete parameters.sector;
+        } else {
+          parameters.sector = sector_name;
+        }
+
         $location.path('').search(parameters);
         Search.filterByUrlParameters();
     }
 
     $scope.showRegionResults = function(regionName) {
         var parameters = $location.search();
+        console.log(parameters);
         parameters.region = regionName;
         $location.path('results').search(parameters);
         Search.filterByUrlParameters();
