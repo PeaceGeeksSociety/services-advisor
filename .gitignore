@@ -9,5 +9,6 @@ js/*
 !js/.gitkeep
 .DS_Store
 
-# people running the site will copy the .dist to this location
+# people running the site will copy the .dist files
 src/site-specific-config.js
+service-list-retrieval/config.js
