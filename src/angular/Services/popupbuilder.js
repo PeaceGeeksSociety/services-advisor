@@ -6,10 +6,9 @@ var services = angular.module('services');
 services.factory('PopupBuilder', ['$translate', function ($translate) {
     var getLogoHtml = function(service) {
         var partnerName = service.organization.name;
-        var logoUrl = './src/images/partner/' + partnerName.toLowerCase().replace(' ', '') + '.jpg';
 
         // we add an onerror callback so that if the image 404's we just set it to display:none
-        var logo = '<img src="' + logoUrl + '" alt="' + partnerName + '" onError="this.onerror=null;this.style.display=\'none\'" />';
+        var logo = '<img src="' + service.logoUrl + '" alt="' + partnerName + '" onError="this.onerror=null;this.style.display=\'none\'" />';
         return logo;
 
     }

@@ -18,11 +18,11 @@ controllers.controller('FilterCtrl', ['$scope', '$rootScope', '$location', 'Sear
 
          Sample: ["IOCC", "UNHCR", "WVI", "JRS", ...,  "NHF"]
     */
-     organizationsArray   = _.chain(data)
-                             .pluck("organization")
-                             .pluck("name")
-                             .unique()
-                             .value();
+    organizationsArray = _.chain(data)
+                          .map(function (service) { return { name: service.organization.name, logoUrl: service.logoUrl }; })
+                          .unique()
+                          .value();
+
      /*
 
       2. Spliting the Array into two arrays (For Column Display)
@@ -39,28 +39,6 @@ controllers.controller('FilterCtrl', ['$scope', '$rootScope', '$location', 'Sear
                                   })
                                  .toArray()
                                 .value();
-    /*
-
-      3. Getting an Object that maps to Partner Logo URL
-
-      Creating a separate scope variable that maps Partner name to the respective Logo URL
-      We are doing this mainly not to temper with the original format of the Partner name in organizationsArray
-
-      Example : "IFH/NFH " requires the " " at the end in order to map to the original object to make changes to
-      side bar pill and the map
-
-      Data: Object
-
-    */
-    $scope.partnerLogoUrl = _.object(
-                                _.map(organizationsArray,function(partnerName){
-                                  // Maps to an array to be converted to an Object
-                                  // Sample: ["IOCC", ".src/images/partner/IOCC.jpg"]
-                                  return [partnerName, './src/images/partner/' + partnerName.replace(/\//g,"-").replace(/\s/g, "").toLowerCase() + '.jpg']
-                                })
-                            )
-
-
   }
 
   $rootScope.filterSelection = []
