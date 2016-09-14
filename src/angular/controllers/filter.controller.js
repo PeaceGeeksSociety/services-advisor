@@ -18,7 +18,7 @@ controllers.controller('FilterCtrl', ['$scope', '$rootScope', '$location', 'Sear
 
          Sample: ["IOCC", "UNHCR", "WVI", "JRS", ...,  "NHF"]
     */
-    organizationsArray = _.chain(data)
+    var organizationsArray = _.chain(data)
                           .map(function (service) { return { name: service.organization.name, logoUrl: service.logoUrl }; })
                           .unique()
                           .value();
@@ -46,6 +46,18 @@ controllers.controller('FilterCtrl', ['$scope', '$rootScope', '$location', 'Sear
   // calls the ServiceList function get which takes a call back function
   // in this case we are collecting Organizations
   ServicesList.get(collectOrganizations);
+
+  var collectNationalities = function(data) {
+    $scope.nationalities = _.chain(data)
+                            .map(function (service) {
+                              return _.find(service.details, function(detail) { return _.has(detail, 'Nationality'); }).Nationality.split(', ');
+                            })
+                            .flatten()
+                            .unique()
+                            .value();
+  }
+
+  ServicesList.get(collectNationalities);
 
   // selected organizations
   $scope.toggleReferral = function(value) {
@@ -96,7 +108,24 @@ controllers.controller('FilterCtrl', ['$scope', '$rootScope', '$location', 'Sear
         // so we can read the height and couldn't figure out how to hook into that event
     $("body").css("padding-top", $("#searchNav").height() + "px");
     }, 2);
-};
+  };
+
+  $scope.toggleNationality = function(value) {
+    var parameters = $location.search();
+    if (_.has(parameters, 'nationality')) {
+      var index = _.indexOf(parameters.nationality, value);
+      if (index > -1) {
+        parameters.nationality.splice(index, 1)
+      } else {
+        parameters.nationality.push(value);
+      }
+    } else {
+      parameters.nationality = [value];
+    }
+
+    $location.search(parameters);
+    Search.filterByUrlParameters();
+  }
 
   $scope.toggleFilters = toggleFilters;
 

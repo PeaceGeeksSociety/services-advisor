@@ -6,6 +6,8 @@ cd $( dirname "${BASH_SOURCE[0]}" )
 #cp ../js/services_AR.json ../js/services_AR.json.bak
 #cp ../js/services_EN.json ../js/services_EN.json.bak
 
+node getSectors.js
+
 echo "Getting latest service data and writing to services.json"
 node getJSONFromAmani.js
 

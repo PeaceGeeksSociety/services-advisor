@@ -31,6 +31,18 @@
           </div>
         </div>
 
+        <h3>{{ 'NATIONALITY' | translate }}</h3>
+        <div class="form-group nationality-form-group">
+          <div ng-repeat="nation in nationalities">
+            <label class="col-xs-12 col-md-4 control-label nationality-label">
+              {{ nation }}
+              <div class="pull-right">
+                <input type="checkbox" ng-click="toggleNationality(nation)" value="">
+              </div>
+            </label>
+          </div>
+        </div>
+
         <h3>{{ 'ORGANIZATIONS' | translate }}</h3>
 
         <!-- use this as a skeleton for a ng-repeat once we figure out getting the organization list -->
