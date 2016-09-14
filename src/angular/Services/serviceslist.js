@@ -14,6 +14,7 @@ services.factory('ServicesList', ['$http', '$translate', '$location', 'PopupBuil
     if (!_.has(SiteSpecificConfig[language], "servicesUrl")) {
         alert("ERROR: No servicesUrl key set for language " + language);
     }
+
     var servicesList = SiteSpecificConfig[language].servicesUrl;
 
     var services = $http.get(servicesList, {cache: true}).then(function (data) {

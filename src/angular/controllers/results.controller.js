@@ -47,8 +47,7 @@ controllers.controller('ResultsCtrl', ['$scope', '$location', '$translate', 'Sea
     }
 
     $scope.getPartnerLogoUrl = function(result) {
-        var partnerName = result.organization.name.toLowerCase().replace(' ', '');
-        return './src/images/partner/' + partnerName + '.jpg';
+        return result.logoUrl;
     };
 
     // gets the activity details of the service

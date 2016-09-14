@@ -24,9 +24,7 @@ controllers.controller('ServiceCtrl', ['$scope', '$routeParams', '$location', 'S
         $scope.service.startDate = service.startDate;
         $scope.service.endDate = service.endDate;
 
-        // TODO: reuse functionality in results controller to parse this info
-        var partnerName = service.organization.name.toLowerCase().replace(' ', '');
-        $scope.service.partnerLogoUrl = './src/images/partner/' + partnerName + '.jpg';
+        $scope.service.partnerLogoUrl = service.logoUrl;
 
         $scope.service.servicesProvided = service.servicesProvided;
 

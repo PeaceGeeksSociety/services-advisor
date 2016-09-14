@@ -116,7 +116,7 @@ var transformActivityInfoServices = function(services, language){
 
 		//Init the category
 		var category = new Object();
-		category.name = serviceUntransformed.category.toUpperCase();
+		category.name = serviceUntransformed.category;
 		var subCategory = new Object();
 		subCategory.name = serviceUntransformed.subCategory;
 		category.subCategory = subCategory;
@@ -149,6 +149,8 @@ var transformActivityInfoServices = function(services, language){
     serviceTransformed.hours = service_properties.hours;
 
 		serviceTransformed.referral = transformReferralMethod(serviceUntransformed);
+
+    serviceTransformed.logoUrl = serviceUntransformed.organizationLogo.src;
 
     serviceTransformed.officeHours = serviceUntransformed.officeHours;
 
