@@ -27,7 +27,7 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
     });
 
     var nationalityDimension = crossfilter.dimension(function (f) {
-        return _.find(f.details, function(detail) { return _.has(detail, 'Nationality'); }).Nationality.split(', ') || undefined;
+        return f.nationality.split(', ') || undefined;
     });
 
     var regionDimension = crossfilter.dimension(function (f) {

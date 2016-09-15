@@ -28,35 +28,19 @@ controllers.controller('ServiceCtrl', ['$scope', '$routeParams', '$location', 'S
 
         $scope.service.servicesProvided = service.servicesProvided;
 
-        var detailsList = []
+        // Details
+        $scope.service.nationality = service.nationality;
+        $scope.service.intakeCriteria = service.intakeCriteria;
+        $scope.service.accessibility = service.accessibility;
+        $scope.service.coverage = service.coverage;
+        $scope.service.availability = service.availability;
+        $scope.service.referralMethod = service.referralMethod;
+        $scope.service.referralNextSteps = service.referralNextSteps;
+        $scope.service.feedbackMechanism = service.feedbackMechanism;
+        $scope.service.feedbackDelay = service.feedbackDelay;
+        $scope.service.complaintsMechanism = service.complaintsMechanism;
 
-        for (var i = 0; i < service.details.length; i++){
-            var serviceDetails = service.details[i];
-
-            var details = {}
-
-            $.each(serviceDetails, function(val, key){
-                details.first = val;
-                details.second = key;
-            });
-
-            detailsList.push(details);
-        }
-
-        $scope.service.details = detailsList;
-
-        // $scope.hours = service.hours;
-
-        var officeHours = service.officeHours.split(',').filter(function (value) {
-            return value.length > 0;
-        });
-
-        $scope.officeHours = [];
-
-        for (var i = 0; i < officeHours.length; i++) {
-            var dayParts = officeHours[i].split(': ');
-            $scope.officeHours.push({'name': dayParts[0] + ':', 'time': dayParts[1]});
-        }
+        $scope.officeHours = service.officeHours;
 
         $scope.goBackFromService = function() {
             var parameters = $location.search();

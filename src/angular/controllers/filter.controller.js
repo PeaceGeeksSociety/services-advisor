@@ -23,12 +23,12 @@ controllers.controller('FilterCtrl', ['$scope', '$rootScope', '$location', 'Sear
 
   var collectNationalities = function(data) {
     $scope.nationalities = _.chain(data)
-                            .map(function (service) {
-                              return _.find(service.details, function(detail) { return _.has(detail, 'Nationality'); }).Nationality.split(', ');
-                            })
-                            .flatten()
-                            .unique()
-                            .value();
+      .map(function (service) {
+        return service.nationality.split(', ');
+      })
+      .flatten()
+      .unique()
+      .value();
   }
 
   ServicesList.get(collectNationalities);

@@ -57,9 +57,45 @@
               <td class="col-xs-6 pull-left">{{ 'END_DATE' | translate }}</td>
               <td class="col-xs-6 pull-right">{{service.endDate}}</td>
             </tr>
-            <tr class="col-xs-12" data-ng-repeat="object in service.details">
-              <td class="col-xs-6 pull-left">{{object.first}}</td>
-              <td class="col-xs-6 pull-right">{{object.second}}</td>
+            <tr class="col-xs-12">
+              <td class="col-xs-6 pull-left">{{ 'NATIONALITY' | translate }}</td>
+              <td class="col-xs-6 pull-right">{{service.nationality}}</td>
+            </tr>
+            <tr class="col-xs-12">
+              <td class="col-xs-6 pull-left">{{ 'INTAKE_CRITERIA' | translate }}</td>
+              <td class="col-xs-6 pull-right">{{service.intakeCriteria}}</td>
+            </tr>
+            <tr class="col-xs-12">
+              <td class="col-xs-6 pull-left">{{ 'ACCESSIBILITY' | translate }}</td>
+              <td class="col-xs-6 pull-right">{{service.accessibility}}</td>
+            </tr>
+            <tr class="col-xs-12">
+              <td class="col-xs-6 pull-left">{{ 'COVERAGE' | translate }}</td>
+              <td class="col-xs-6 pull-right">{{service.coverage}}</td>
+            </tr>
+            <tr class="col-xs-12">
+              <td class="col-xs-6 pull-left">{{ 'AVAILABILITY' | translate }}</td>
+              <td class="col-xs-6 pull-right">{{service.availability}}</td>
+            </tr>
+            <tr class="col-xs-12">
+              <td class="col-xs-6 pull-left">{{ 'REFERRAL_METHOD' | translate }}</td>
+              <td class="col-xs-6 pull-right">{{service.referralMethod}}</td>
+            </tr>
+            <tr class="col-xs-12">
+              <td class="col-xs-6 pull-left">{{ 'REFERRAL_NEXT_STEPS' | translate }}</td>
+              <td class="col-xs-6 pull-right">{{service.referralNextSteps}}</td>
+            </tr>
+            <tr class="col-xs-12">
+              <td class="col-xs-6 pull-left">{{ 'FEEDBACK_MECHANISM' | translate }}</td>
+              <td class="col-xs-6 pull-right">{{service.feedbackMechanism}}</td>
+            </tr>
+            <tr class="col-xs-12">
+              <td class="col-xs-6 pull-left">{{ 'FEEDBACK_DELAY' | translate }}</td>
+              <td class="col-xs-6 pull-right">{{service.feedbackDelay}}</td>
+            </tr>
+            <tr class="col-xs-12">
+              <td class="col-xs-6 pull-left">{{ 'COMPLAINTS_MECHANISM' | translate }}</td>
+              <td class="col-xs-6 pull-right">{{service.complaintsMechanism}}</td>
             </tr>
           </tbody>
         </table>

@@ -61,32 +61,6 @@ var transformReferralMethod = function(service) {
     return referral;
 }
 
-var transformServiceDetails = function(service) {
-	var details = [];
-	var hours = {};
-  var tempArray = [];
-
-	_.each(service, function(property_value, property_name) {
-    if  (property_name.substr(0,8) == 'details:'){
-      var obj = {};
-      propname = property_name.replace('details:','');
-      obj[propname] = property_value;
-      details.push(obj);
-    } else if (property_name.substr(0,6) == 'hours:'){
-      hours[property_name.replace('hours:','')] = property_value;
-    } else {
-
-    }
-    return;
-	});
-
-    var service_properties = {
-        "details": details,
-        "hours": hours
-    }
-	return service_properties;
-}
-
 
 /*
 Transforms the data from activity info into a format that services
@@ -144,15 +118,33 @@ var transformActivityInfoServices = function(services, language){
     }
 		serviceTransformed.location = locationFeature;
 
-		var service_properties = transformServiceDetails(serviceUntransformed);
-    serviceTransformed.details = service_properties.details;
-    serviceTransformed.hours = service_properties.hours;
+    serviceTransformed.nationality         = serviceUntransformed.nationality;
+    serviceTransformed.intakeCriteria      = serviceUntransformed.intakeCriteria;
+    serviceTransformed.accessibility       = serviceUntransformed.accessibility;
+    serviceTransformed.coverage            = serviceUntransformed.coverage;
+    serviceTransformed.availability        = serviceUntransformed.availability;
+    serviceTransformed.referralMethod      = serviceUntransformed.referralMethod;
+    serviceTransformed.referralNextSteps   = serviceUntransformed.referralNextSteps;
+    serviceTransformed.feedbackMechanism   = serviceUntransformed.feedbackMechanism;
+    serviceTransformed.feedbackDelay       = serviceUntransformed.feedbackDelay;
+    serviceTransformed.complaintsMechanism = serviceUntransformed.complaintsMechanism;
 
 		serviceTransformed.referral = transformReferralMethod(serviceUntransformed);
 
     serviceTransformed.logoUrl = serviceUntransformed.organizationLogo.src;
 
     serviceTransformed.officeHours = serviceUntransformed.officeHours;
+
+    var officeHours = serviceUntransformed.officeHours.split(',').filter(function (value) {
+        return value.length > 0;
+    });
+
+    serviceTransformed.officeHours = [];
+
+    for (var i = 0; i < officeHours.length; i++) {
+        var dayParts = officeHours[i].split(': ');
+        serviceTransformed.officeHours.push({'name': dayParts[0], 'time': dayParts[1]});
+    }
 
 		transformedServices.push(serviceTransformed);
 	}

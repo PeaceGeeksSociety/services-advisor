@@ -22,15 +22,11 @@ services.factory('PopupBuilder', ['$translate', function ($translate) {
 
     var getHoursHtml = function(service) {
         // Prepare the office hours output.
-        var officeHours = service.officeHours.split(',').filter(function (value) {
-            return value.length > 0;
-        });
-
         var hours = '<strong>' + $translate.instant('HOURS') + ':</strong>';
         hours += '<ul>';
 
-        for (var i = 0; i < officeHours.length; i++) {
-            hours += '<li>' + officeHours[i] + '</li>';
+        for (var i = 0; i < service.officeHours.length; i++) {
+            hours += '<li>' + service.officeHours[i].name + ': ' + service.officeHours[i].time + '</li>';
         }
 
         hours += '</ul>';
@@ -46,12 +42,12 @@ services.factory('PopupBuilder', ['$translate', function ($translate) {
 
             var activityDetails = service.servicesProvided.join(', ');
             if (activityDetails === '') { activityDetails = $translate.instant('UNKNOWN'); }
-            var activityDetailsHtml = '<p><strong>' + $translate.instant("Activity Details") + ':</strong> ' + activityDetails + '</p>';
+            var activityDetailsHtml = '<p><strong>' + $translate.instant("ACTIVITY_DETAILS") + ':</strong> ' + activityDetails + '</p>';
             headerOutput += activityDetailsHtml;
 
             var referralInfo = service.referral.type;
             if (referralInfo === '') { referralInfo = $translate.instant('UNKNOWN'); }
-            var referralHtml = '<p><strong>' + $translate.instant("Referral Method") + ':</strong> ' + referralInfo + '</p>';
+            var referralHtml = '<p><strong>' + $translate.instant("REFERRAL_METHOD") + ':</strong> ' + referralInfo + '</p>';
             headerOutput += referralHtml;
 
             var glyph = getIconHtml(service);
