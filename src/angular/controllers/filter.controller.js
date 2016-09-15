@@ -8,40 +8,14 @@ var controllers = angular.module('controllers');
 
 controllers.controller('FilterCtrl', ['$scope', '$rootScope', '$location', 'Search', 'ServicesList', '_', '$timeout', function ($scope, $rootScope, $location, Search, ServicesList, _, $timeout) {
 
- // defines a function to callback function for filtering data
   var collectOrganizations = function(data){
-
-    /*
-      1. Original Organization/Partner name array
-
-         Here we make use of methods in underscore to pluck the organization names
-
-         Sample: ["IOCC", "UNHCR", "WVI", "JRS", ...,  "NHF"]
-    */
-    var organizationsArray = _.chain(data)
-                          .map(function (service) { return { name: service.organization.name, logoUrl: service.logoUrl }; })
-                          .unique()
-                          .value();
-
-     /*
-
-      2. Spliting the Array into two arrays (For Column Display)
-
-     */                             
-    var splitValue = organizationsArray.length/3;    
-    
-    // Using the split value, we divide the array evenly into two separate arrays 
-    // Resulting array = [ ['UNHCR', 'stuff '], ['stuff', 'stuff'] ]
-    $scope.organizationsArray = _.chain(organizationsArray)
-                                  // Converts the array into an even Split
-                                 .groupBy(function(element, index){
-                                    return Math.floor(index/splitValue);
-                                  })
-                                 .toArray()
-                                .value();
+    $scope.organizations = {};
+    _.each(data, function (service) {
+      $scope.organizations[service.organization.name] = { name: service.organization.name, logoUrl: service.logoUrl };
+    });
   }
 
-  $rootScope.filterSelection = []
+  $rootScope.filterSelection = [];
 
   // calls the ServiceList function get which takes a call back function
   // in this case we are collecting Organizations
