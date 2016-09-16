@@ -25,7 +25,7 @@ transform it into an object like:
  */
 var transformReferralMethod = function(service) {
 	// Check if this feature has referral method "No Referral"
-    referralData = service["details:Referral Method"];
+    referralData = service["referralMethod"];
      /*
      *  There are 7 possible values:
      *  "Email on a per case basis"

@@ -14,7 +14,6 @@ controllers.controller('SearchCtrl', ['$scope', '$http', '$location', '$rootScop
         angular.forEach(services, function (service) {
             // add activity and its category to list, and increment counter of this category's available services
             var category = service.category.name;
-            console.log(iconGlyphs[category].glyph);
             if (category) {
                 if (categories[category] == null) {
                     categories[category] = {glyph: iconGlyphs[category].glyph, color: iconGlyphs[category].markerColor, activities:{}, count: 0};
