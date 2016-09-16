@@ -14,9 +14,10 @@ controllers.controller('SearchCtrl', ['$scope', '$http', '$location', '$rootScop
         angular.forEach(services, function (service) {
             // add activity and its category to list, and increment counter of this category's available services
             var category = service.category.name;
+            console.log(iconGlyphs[category].glyph);
             if (category) {
                 if (categories[category] == null) {
-                    categories[category] = {activities:{}, count: 0};
+                    categories[category] = {glyph: iconGlyphs[category].glyph, color: iconGlyphs[category].markerColor, activities:{}, count: 0};
                 }
                 categories[category].count++;
 
@@ -32,7 +33,7 @@ controllers.controller('SearchCtrl', ['$scope', '$http', '$location', '$rootScop
 
         // now to get an array of categories we just map over the keys of the object
         var unsortedCategories = $.map(categories, function (value, index) {
-            return {name: index, count: value.count, activities: value.activities};
+            return {name: index, glyph: value.glyph, color: value.color, count: value.count, activities: value.activities};
         });
 
         $scope.categories = unsortedCategories.sort(function (categoryA, categoryB) {
@@ -69,13 +70,13 @@ controllers.controller('SearchCtrl', ['$scope', '$http', '$location', '$rootScop
 
     $scope.toggleCategory = function(categoryId) {
         $( '#' + categoryId + ' .activities').toggleClass('hidden');
-        var classes = $( '#' + categoryId + ' .glyphicon').attr('class').split(/\s+/);
+        var classes = $( '#' + categoryId + ' > a > .glyphicon').attr('class').split(/\s+/);
         if($.inArray('glyphicon-chevron-down', classes) > -1) {
-            $( '#' + categoryId + ' .glyphicon').addClass('glyphicon-chevron-right');
-            $( '#' + categoryId + ' .glyphicon').removeClass('glyphicon-chevron-down');
+            $( '#' + categoryId + ' > a > .glyphicon').addClass('glyphicon-chevron-right');
+            $( '#' + categoryId + ' > a > .glyphicon').removeClass('glyphicon-chevron-down');
         } else if($.inArray('glyphicon-chevron-right', classes) > -1) {
-            $( '#' + categoryId + ' .glyphicon').addClass('glyphicon-chevron-down');
-            $( '#' + categoryId + ' .glyphicon').removeClass('glyphicon-chevron-right');
+            $( '#' + categoryId + ' > a > .glyphicon').addClass('glyphicon-chevron-down');
+            $( '#' + categoryId + ' > a > .glyphicon').removeClass('glyphicon-chevron-right');
         }
     }
 

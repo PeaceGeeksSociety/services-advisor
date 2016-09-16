@@ -20,7 +20,7 @@
       </a>
       <div id="{{category.name}}Activities" class="activities hidden">
         <a ng-repeat="activity in category.activities" ng-click="showCategoryResults(activity.name);" ng-class="'list-group-item activityname-filter-value-' + toCssClass(activity.name)">
-          <span class="glyph"></span>{{activity.name}}
+          <span style="color: {{category.color}}" class="glyphicon icon-{{ category.glyph }}"></span>{{activity.name}}
           <span class="badge">{{activity.count}}</span>
         </a>
       </div>
