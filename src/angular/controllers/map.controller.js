@@ -1,6 +1,6 @@
 var controllers = angular.module('controllers');
 
-controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$translate', 'Search','_', 'Cookies', function ($scope, $rootScope, $location, $translate, Search, _, Cookies) {
+controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$translate', 'Search','_', 'Language', function ($scope, $rootScope, $location, $translate, Search, _, Language) {
     // Mapbox doesn't need its own var - it automatically attaches to Leaflet's L.
     require('mapbox.js');
     // Use Awesome Markers lib to produce font-icon map markers
@@ -8,7 +8,7 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
     // Marker clustering
     require('../../../node_modules/leaflet.markercluster/dist/leaflet.markercluster.js');
 
-    $scope.selectedLanguage = Cookies.getCookie('LANGUAGE') || 'AR';
+    $scope.selectedLanguage = Language.getLanguage();
     var sectors = $scope.selectedLanguage == 'EN' ? require('../../../js/sectors_EN.json') : require('../../../js/sectors_AR.json');
 
     // Initialize the map, using Affinity Bridge's mapbox account.

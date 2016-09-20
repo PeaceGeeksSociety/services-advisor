@@ -18,12 +18,13 @@ require('../site-specific-config.js');
 
 // Routes
 require('./Routes/routes.js');
+
 // Services
-require('./Services/serviceslist.js');
-require('./Services/search.js');
+require('./Services/language.js');
 require('./Services/popupbuilder.js');
+require('./Services/search.js');
+require('./Services/serviceslist.js');
 require('./Services/underscore.js');
-require('./Services/cookies.js');
 
 // Controllers
 require('./controllers/search.controller.js');

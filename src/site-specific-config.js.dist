@@ -12,6 +12,7 @@
 var services = angular.module('services');
 services.factory('SiteSpecificConfig', [function () {
     return {
+        "defaultLanguage": "EN",
         "AR": {
             "languageDirection": "rtl",
             "servicesUrl": "js/services_AR.json",
