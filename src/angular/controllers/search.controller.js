@@ -3,14 +3,37 @@ var controllers = angular.module('controllers');
 /**
  * For the category/region search view
  */
-controllers.controller('SearchCtrl', ['$scope', '$http', '$location', '$rootScope', 'ServicesList', 'Search', '_', function ($scope, $http, $location, $rootScope, ServicesList, Search, _) {
+controllers.controller('SearchCtrl', ['$scope', '$http', '$location', '$rootScope', 'ServicesList', 'Search', '_', '$translate', 'Language', function ($scope, $http, $location, $rootScope, ServicesList, Search, _, $translate, Language) {
 
     var renderView = function(services) {
+
+        // get total counts
+        if ($scope.serviceCounts == null){
+          $scope.serviceCounts = {};
+          angular.forEach($rootScope.allServices, function (service) {
+              var category = service.category.name;
+              if (category) {
+                  if ($scope.serviceCounts[category] == null) {
+                      $scope.serviceCounts[category] = {total: 0};
+                  }
+                  $scope.serviceCounts[category].total++;
+              }
+          });
+        }
+
+        $scope.selectedLanguage = Language.getLanguage();
+        var sectors = $scope.selectedLanguage == 'EN' ? require('../../../js/sectors_EN.json') : require('../../../js/sectors_AR.json');
+
+        var categories = {};
+
+        angular.forEach(sectors, function (sector) {
+            var total = $scope.serviceCounts[sector.sector.name].total;
+            categories[sector.sector.name] = {activities:{}, count: 0, total: total, glyph:sector.sector.glyph};
+        });
 
         // Here we're going to extract the list of categories and display them in a simple template
         // use an object to collect service information since object keys won't allow
         // for duplicates (this basically acts as a set)
-        var categories = {};
         angular.forEach(services, function (service) {
             // add activity and its category to list, and increment counter of this category's available services
             var category = service.category.name;
@@ -32,7 +55,7 @@ controllers.controller('SearchCtrl', ['$scope', '$http', '$location', '$rootScop
 
         // now to get an array of categories we just map over the keys of the object
         var unsortedCategories = $.map(categories, function (value, index) {
-            return {name: index, glyph: value.glyph, color: value.color, count: value.count, activities: value.activities};
+            return {name: index, glyph: value.glyph, color: value.color, count: value.count, total: value.total, activities: value.activities};
         });
 
         $scope.categories = unsortedCategories.sort(function (categoryA, categoryB) {
@@ -49,6 +72,14 @@ controllers.controller('SearchCtrl', ['$scope', '$http', '$location', '$rootScop
         $scope.regions = unsortedRegions.sort(function (regionA, regionB) {
             return regionA.localeCompare(regionB);
         });
+        var parameters = $location.search();
+
+        if (_.has(parameters, 'sector')) {
+          if ($scope.activeCategory != undefined){
+            $scope.previousCategory == $scope.activeCategory;
+          }
+          $scope.activeCategory = parameters.sector;
+        }
     };
 
     // Had to put renderView() in a function callback otherwise Watch won't make changes
@@ -67,8 +98,10 @@ controllers.controller('SearchCtrl', ['$scope', '$http', '$location', '$rootScop
         renderView(Search.currResults());
     });
 
-    $scope.toggleCategory = function(categoryId) {
+    $scope.toggleCategory = function(categoryId, categoryName) {
         $( '#' + categoryId + ' .activities').toggleClass('hidden');
+        $( '#' + categoryId + ' .list-group-item').toggleClass('active');
+
         var classes = $( '#' + categoryId + ' > a > .glyphicon').attr('class').split(/\s+/);
         if($.inArray('glyphicon-chevron-down', classes) > -1) {
             $( '#' + categoryId + ' > a > .glyphicon').addClass('glyphicon-chevron-right');
@@ -94,9 +127,22 @@ controllers.controller('SearchCtrl', ['$scope', '$http', '$location', '$rootScop
         $location.path('results').search(parameters);
         Search.filterByUrlParameters();
     }
+    $scope.toggleSectorResults = function(sector_name) {
+        var parameters = $location.search();
+
+        if (parameters.sector != undefined && parameters.sector == sector_name){
+            delete parameters.sector;
+        } else {
+          parameters.sector = sector_name;
+        }
+
+        $location.path('').search(parameters);
+        Search.filterByUrlParameters();
+    }
 
     $scope.showRegionResults = function(regionName) {
         var parameters = $location.search();
+        console.log(parameters);
         parameters.region = regionName;
         $location.path('results').search(parameters);
         Search.filterByUrlParameters();

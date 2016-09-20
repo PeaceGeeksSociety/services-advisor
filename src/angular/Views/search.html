@@ -13,12 +13,13 @@
   <h3>{{'CATEGORY' | translate}}</h3>
   <div class="list-group">
     <div ng-init="categoryId = 'category-' + $index" id="{{categoryId}}" ng-repeat="category in categories">
-      <a class="list-group-item category" ng-click="toggleCategory(categoryId)">
-          <span class="glyphicon glyphicon-chevron-right"></span>
-          {{category.name}} 
-          <span class="badge">{{category.count}}</span>
+      <a class="list-group-item category" ng-click="toggleSectorResults(category.name); toggleCategory(categoryId, category.name); ">
+          <span class="glyphicon {{ category.name == activeCategory ? 'glyphicon-chevron-down' : 'glyphicon-chevron-right'}}"></span>
+          <i class="glyphicon sector-glyph icon-{{category.glyph}} "></i>
+          {{category.name}}
+          <span class="badge">{{category.total}}</span>
       </a>
-      <div id="{{category.name}}Activities" class="activities hidden">
+      <div id="{{category.name}}Activities" class="activities {{ category.name == activeCategory ? '' : 'hidden'}}">
         <a ng-repeat="activity in category.activities" ng-click="showCategoryResults(activity.name);" ng-class="'list-group-item activityname-filter-value-' + toCssClass(activity.name)">
           <span style="color: {{category.color}}" class="glyphicon icon-{{ category.glyph }}"></span>{{activity.name}}
           <span class="badge">{{activity.count}}</span>

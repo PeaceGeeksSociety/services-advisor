@@ -9,6 +9,7 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
 
     // asynchronously initialize crossfilter
     ServicesList.get(function (allServices) {
+        $rootScope.allServices = allServices;
         crossfilter.add(allServices);
 
         // trigger initial map load
@@ -21,6 +22,9 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
     // TODO: not sure why they do || undefined, but previously they had "|| option.empty" where empty was never defined
     var categoryDimension = crossfilter.dimension(function (f) {
         return f.category.subCategory.name || undefined;
+    });
+    var sectorDimension = crossfilter.dimension(function (f) {
+        return f.category.name || undefined;
     });
     var partnerDimension = crossfilter.dimension(function (f) {
         return f.organization.name || undefined;
@@ -45,7 +49,7 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
     /** Used to get list of currently filtered services rather than re-using an existing dimension **/
     var metaDimension = crossfilter.dimension(function (f) { return f.category.subCategory.name; });
 
-    var allDimensions = [categoryDimension, partnerDimension, nationalityDimension, regionDimension, idDimension, referralsDimension];
+    var allDimensions = [categoryDimension, partnerDimension, nationalityDimension, regionDimension, idDimension, referralsDimension, sectorDimension];
 
     var clearAll = function () {
         angular.forEach(allDimensions, function(filter) {
@@ -66,14 +70,6 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
             var result = fn.apply(this, arguments);
             $rootScope.$emit('FILTER_CHANGED');
             return result;
-        };
-    };
-
-    var withoutClearAndEmit = function(fn) {
-        return function () {
-            var results = fn.apply(this, arguments);
-            $rootScope.$emit('FILTER_CHANGED');
-            return results;
         };
     };
 
@@ -111,6 +107,12 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
     var _selectCategory = function(category){
         categoryDimension.filter(function(service) {
             return service == category;
+        });
+    }
+    
+    var _selectSector = function(sector){
+        sectorDimension.filter(function(service) {
+            return service == sector;
         });
     }
 
@@ -221,6 +223,9 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
 
             if (_.has(parameters, 'category')) {
                 _selectCategory(parameters.category);
+            }
+            if (_.has(parameters, 'sector')) {
+                _selectSector(parameters.sector);
             }
 
             if (_.has(parameters, 'region')){

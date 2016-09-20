@@ -9,6 +9,7 @@ $teal: #5ED9DB;
 $grey-medium: #E9EDEF;
 $grey-light: #F8FAFB;
 
+$blue-map: #6d84ec;
 $grey-dark: #333333;
 $orange-dark: #d64a2b;
 $brown-light: #e6c68b;
@@ -374,7 +375,7 @@ h3 {
 #serviceList {
   height: 94vh; /* compensate for the scroll buttons */
   overflow-y: scroll;
-
+   
   div.col-xs-5 {
     background-color: white;
     padding: 5px;
@@ -396,7 +397,6 @@ h3 {
     background-color: white;
     padding: 5px;
     text-align: center;
-
     &:first-child {
       border-left: 10px solid $grey-medium;
       padding: 10px;
@@ -423,15 +423,37 @@ h3 {
   }
 
   //--main list
-  .list-group :first-child {
-    margin-top: 5px;
+//  .list-group {
+//    :first-child,
+//    :last-child {
+//      margin-top: 5px;
+//    }
+//  }
+  .glyphicon.sector-glyph {
+    position:absolute !important;
+    left: 5px;
+    .lang-AR & {
+      left:auto;
+      right:5px;
+    }
   }
-
-  .list-group-item{
+  .ng-scope > a.list-group-item {
+    margin-top:7px;
+    border-radius: 0px !important;
     background-color: $grey-medium;
     border: 1px solid $grey-light;
     color: black;
     cursor: pointer;
+    padding-left: 30px;
+    .lang-AR & {
+      padding-left: 0px;
+      padding-right: 35px;
+    }
+    position: relative;
+    &.active {
+      background-color: $grey-medium !important;
+      border-radius: 0px;
+    }
 
     .icon {
       padding: 3px;
@@ -441,6 +463,9 @@ h3 {
       background: none;
       font-weight: normal;
       color: black;
+      .lang-AR & {
+        float:left !important;
+      }
     }
 
     .media-heading{
@@ -454,7 +479,21 @@ h3 {
     }
 
   }
-
+  .activities > a.list-group-item {
+    margin: 0 1px;
+    border: 1px solid $grey-medium;
+    border-top:0px;
+    border-bottom:0px;
+    background:$grey-light;
+    line-height:1;
+    border-radius:0px !important;
+    color: #337ab7 !important;
+    border-bottom: 1px solid $grey-medium;
+    cursor:pointer;
+    &:last-child {
+//      border-top: 1px solid $grey-medium;
+    }
+  }
   button {
     margin: 25px 0px 5px -15px;
     padding: 7px 15px 6px 10px;
@@ -758,7 +797,7 @@ ul.filter-togglers {
 #partnerName {
   max-height: 300px;
   overflow: auto;
-
+  
   label {
     float: left;
     height: 40px;
@@ -815,4 +854,7 @@ body.lang-EN {
   .x-search-result-header {
     font-size: 14px;
   }
+}
+.lang-AR .glyphicon-chevron-right.glyphicon{
+      transform: scaleX(-1) !important;
 }
