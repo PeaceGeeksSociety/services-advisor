@@ -1,6 +1,6 @@
 var services = angular.module('services');
 
-services.factory('Language', ['$location', '$window', 'SiteSpecificConfig', '_', function ($location, $window, SiteSpecificConfig, _) {
+services.factory('Language', ['$location', '$window', 'SiteSpecificConfig', '_', '$route', function ($location, $window, SiteSpecificConfig, _) {
   return {
     getAllLanguages: function() {
       return _.keys(SiteSpecificConfig.languages);
@@ -10,7 +10,7 @@ services.factory('Language', ['$location', '$window', 'SiteSpecificConfig', '_',
     },
     setLanguage: function(lang) {
       // Redirect the page home and add the query parameter.
-      $location.path('/').search('language', lang);
+      window.location.href = '#/?language=' + lang;
       $window.location.reload();
     }
   };
