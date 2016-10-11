@@ -9,6 +9,7 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
 
     // asynchronously initialize crossfilter
     ServicesList.get(function (allServices) {
+        $rootScope.allServices = allServices;
         crossfilter.add(allServices);
 
         // trigger initial map load
@@ -22,8 +23,15 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
     var categoryDimension = crossfilter.dimension(function (f) {
         return f.category.subCategory.name || undefined;
     });
+    var sectorDimension = crossfilter.dimension(function (f) {
+        return f.category.name || undefined;
+    });
     var partnerDimension = crossfilter.dimension(function (f) {
         return f.organization.name || undefined;
+    });
+
+    var nationalityDimension = crossfilter.dimension(function (f) {
+        return f.nationality.split(', ') || undefined;
     });
 
     var regionDimension = crossfilter.dimension(function (f) {
@@ -41,7 +49,7 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
     /** Used to get list of currently filtered services rather than re-using an existing dimension **/
     var metaDimension = crossfilter.dimension(function (f) { return f.category.subCategory.name; });
 
-    var allDimensions = [categoryDimension, partnerDimension, regionDimension, idDimension, referralsDimension];
+    var allDimensions = [categoryDimension, partnerDimension, nationalityDimension, regionDimension, idDimension, referralsDimension, sectorDimension];
 
     var clearAll = function () {
         angular.forEach(allDimensions, function(filter) {
@@ -65,14 +73,6 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
         };
     };
 
-    var withoutClearAndEmit = function(fn) {
-        return function () {
-            var results = fn.apply(this, arguments);
-            $rootScope.$emit('FILTER_CHANGED');
-            return results;
-        };
-    };
-
     var _clearOrganizations = function() {
         partnerDimension.filterAll();
     };
@@ -80,6 +80,12 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
     var _selectOrganizations = function(organizations) {
         partnerDimension.filter(function(serviceOrganization) {
             return organizations.indexOf(serviceOrganization) > -1;
+        });
+    };
+
+    var _selectNationalities = function(nationalities) {
+        nationalityDimension.filter(function(serviceNationalities) {
+            return _.intersection(nationalities, serviceNationalities).length > 0;
         });
     };
 
@@ -101,6 +107,12 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
     var _selectCategory = function(category){
         categoryDimension.filter(function(service) {
             return service == category;
+        });
+    }
+    
+    var _selectSector = function(sector){
+        sectorDimension.filter(function(service) {
+            return service == sector;
         });
     }
 
@@ -201,12 +213,19 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
                 _selectOrganizations(parameters.organization);
             }
 
+            if (_.has(parameters, 'nationality') && parameters.nationality.length > 0){
+                _selectNationalities(parameters.nationality);
+            }
+
             if (_.has(parameters, 'referrals')) {
                 _selectReferrals(parameters.referrals);
             }
 
             if (_.has(parameters, 'category')) {
                 _selectCategory(parameters.category);
+            }
+            if (_.has(parameters, 'sector')) {
+                _selectSector(parameters.sector);
             }
 
             if (_.has(parameters, 'region')){

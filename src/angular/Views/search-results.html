@@ -36,7 +36,11 @@
                   <!-- hours section -->
                   <div class="col-xs-5">
                     <h2>{{ 'HOURS' | translate }}</h2>
-                    <p>{{ result.hours.openAt || 'N/A' }} - {{ result.hours.closedAt || 'N/A' }}</p>
+                    <table class="office-hours">
+                      <tr data-ng-repeat="day in result.officeHours">
+                        <td class="day-name">{{ day.name }}:</td><td class="day-time">{{ day.time }}</td>
+                      </tr>
+                    </table>
                   </div>
 
                   <!-- activites detail section -->

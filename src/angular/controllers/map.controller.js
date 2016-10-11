@@ -1,12 +1,15 @@
 var controllers = angular.module('controllers');
 
-controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$translate', 'Search','_', function ($scope, $rootScope, $location, $translate, Search, _) {
+controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$translate', 'Search','_', 'Language', function ($scope, $rootScope, $location, $translate, Search, _, Language) {
     // Mapbox doesn't need its own var - it automatically attaches to Leaflet's L.
     require('mapbox.js');
     // Use Awesome Markers lib to produce font-icon map markers
     require('../../../src/leaflet.awesome-markers.js');
     // Marker clustering
     require('../../../node_modules/leaflet.markercluster/dist/leaflet.markercluster.js');
+
+    $scope.selectedLanguage = Language.getLanguage();
+    var sectors = $scope.selectedLanguage == 'EN' ? require('../../../js/sectors_EN.json') : require('../../../js/sectors_AR.json');
 
     // Initialize the map, using Affinity Bridge's mapbox account.
     map = L.mapbox.map('mapContainer', 'affinitybridge.ia7h38nj');
@@ -91,14 +94,11 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
     // Match possible Activity Categories to Humanitarian Font icons.
     // TODO: this is global right now so we can use it in the ServicesList service
     iconGlyphs = {};
-    iconGlyphs[$translate.instant('CASH')] = {glyph: 'ocha-sector-cash', markerColor: '#a48658' };
-    iconGlyphs[$translate.instant('EDUCATION')] = {glyph: 'ocha-sector-education', markerColor: '#c00000' };
-    iconGlyphs[$translate.instant('FOOD')] = {glyph: 'ocha-sector-foodsecurity', markerColor: '#006600' };
-    iconGlyphs[$translate.instant('HEALTH')] = {glyph: 'ocha-sector-health', markerColor: '#08a1d9' };
-    iconGlyphs[$translate.instant('NFI')] = {glyph: 'ocha-item-reliefgood', markerColor: '#f96a1b' };
-    iconGlyphs[$translate.instant('PROTECTION')] = {glyph: 'ocha-sector-protection', markerColor: '#1f497d' };
-    iconGlyphs[$translate.instant('SHELTER')] = {glyph: 'ocha-sector-shelter', markerColor: '#989aac' };
-    iconGlyphs[$translate.instant('WASH')] = {glyph: 'ocha-sector-wash', markerColor: '#7030a0' };
+
+    for (var i = 0; i < sectors.length; i++){
+      var sector = sectors[i].sector;
+      iconGlyphs[$translate.instant(sector.name)] = {glyph: sector.glyph, markerColor: sector.markerColor };
+    }
 
     // TODO: remove global
     iconObjects = {};
@@ -135,6 +135,8 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
             markers[feature.id] = feature.marker;
             // Build the output for the filtered list view
         } );
+
+        map.fitBounds(clusterLayer.getBounds());
 
         // TODO: do this zooming when someone clicks into the service detailed view
 

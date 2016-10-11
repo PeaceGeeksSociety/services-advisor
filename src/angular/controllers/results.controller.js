@@ -14,41 +14,8 @@ controllers.controller('ResultsCtrl', ['$scope', '$location', '$translate', 'Sea
         }
     )
 
-    // the methods below serves to get the key value in the object between each ng-repeat loop.
-    // The object is passed in from the view, manipulated then returned back.
-
-    // gets the opening time of the service
-    $scope.getOpeningTime = function(result){
-        //define a variable to store the 'opening time'
-        var openingTime = null;
-
-        var timeObject = result.properties[$translate.instant('OFFICE_OPEN_AT')];
-        // Run this if the office opening time exists
-        if(timeObject){
-            // Grabs the key value from the nested object which results in time in string
-            openingTime = Object.keys(timeObject)[0];
-        }
-
-        return openingTime;
-    }
-
-    // gets the closing time of the service
-    $scope.getClosingTime = function(result){
-        //define a variable to store the 'closing time'
-        var closingTime = null;
-        var timeObject = result.properties[$translate.instant('OFFICE_CLOSE_AT')];
-        // Run this if the office closing time exists
-        if(timeObject){
-            // Grabs the key value from the nested object which results in time in string
-            closingTime = Object.keys(timeObject)[0];
-        }
-
-        return closingTime;
-    }
-
     $scope.getPartnerLogoUrl = function(result) {
-        var partnerName = result.organization.name.toLowerCase().replace(' ', '');
-        return './src/images/partner/' + partnerName + '.jpg';
+        return result.logoUrl;
     };
 
     // gets the activity details of the service
@@ -70,6 +37,10 @@ controllers.controller('ResultsCtrl', ['$scope', '$location', '$translate', 'Sea
             Search.filterByUrlParameters();
         } else if (_.has(parameters, 'region')){
             delete parameters.region;
+            // refilter as we changed the parameters.
+            Search.filterByUrlParameters();
+        } else if (_.has(parameters, 'sector')){
+            delete parameters.sector;
             // refilter as we changed the parameters.
             Search.filterByUrlParameters();
         }

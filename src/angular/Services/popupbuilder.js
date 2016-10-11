@@ -6,49 +6,30 @@ var services = angular.module('services');
 services.factory('PopupBuilder', ['$translate', function ($translate) {
     var getLogoHtml = function(service) {
         var partnerName = service.organization.name;
-        var logoUrl = './src/images/partner/' + partnerName.toLowerCase().replace(' ', '') + '.jpg';
 
         // we add an onerror callback so that if the image 404's we just set it to display:none
-        var logo = '<img src="' + logoUrl + '" alt="' + partnerName + '" onError="this.onerror=null;this.style.display=\'none\'" />';
+        var logo = '<img src="' + service.logoUrl + '" alt="' + partnerName + '" onError="this.onerror=null;this.style.display=\'none\'" />';
         return logo;
 
     }
 
     var getIconHtml = function(service) {
         // Get the activity-category icon.
-        activityCategory = service.category.name; // eg "CASH"
-        console.log(activityCategory);
-        console.log(iconGlyphs);
+        var activityCategory = service.category.name ? service.category.name : 'default'; // eg "CASH"
         var glyph = '<i class="glyphicon icon-' + iconGlyphs[activityCategory].glyph + '"></i>';
         return glyph;
     }
 
     var getHoursHtml = function(service) {
         // Prepare the office hours output.
-        var hours = '<strong>' + $translate.instant('HOURS') + ':</strong> ';
-        var hourOpen = '';
-        var hourClosed = '';
-        var serviceHours = service.hours;
-        if (serviceHours.hasOwnProperty('openAt')){
-            hourOpen = serviceHours.openAt;
-        }
-        if (serviceHours.hasOwnProperty('closedAt')){
-            hourClosed = serviceHours.closedAt;
+        var hours = '<strong>' + $translate.instant('HOURS') + ':</strong>';
+        hours += '<ul>';
+
+        for (var i = 0; i < service.officeHours.length; i++) {
+            hours += '<li>' + service.officeHours[i].name + ': ' + service.officeHours[i].time + '</li>';
         }
 
-        // If we have hours, show them as compact as possible.
-        if (hourOpen) {
-            // TODO: translate
-            // If we have open time but no close time, say "Open at X o'clock"; if we
-            // have both, show "X o'clock to X o'clock".
-            hours = hourClosed ?
-                hours += hourOpen + ' - ' + hourClosed.replace('Close at', '') :
-            hours + 'Open at ' + hourOpen;
-        } else {
-            // If we have no open time but yes close time, show close time only; if we have
-            // neither, say "unknown".
-            hours = hourClosed ? hours += hourClosed : hours + $translate.instant('UNKNOWN');
-        }
+        hours += '</ul>';
 
         return hours;
     }
@@ -61,12 +42,12 @@ services.factory('PopupBuilder', ['$translate', function ($translate) {
 
             var activityDetails = service.servicesProvided.join(', ');
             if (activityDetails === '') { activityDetails = $translate.instant('UNKNOWN'); }
-            var activityDetailsHtml = '<p><strong>' + $translate.instant("Activity Details") + ':</strong> ' + activityDetails + '</p>';
+            var activityDetailsHtml = '<p><strong>' + $translate.instant("ACTIVITY_DETAILS") + ':</strong> ' + activityDetails + '</p>';
             headerOutput += activityDetailsHtml;
 
             var referralInfo = service.referral.type;
             if (referralInfo === '') { referralInfo = $translate.instant('UNKNOWN'); }
-            var referralHtml = '<p><strong>' + $translate.instant("Referral Method") + ':</strong> ' + referralInfo + '</p>';
+            var referralHtml = '<p><strong>' + $translate.instant("REFERRAL_METHOD") + ':</strong> ' + referralInfo + '</p>';
             headerOutput += referralHtml;
 
             var glyph = getIconHtml(service);

@@ -25,7 +25,7 @@ transform it into an object like:
  */
 var transformReferralMethod = function(service) {
 	// Check if this feature has referral method "No Referral"
-    referralData = service["details:Referral Method"];
+    referralData = service["referralMethod"];
      /*
      *  There are 7 possible values:
      *  "Email on a per case basis"
@@ -61,32 +61,6 @@ var transformReferralMethod = function(service) {
     return referral;
 }
 
-var transformServiceDetails = function(service) {
-	var details = [];
-	var hours = {};
-  var tempArray = [];
-
-	_.each(service, function(property_value, property_name) {
-    if  (property_name.substr(0,8) == 'details:'){
-      var obj = {};
-      propname = property_name.replace('details:','');
-      obj[propname] = property_value;
-      details.push(obj);
-    } else if (property_name.substr(0,6) == 'hours:'){
-      hours[property_name.replace('hours:','')] = property_value;
-    } else {
-
-    }
-    return;
-	});
-
-    var service_properties = {
-        "details": details,
-        "hours": hours
-    }
-	return service_properties;
-}
-
 
 /*
 Transforms the data from activity info into a format that services
@@ -96,9 +70,15 @@ advisor can understand.
 */
 var transformActivityInfoServices = function(services, language){
 	transformedServices = [];
+  var nids = [];
 
 	for (var i = 0; i < services.length; i++){
 		var serviceUntransformed = services[i].node;
+    if (nids.indexOf(serviceUntransformed.id) >= 0){
+      continue;
+    } else {
+      nids.push(serviceUntransformed.id);
+    }
 		var serviceTransformed = new Object();
 		serviceTransformed.id = serviceUntransformed.id;
 		serviceTransformed.region = serviceUntransformed.region;
@@ -110,7 +90,7 @@ var transformActivityInfoServices = function(services, language){
 
 		//Init the category
 		var category = new Object();
-		category.name = serviceUntransformed.category.toUpperCase();
+		category.name = serviceUntransformed.category;
 		var subCategory = new Object();
 		subCategory.name = serviceUntransformed.subCategory;
 		category.subCategory = subCategory;
@@ -120,19 +100,51 @@ var transformActivityInfoServices = function(services, language){
 		serviceTransformed.endDate = serviceUntransformed.endDate;
 
     var servicesProvided = [];
-    servicesProvided.push(serviceUntransformed.servicesProvided);
+    if (serviceUntransformed.servicesProvided.match('\|\|')){
+      servicesProvided = serviceUntransformed.servicesProvided.split('||');
+    } else {
+      servicesProvided.push(serviceUntransformed.servicesProvided);
+    }
+
 		serviceTransformed.servicesProvided = servicesProvided;
 
 		var locationFeature = new Object();
 		locationFeature.type = "Feature";
-		locationFeature.geometry = JSON.parse(serviceUntransformed['location:geometry']);
+
+    if(serviceUntransformed['locationAlternate:geometry'].length > 0){
+      locationFeature.geometry = JSON.parse(serviceUntransformed['locationAlternate:geometry']);
+    } else {
+      locationFeature.geometry = JSON.parse(serviceUntransformed['location:geometry']);
+    }
 		serviceTransformed.location = locationFeature;
 
-		var service_properties = transformServiceDetails(serviceUntransformed);
-    serviceTransformed.details = service_properties.details;
-    serviceTransformed.hours = service_properties.hours;
+    serviceTransformed.nationality         = serviceUntransformed.nationality;
+    serviceTransformed.intakeCriteria      = serviceUntransformed.intakeCriteria;
+    serviceTransformed.accessibility       = serviceUntransformed.accessibility;
+    serviceTransformed.coverage            = serviceUntransformed.coverage;
+    serviceTransformed.availability        = serviceUntransformed.availability;
+    serviceTransformed.referralMethod      = serviceUntransformed.referralMethod;
+    serviceTransformed.referralNextSteps   = serviceUntransformed.referralNextSteps;
+    serviceTransformed.feedbackMechanism   = serviceUntransformed.feedbackMechanism;
+    serviceTransformed.feedbackDelay       = serviceUntransformed.feedbackDelay;
+    serviceTransformed.complaintsMechanism = serviceUntransformed.complaintsMechanism;
 
 		serviceTransformed.referral = transformReferralMethod(serviceUntransformed);
+
+    serviceTransformed.logoUrl = serviceUntransformed.organizationLogo.src;
+
+    serviceTransformed.officeHours = serviceUntransformed.officeHours;
+
+    var officeHours = serviceUntransformed.officeHours.split(',').filter(function (value) {
+        return value.length > 0;
+    });
+
+    serviceTransformed.officeHours = [];
+
+    for (var i = 0; i < officeHours.length; i++) {
+        var dayParts = officeHours[i].split(': ');
+        serviceTransformed.officeHours.push({'name': dayParts[0], 'time': dayParts[1]});
+    }
 
 		transformedServices.push(serviceTransformed);
 	}

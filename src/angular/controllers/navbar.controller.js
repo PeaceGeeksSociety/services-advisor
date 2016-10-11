@@ -1,16 +1,15 @@
 var controllers = angular.module('controllers');
 
-controllers.controller('NavbarCtrl', ['$scope', 'Cookies', function ($scope, Cookies) {
-  $scope.languages = ['AR','EN'];
-  $scope.selectedLanguage = Cookies.getCookie('LANGUAGE') || 'AR';
+controllers.controller('NavbarCtrl', ['$scope', 'Language', function ($scope, Language) {
+  $scope.languages = Language.getAllLanguages();
+  $scope.selectedLanguage = Language.getLanguage();
 
   $scope.changeLanguage = function (langKey) {
     // we just set the cookie and reload since things aren't set up to properly reload new services list
-    Cookies.setCookie('LANGUAGE', langKey);
+    Language.setLanguage(langKey);
 
     // reload to / because we use the translated word in the URL so the same url won't work in a different language
     // example: /#/results?category=Financial%20assistance
-    window.location = "/";
   };
 
   $scope.toggleFilters = toggleFilters;

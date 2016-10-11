@@ -5,10 +5,10 @@ css/main.css
 .idea/
 *.iml
 bower_components/
-js/app.js
+js/*
+!js/.gitkeep
 .DS_Store
-js/services_AR.json.bak
-js/services_EN.json.bak
 
-# people running the site will copy the .dist to this location
+# people running the site will copy the .dist files
 src/site-specific-config.js
+service-list-retrieval/config.js

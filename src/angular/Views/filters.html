@@ -31,46 +31,31 @@
           </div>
         </div>
 
+        <h3>{{ 'NATIONALITY' | translate }}</h3>
+
+        <div class="form-group nationality-form-group">
+          <div ng-repeat="nation in nationalities">
+            <label class="col-xs-12 col-md-4 control-label nationality-label">
+              {{ nation }}
+              <div class="pull-right">
+                <input type="checkbox" ng-click="toggleNationality(nation)" value="">
+              </div>
+            </label>
+          </div>
+        </div>
+
         <h3>{{ 'ORGANIZATIONS' | translate }}</h3>
 
-        <!-- use this as a skeleton for a ng-repeat once we figure out getting the organization list -->
-
         <div class="form-group organizations-form-group">
-
-          <!-- Note organization1 and organization2 are from the same source but are just split into two for separate column   -->
-
-            <!-- Looping first split array  -->
-            <div ng-repeat="organization1 in organizationsArray[0]">
+            <div ng-repeat="organization in organizations">
               <label class="col-xs-12 col-md-4 control-label organization-label">
-                {{organization1}}
+                {{organization.name}}
                 <div class="pull-right">
-                  <img class="organization-logo" ng-src="{{partnerLogoUrl[organization1]}}" onError="this.onerror=null;this.style.display='none';"/>
-                  <input ng-checked="filterSelection.indexOf(organization1) > -1" ng-click="toggleSelection(organization1)" type="checkbox" value="">
+                  <img class="organization-logo" ng-src="{{organization.logoUrl}}" onError="this.onerror=null;this.style.display='none';"/>
+                  <input ng-checked="filterSelection.indexOf(organization.name) > -1" ng-click="toggleSelection(organization.name)" type="checkbox" value="">
                 </div>
               </label>
             </div>
-
-            <!-- Looping second split array  -->
-            <div ng-repeat="organization2 in organizationsArray[1]">
-              <label class="col-xs-12 col-md-4 control-label organization-label">
-                {{organization2}}
-                <div class="pull-right">
-                   <img class="organization-logo" ng-src="{{partnerLogoUrl[organization2]}}" onError="this.onerror=null;this.style.display='none';"/>
-                  <input ng-checked="filterSelection.indexOf(organization2) > -1" ng-click="toggleSelection(organization2)" type="checkbox" value="">
-                </div>
-              </label>
-            </div>
-
-            <!-- Looping second split array  -->
-            <div ng-repeat="organization3 in organizationsArray[2]">
-              <label class="col-xs-12 col-md-4 control-label organization-label">
-                {{organization3}}
-                <div class="pull-right">
-                   <img class="organization-logo" ng-src="{{partnerLogoUrl[organization3]}}" onError="this.onerror=null;this.style.display='none';"/>
-                  <input ng-checked="filterSelection.indexOf(organization3) > -1" ng-click="toggleSelection(organization3)" type="checkbox" value="">
-                </div>
-              </label>
-            </div>
-
         </div>
+
       </form>

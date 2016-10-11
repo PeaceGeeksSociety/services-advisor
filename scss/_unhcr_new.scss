@@ -9,6 +9,7 @@ $teal: #5ED9DB;
 $grey-medium: #E9EDEF;
 $grey-light: #F8FAFB;
 
+$blue-map: #6d84ec;
 $grey-dark: #333333;
 $orange-dark: #d64a2b;
 $brown-light: #e6c68b;
@@ -374,7 +375,7 @@ h3 {
 #serviceList {
   height: 94vh; /* compensate for the scroll buttons */
   overflow-y: scroll;
-
+   
   div.col-xs-5 {
     background-color: white;
     padding: 5px;
@@ -396,7 +397,6 @@ h3 {
     background-color: white;
     padding: 5px;
     text-align: center;
-
     &:first-child {
       border-left: 10px solid $grey-medium;
       padding: 10px;
@@ -423,18 +423,37 @@ h3 {
   }
 
   //--main list
-  .list-group {
-    :first-child,
-    :last-child {
-      margin-top: 5px;
+//  .list-group {
+//    :first-child,
+//    :last-child {
+//      margin-top: 5px;
+//    }
+//  }
+  .glyphicon.sector-glyph {
+    position:absolute !important;
+    left: 5px;
+    .lang-AR & {
+      left:auto;
+      right:5px;
     }
   }
-
-  .list-group-item{
+  .ng-scope > a.list-group-item {
+    margin-top:7px;
+    border-radius: 0px !important;
     background-color: $grey-medium;
     border: 1px solid $grey-light;
     color: black;
     cursor: pointer;
+    padding-left: 30px;
+    .lang-AR & {
+      padding-left: 0px;
+      padding-right: 35px;
+    }
+    position: relative;
+    &.active {
+      background-color: $grey-medium !important;
+      border-radius: 0px;
+    }
 
     .icon {
       padding: 3px;
@@ -444,6 +463,9 @@ h3 {
       background: none;
       font-weight: normal;
       color: black;
+      .lang-AR & {
+        float:left !important;
+      }
     }
 
     .media-heading{
@@ -457,7 +479,21 @@ h3 {
     }
 
   }
-
+  .activities > a.list-group-item {
+    margin: 0 1px;
+    border: 1px solid $grey-medium;
+    border-top:0px;
+    border-bottom:0px;
+    background:$grey-light;
+    line-height:1;
+    border-radius:0px !important;
+    color: #337ab7 !important;
+    border-bottom: 1px solid $grey-medium;
+    cursor:pointer;
+    &:last-child {
+//      border-top: 1px solid $grey-medium;
+    }
+  }
   button {
     margin: 25px 0px 5px -15px;
     padding: 7px 15px 6px 10px;
@@ -547,6 +583,17 @@ h3 {
   div {
     padding-top:10px;
     text-align:center;
+  }
+
+  table.office-hours {
+    margin: 0 auto;
+    td.day-name {
+      text-align: right;
+      padding-right: 10px;
+    }
+    td.day-time {
+      text-align: left;
+    }
   }
 }
 
@@ -708,84 +755,10 @@ ul.filter-togglers {
   padding-left: 15px;
 }
 
-.activityname-filter-value-all span.glyph { background-color: transparent; }
-.activityname-filter-value-basic-needs span.glyph:before,
-.activityname-filter-value-توزيع-الاحتياجات-الأساسية-\(المواد-غير-الغذائية\)-\(المواد-غير-الغذائية\) span.glyph:before,
-.activityname-filter-value-distribution-for-basic-needs-\(nfi\) span.glyph:before {
-  content: "\f412"; color: #f96a1b;
-}
-.activityname-filter-value-protection-services span.glyph:before,
-.activityname-filter-value-خدمات-الحماية span.glyph:before,
-.activityname-filter-value-child-protection span.glyph:before,
-.activityname-filter-value-حماية-الطفل span.glyph:before,
-.activityname-filter-value-community-focused-protection span.glyph:before,
-.activityname-filter-value-protection span.glyph:before,
-.activityname-filter-value-case-focused-mhpss span.glyph:before,
-.activityname-filter-value-community-focused-mhpss-and-protection span.glyph:before,
-.activityname-filter-value-general-mhpss---protection span.glyph:before,
-.activityname-filter-value-الحماية-التي-تركز-على-المجتمع span.glyph:before,
-.activityname-filter-value-حق-اللاجئين span.glyph:before,
-.activityname-filter-value-refugee-right span.glyph:before {
-  content: "\f368";
-  color: #1f497d;
-}
-.activityname-filter-value-food-security span.glyph:before,
-.activityname-filter-value-maintain-food-security span.glyph:before,
-.activityname-filter-value-nutritional-status-impovement span.glyph:before,
-.activityname-filter-value-improve-nutritional-status span.glyph:before {
-  content: "\f366";
-  color: #006600;
-}
-.activityname-filter-value-financial-assistance span.glyph:before,
-.activityname-filter-value-المساعدة-المالية span.glyph:before,
-.activityname-filter-value-need-coverage span.glyph:before {
-  content: "\f32a";
-  color: #a48658;
-}
-.activityname-filter-value-shelter-rehabilitation span.glyph:before,
-.activityname-filter-value-إعادة-تأهيل-الملاجئ span.glyph:before,
-.activityname-filter-value-shelter-rehabilitation-jordanians---syrians span.glyph:before,
-.activityname-filter-value-cash-for-rent span.glyph:before,
-.activityname-filter-value-النقد-للإيجار span.glyph:before,
-.activityname-filter-value-economic-capacity-of-syrian-refugee-families span.glyph:before {
-  content: "\f363";
-  color: #989aac;
-}
-.activityname-filter-value-education span.glyph:before,
-.activityname-filter-value-education-opportunities span.glyph:before,
-.activityname-filter-value-access-to-appropriate-opportunities span.glyph:before,
-.activityname-filter-value-education-for-children-with-disabilities span.glyph:before,
-.activityname-filter-value-support-for-learning--environment span.glyph:before,
-.activityname-filter-value-دعم-بيئة-التعلم span.glyph:before,
-.activityname-filter-value-learning--environment span.glyph:before {
-  content: "\f362";
-  color: #c00000;
-}
-.activityname-filter-value-health span.glyph:before,
-.activityname-filter-value-health-services span.glyph:before,
-.activityname-filter-value-الخدمات-الصحية span.glyph:before,
-.activityname-filter-value-hygiene---hygiene-products-delivery span.glyph:before,
-.activityname-filter-value-psychosocial-\&-mental-health span.glyph:before,
-.activityname-filter-value-الصحة-النفسية-و-العقلية span.glyph:before,
-.activityname-filter-value-community-care---child-health span.glyph:before,
-.activityname-filter-value-community-care---environmental-health span.glyph:before,
-.activityname-filter-value-community-care---nutrition span.glyph:before,
-.activityname-filter-value-community-care---sti---hiv-aids span.glyph:before,
-.activityname-filter-value-primary-care---child-health span.glyph:before,
-.activityname-filter-value-primary-care---non-communicable-diseases span.glyph:before,
-.activityname-filter-value-primary-care---nutrition span.glyph:before,
-.activityname-filter-value-primary-care---sti---hiv-aids span.glyph:before,
-.activityname-filter-value-secondary---tertiary-care---non-communicable span.glyph:before {
-  content: "\f364";
-  color: #08a1d9;
-}
-.activityname-filter-value-wash span.glyph:before,
-.activityname-filter-value-drainage span.glyph:before,
-.activityname-filter-value-hygiene-promotion---hygiene-products-delivery span.glyph:before,
-.activityname-filter-value-sanitation-protection-from-the-spread-of-dise span.glyph:before,
-.activityname-filter-value-water-access span.glyph:before {
-  content: "\f369";
-  color: #7030a0;
+.activities .glyphicon {
+  display: inline;
+  font-size: 1.5em;
+  vertical-align: sub;
 }
 
 /* Referral Required */
@@ -824,7 +797,7 @@ ul.filter-togglers {
 #partnerName {
   max-height: 300px;
   overflow: auto;
-
+  
   label {
     float: left;
     height: 40px;
@@ -867,69 +840,6 @@ i.glyphicon.icon-ocha-sector-foodsecurity { color: #006600; }
 i.glyphicon.icon-ocha-sector-education { color: #c00000; margin-right: -5px; }
 i.glyphicon.icon-ocha-sector-shelter { color: #989aac; }
 
-#partnername-filter-value-acf span.glyph { background-image: url("../src/images/partner/acf.jpg"); }
-#partnername-filter-value-acted span.glyph { background-image: url("../src/images/partner/acted.jpg"); }
-#partnername-filter-value-actionaid span.glyph { background-image: url("../src/images/partner/actionaid.jpg"); }
-#partnername-filter-value-adra span.glyph { background-image: url("../src/images/partner/adra.jpg"); }
-#partnername-filter-value-avsi span.glyph { background-image: url("../src/images/partner/avsi.jpg"); }
-#partnername-filter-value-care span.glyph { background-image: url("../src/images/partner/care.jpg"); }
-#partnername-filter-value-chf span.glyph { background-image: url("../src/images/partner/chf.jpg"); }
-#partnername-filter-value-cvt span.glyph { background-image: url("../src/images/partner/cvt.jpg"); }
-#partnername-filter-value-drc span.glyph { background-image: url("../src/images/partner/drc.jpg"); }
-#partnername-filter-value-fao span.glyph { background-image: url("../src/images/partner/fao.jpg"); }
-#partnername-filter-value-fca span.glyph { background-image: url("../src/images/partner/fca.jpg"); }
-#partnername-filter-value-fpsc span.glyph { background-image: url("../src/images/partner/fpsci.jpg"); }
-#partnername-filter-value-hi span.glyph { background-image: url("../src/images/partner/hi.jpg"); }
-#partnername-filter-value-icmc span.glyph { background-image: url("../src/images/partner/icmc.jpg"); }
-#partnername-filter-value-ifh span.glyph { background-image: url("../src/images/partner/ifh.jpg"); }
-#partnername-filter-value-ilo span.glyph { background-image: url("../src/images/partner/ilo.jpg"); }
-#partnername-filter-value-imc span.glyph { background-image: url("../src/images/partner/imc.jpg"); }
-#partnername-filter-value-intersos span.glyph { background-image: url("../src/images/partner/intersos.jpg"); }
-#partnername-filter-value-iocc span.glyph { background-image: url("../src/images/partner/iocc.jpg"); }
-#partnername-filter-value-iom span.glyph { background-image: url("../src/images/partner/iom.jpg"); }
-#partnername-filter-value-irc span.glyph { background-image: url("../src/images/partner/irc.jpg"); }
-#partnername-filter-value-ird span.glyph { background-image: url("../src/images/partner/ird.jpg"); }
-#partnername-filter-value-irw span.glyph { background-image: url("../src/images/partner/irw.jpg"); }
-#partnername-filter-value-jen span.glyph { background-image: url("../src/images/partner/jen.jpg"); }
-#partnername-filter-value-jhas span.glyph { background-image: url("../src/images/partner/jhas.jpg"); }
-#partnername-filter-value-jhco span.glyph { background-image: url("../src/images/partner/jhco.jpg"); }
-#partnername-filter-value-jrs span.glyph { background-image: url("../src/images/partner/jrs.jpg"); }
-#partnername-filter-value-knk span.glyph { background-image: url("../src/images/partner/knk.jpg"); }
-#partnername-filter-value-la span.glyph { background-image: url("../src/images/partner/la.jpg"); }
-#partnername-filter-value-lwf span.glyph { background-image: url("../src/images/partner/lwf.jpg"); }
-#partnername-filter-value-mc span.glyph { background-image: url("../src/images/partner/mc.jpg"); }
-#partnername-filter-value-mdm span.glyph { background-image: url("../src/images/partner/mdm.jpg"); }
-#partnername-filter-value-medair span.glyph { background-image: url("../src/images/partner/medair.jpg"); }
-#partnername-filter-value-po-la-paz span.glyph { background-image: url("../src/images/partner/movimiento-po-la-paz.jpg"); }
-#partnername-filter-value-msf span.glyph { background-image: url("../src/images/partner/msf.jpg"); }
-#partnername-filter-value-niccod span.glyph { background-image: url("../src/images/partner/niccod.jpg"); }
-#partnername-filter-value-nrc span.glyph { background-image: url("../src/images/partner/nrc.jpg"); }
-#partnername-filter-value-opm span.glyph { background-image: url("../src/images/partner/operation-mercy.jpg"); }
-#partnername-filter-value-oxfam span.glyph { background-image: url("../src/images/partner/oxfam.jpg"); }
-#partnername-filter-value-pu-ami span.glyph { background-image: url("../src/images/partner/pu-ami.jpg"); }
-#partnername-filter-value-qrc span.glyph { background-image: url("../src/images/partner/qrc.jpg"); }
-#partnername-filter-value-questcope span.glyph { background-image: url("../src/images/partner/quetscope.jpg"); }
-#partnername-filter-value-ri span.glyph { background-image: url("../src/images/partner/ri.jpg"); }
-#partnername-filter-value-sc-jordan span.glyph { background-image: url("../src/images/partner/scjordan.jpg"); }
-#partnername-filter-value-sci span.glyph { background-image: url("../src/images/partner/sci.jpg"); }
-#partnername-filter-value-taghyeer span.glyph { background-image: url("../src/images/partner/taghyeer.jpg"); }
-#partnername-filter-value-tdh span.glyph { background-image: url("../src/images/partner/tdh.jpg"); }
-#partnername-filter-value-tdhi span.glyph { background-image: url("../src/images/partner/tdh-it.jpg"); }
-#partnername-filter-value-thw span.glyph { background-image: url("../src/images/partner/thw.jpg"); }
-#partnername-filter-value-tgh span.glyph { background-image: url("../src/images/partner/triangle.jpg"); }
-#partnername-filter-value-undp span.glyph { background-image: url("../src/images/partner/undp.jpg"); }
-#partnername-filter-value-unesco span.glyph { background-image: url("../src/images/partner/unesco.jpg"); }
-#partnername-filter-value-unfpa span.glyph { background-image: url("../src/images/partner/unfpa.jpg"); }
-#partnername-filter-value-unhabitat span.glyph { background-image: url("../src/images/partner/unhabitat.jpg"); }
-#partnername-filter-value-unhcr span.glyph { background-image: url("../src/images/partner/unhcr.jpg"); }
-#partnername-filter-value-unicef span.glyph { background-image: url("../src/images/partner/unicef.jpg"); }
-#partnername-filter-value-unops span.glyph { background-image: url("../src/images/partner/unops.jpg"); }
-#partnername-filter-value-upp span.glyph { background-image: url("../src/images/partner/upp.jpg"); }
-#partnername-filter-value-warchild span.glyph { background-image: url("../src/images/partner/warchild.jpg"); }
-#partnername-filter-value-wfp span.glyph { background-image: url("../src/images/partner/wfp.jpg"); }
-#partnername-filter-value-who span.glyph { background-image: url("../src/images/partner/who.jpg"); }
-#partnername-filter-value-wvi span.glyph { background-image: url("../src/images/partner/wvi.jpg"); }
-
 #proximity .leaflet-control-filter-fieldset {
   width: 50%; display: inline-block;
   .filter-option { width: 200px; display: inline-block; }
@@ -944,4 +854,7 @@ body.lang-EN {
   .x-search-result-header {
     font-size: 14px;
   }
+}
+.lang-AR .glyphicon-chevron-right.glyphicon{
+      transform: scaleX(-1) !important;
 }

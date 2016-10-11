@@ -12,15 +12,18 @@
 var services = angular.module('services');
 services.factory('SiteSpecificConfig', [function () {
     return {
-        "AR": {
-            "languageDirection": "rtl",
-            "servicesUrl": "js/services_AR.json",
-            "amani": false
-        },
-        "EN": {
-            "languageDirection": "ltr",
-            "servicesUrl": "js/services_EN.json",
-            "amani": false
+        "defaultLanguage": "EN",
+        "languages": {
+            "AR": {
+                "languageDirection": "rtl",
+                "servicesUrl": "js/services_AR.json",
+                "amani": true
+            },
+            "EN": {
+                "languageDirection": "ltr",
+                "servicesUrl": "js/services_EN.json",
+                "amani": true
+            }
         }
     };
 }
