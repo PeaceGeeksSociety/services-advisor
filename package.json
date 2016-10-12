@@ -37,6 +37,7 @@
     "leaflet.markercluster": "Leaflet/Leaflet.markercluster#232e93cc",
     "mapbox.js": "^1.6.3",
     "split": "^0.3.0",
-    "underscore": "*"
+    "underscore": "*",
+    "angular-translate-loader-static-files": "^2.12.1"
   }
 }
