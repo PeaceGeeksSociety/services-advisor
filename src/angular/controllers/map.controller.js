@@ -79,7 +79,9 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
 
     // TODO: don't make global but needed now for use in search controller
     polygonLayer = L.geoJson();
-    map.addLayer(polygonLayer);
+
+    // TODO temporarily removed.
+    // map.addLayer(polygonLayer);
 
     jQuery.getJSON( "src/polygons.json", function( polygonData ) {
         // Create the polygon layer and add to the map.
