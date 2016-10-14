@@ -21,12 +21,33 @@ controllers.controller('SearchCtrl', ['$scope', '$http', '$location', '$rootScop
           });
         }
 
-        $scope.selectedLanguage = Language.getLanguage();
-        var sectors = $scope.selectedLanguage == 'EN' ? require('../../../js/sectors_EN.json') : require('../../../js/sectors_AR.json');
+        // @todo Remove this ASAP.
+        // Sectors are data and not js modules. This should be turned into an
+        // asynchronous callback.
+        switch(Language.getLanguage()) {
+            case 'EN':
+                var sectors = require('../../../js/sectors_EN.json');
+                break;
+            case 'AR':
+                var sectors = require('../../../js/sectors_AR.json');
+                break;
+            case 'KU':
+                var sectors = require('../../../js/sectors_KU.json');
+                break;
+            case 'FA':
+                var sectors = require('../../../js/sectors_FA.json');
+                break;
+            case 'TR':
+                var sectors = require('../../../js/sectors_TR.json');
+                break;
+        }
 
         var categories = {};
 
         angular.forEach(sectors, function (sector) {
+            if ($scope.serviceCounts[sector.sector.name] == null) {
+                $scope.serviceCounts[sector.sector.name] = {total: 0};
+            }
             var total = $scope.serviceCounts[sector.sector.name].total;
             categories[sector.sector.name] = {activities:{}, count: 0, total: total, glyph:sector.sector.glyph};
         });

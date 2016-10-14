@@ -16,6 +16,5 @@ node transformJSONFromAmani.js
 
 echo "Getting translations"
 node getLocaleStrings.js
-# node FinishEn_AR_JSON.js
 
 echo "Done!"

@@ -8,8 +8,26 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
     // Marker clustering
     require('../../../node_modules/leaflet.markercluster/dist/leaflet.markercluster.js');
 
-    $scope.selectedLanguage = Language.getLanguage();
-    var sectors = $scope.selectedLanguage == 'EN' ? require('../../../js/sectors_EN.json') : require('../../../js/sectors_AR.json');
+    // @todo Remove this ASAP.
+    // Sectors are data and not js modules. This should be turned into an
+    // asynchronous callback.
+    switch(Language.getLanguage()) {
+        case 'EN':
+            var sectors = require('../../../js/sectors_EN.json');
+            break;
+        case 'AR':
+            var sectors = require('../../../js/sectors_AR.json');
+            break;
+        case 'KU':
+            var sectors = require('../../../js/sectors_KU.json');
+            break;
+        case 'FA':
+            var sectors = require('../../../js/sectors_FA.json');
+            break;
+        case 'TR':
+            var sectors = require('../../../js/sectors_TR.json');
+            break;
+    }
 
     // Initialize the map, using Affinity Bridge's mapbox account.
     map = L.mapbox.map('mapContainer', 'affinitybridge.ia7h38nj');
