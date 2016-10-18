@@ -1,6 +1,6 @@
 var controllers = angular.module('controllers');
 
-controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$translate', 'Search','_', 'Language', function ($scope, $rootScope, $location, $translate, Search, _, Language) {
+controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$translate', 'SiteSpecificConfig', 'Search','_', 'Language', 'SectorList', function ($scope, $rootScope, $location, $translate, SiteSpecificConfig, Search, _, Language, SectorList) {
     // Mapbox doesn't need its own var - it automatically attaches to Leaflet's L.
     require('mapbox.js');
     // Use Awesome Markers lib to produce font-icon map markers
@@ -8,11 +8,14 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
     // Marker clustering
     require('../../../node_modules/leaflet.markercluster/dist/leaflet.markercluster.js');
 
-    $scope.selectedLanguage = Language.getLanguage();
-    var sectors = $scope.selectedLanguage == 'EN' ? require('../../../js/sectors_EN.json') : require('../../../js/sectors_AR.json');
-
     // Initialize the map, using Affinity Bridge's mapbox account.
-    map = L.mapbox.map('mapContainer', 'affinitybridge.ia7h38nj');
+    map = L.mapbox.map('mapContainer');
+
+    if (SiteSpecificConfig.mapTileAPI == null) {
+        L.mapbox.tileLayer('affinitybridge.ia7h38nj').addTo(map);
+    } else {
+        L.tileLayer(SiteSpecificConfig.mapTileAPI).addTo(map);
+    }
 
     map.locate({setView: false}); // set setView to false so that map doesn't re-center on geolocation
     map.on("locationfound", function(e) {
@@ -61,7 +64,11 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
 
     // TODO: don't make global but needed now for use in search controller
     polygonLayer = L.geoJson();
-    map.addLayer(polygonLayer);
+
+    // TODO temporarily removed.
+    if (SiteSpecificConfig.includePolygons) {
+        map.addLayer(polygonLayer);
+    }
 
     jQuery.getJSON( "src/polygons.json", function( polygonData ) {
         // Create the polygon layer and add to the map.
@@ -89,30 +96,6 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
             }, this);
         });
     });
-
-
-    // Match possible Activity Categories to Humanitarian Font icons.
-    // TODO: this is global right now so we can use it in the ServicesList service
-    iconGlyphs = {};
-
-    for (var i = 0; i < sectors.length; i++){
-      var sector = sectors[i].sector;
-      iconGlyphs[$translate.instant(sector.name)] = {glyph: sector.glyph, markerColor: sector.markerColor };
-    }
-
-    // TODO: remove global
-    iconObjects = {};
-
-    // Create the icon objects. We'll reuse the same icon for all markers in the same category.
-    for (var category in iconGlyphs) {
-        iconObjects[category] = L.AwesomeMarkers.icon({
-            icon: iconGlyphs[category].glyph,
-            prefix: 'icon', // necessary because Humanitarian Fonts prefixes its icon names with "icon"
-            iconColor: iconGlyphs[category].markerColor,
-            markerColor: "white",
-            extraClasses: category
-        });
-    }
 
     var onChange = function(event) {
         var results = Search.currResults();

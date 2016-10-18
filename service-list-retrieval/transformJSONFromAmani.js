@@ -68,7 +68,7 @@ advisor can understand.
 @param services: the list of services (from activity info)
 @param language: the language we want the services to be translated in.
 */
-var transformActivityInfoServices = function(services, language){
+var transformActivityInfoServices = function(services){
 	transformedServices = [];
   var nids = [];
 
@@ -141,8 +141,8 @@ var transformActivityInfoServices = function(services, language){
 
     serviceTransformed.officeHours = [];
 
-    for (var i = 0; i < officeHours.length; i++) {
-        var dayParts = officeHours[i].split(': ');
+    for (var j = 0; j < officeHours.length; j++) {
+        var dayParts = officeHours[j].split(': ');
         serviceTransformed.officeHours.push({'name': dayParts[0], 'time': dayParts[1]});
     }
 
@@ -153,22 +153,22 @@ var transformActivityInfoServices = function(services, language){
 
 // **** MAIN - Loop through each language, transform **** //
 
-    for (var i in config.languages) {
-      (function (language){
-        console.log("Transforming " + language.name);
-          var untransformedServices = require(language.downloaded_json);
+for (var i in config.languages) {
+  (function (language){
+    console.log("Transforming " + language.name);
+      var untransformedServices = require(language.downloaded_json);
 
-          services = transformActivityInfoServices(untransformedServices, 'EN');
+      services = transformActivityInfoServices(untransformedServices);
 
-          var outputFilename = language.transformed_json;
+      var outputFilename = language.transformed_json;
 
-          fs.writeFile(outputFilename, JSON.stringify(services), function (err) {
-              if (err) {
-                  console.log(err);
-              }
-          });
-      })(config.languages[i]);
-    }
+      fs.writeFile(outputFilename, JSON.stringify(services), function (err) {
+          if (err) {
+              console.log(err);
+          }
+      });
+  })(config.languages[i]);
+}
 
 
 

@@ -1,6 +1,6 @@
 var services = angular.module('services');
 
-services.factory('Language', ['$location', '$window', 'SiteSpecificConfig', '_', '$route', function ($location, $window, SiteSpecificConfig, _) {
+services.factory('Language', ['$location', '$window', 'SiteSpecificConfig', '_', function ($location, $window, SiteSpecificConfig, _) {
   return {
     getAllLanguages: function() {
       return _.keys(SiteSpecificConfig.languages);

@@ -3,7 +3,7 @@ var services = angular.module('services');
 /**
  * Provides the list of services (compiled.json)
  */
-services.factory('ServicesList', ['$http', '$translate', '$location', 'PopupBuilder', 'Language', 'SiteSpecificConfig', "_", function ($http, $translate, $location, PopupBuilder, Language, SiteSpecificConfig, _) {
+services.factory('ServicesList', ['$http', '$translate', '$location', 'PopupBuilder', 'Language', 'SiteSpecificConfig', '_', 'SectorList', function ($http, $translate, $location, PopupBuilder, Language, SiteSpecificConfig, _, SectorList) {
     var servicesById = null;
 
     // doing this here because we need it right before we load the data
@@ -18,7 +18,9 @@ services.factory('ServicesList', ['$http', '$translate', '$location', 'PopupBuil
 
     var servicesList = SiteSpecificConfig.languages[language].servicesUrl;
 
-    var services = $http.get(servicesList, {cache: true}).then(function (data) {
+    var services = SectorList.get(function (sectors) {
+
+        return $http.get(servicesList, {cache: true}).then(function (data) {
             data = data.data.filter(function (feature) {
                 // We want to remove features that are past the endDate.
                 var featureEndDate = new Date(feature.endDate);
@@ -28,11 +30,17 @@ services.factory('ServicesList', ['$http', '$translate', '$location', 'PopupBuil
                 var todayUTC = new Date(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate());
                 return featureEndDateUTC > todayUTC;
             });
+
             angular.forEach(data, function (feature) {
 
                 // TODO: adding markers to the map here is a hack. Should be done somewhere it makes sense
-                var serviceMarker = L.marker(feature.location.geometry.coordinates.reverse(),
-                    {icon: iconObjects[feature.category.name]});
+                var serviceMarker = L.marker(
+                    feature.location.geometry.coordinates.reverse(),
+                    {icon: sectors[feature.category.name].icon}
+                );
+
+                feature.category.sector = sectors[feature.category.name];
+
                 serviceMarker.addTo(clusterLayer);
 
                 // Make the popup, and bind it to the marker.  Add the service's unique ID
@@ -67,9 +75,11 @@ services.factory('ServicesList', ['$http', '$translate', '$location', 'PopupBuil
             return data;
         });
 
+    });
+
     return {
         get: function (successCb) {
-            services.then(successCb);
+            return services.then(successCb);
         },
         findById: function (id) {
             return services.then(function(services) {

@@ -13,6 +13,8 @@ var services = angular.module('services');
 services.factory('SiteSpecificConfig', [function () {
     return {
         "defaultLanguage": "EN",
+        "mapId": null,
+        "includePolygons": true,
         "languages": {
             "AR": {
                 "languageDirection": "rtl",

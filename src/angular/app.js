@@ -23,6 +23,7 @@ require('./Routes/routes.js');
 require('./Services/language.js');
 require('./Services/popupbuilder.js');
 require('./Services/search.js');
+require('./Services/sectorlist.js');
 require('./Services/serviceslist.js');
 require('./Services/underscore.js');
 

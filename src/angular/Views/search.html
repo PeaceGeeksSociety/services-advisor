@@ -17,7 +17,7 @@
           <span class="glyphicon {{ category.name == activeCategory ? 'glyphicon-chevron-down' : 'glyphicon-chevron-right'}}"></span>
           <i class="glyphicon sector-glyph icon-{{category.glyph}} "></i>
           {{category.name}}
-          <span class="badge">{{category.total}}</span>
+          <span class="badge">{{category.count}}</span>
       </a>
       <div id="{{category.name}}Activities" class="activities {{ category.name == activeCategory ? '' : 'hidden'}}">
         <a ng-repeat="activity in category.activities" ng-click="showCategoryResults(activity.name);" ng-class="'list-group-item activityname-filter-value-' + toCssClass(activity.name)">
@@ -28,9 +28,8 @@
     </div>
   </div>
 </div>
-<div class="row">
+<!-- <div class="row">
   <h3>{{'REGION' | translate}}</h3>
-  <!-- populating the catgories from the SearchCtrl  -->
   <div class="list-group">
     <div ng-repeat="region in regions">
       <a ng-click="showRegionResults(region);" class="list-group-item">
@@ -38,7 +37,7 @@
       </a>
     </div>
   </div>
-</div>
+</div> -->
 <div class="row">{{ 'POWERED_BY' | translate }}</div>
 
 <script>
