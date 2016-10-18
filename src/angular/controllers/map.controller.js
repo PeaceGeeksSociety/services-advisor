@@ -1,6 +1,6 @@
 var controllers = angular.module('controllers');
 
-controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$translate', 'Search','_', 'Language', 'SectorList', function ($scope, $rootScope, $location, $translate, Search, _, Language, SectorList) {
+controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$translate', 'SiteSpecificConfig', 'Search','_', 'Language', 'SectorList', function ($scope, $rootScope, $location, $translate, SiteSpecificConfig, Search, _, Language, SectorList) {
     // Mapbox doesn't need its own var - it automatically attaches to Leaflet's L.
     require('mapbox.js');
     // Use Awesome Markers lib to produce font-icon map markers
@@ -9,7 +9,13 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
     require('../../../node_modules/leaflet.markercluster/dist/leaflet.markercluster.js');
 
     // Initialize the map, using Affinity Bridge's mapbox account.
-    map = L.mapbox.map('mapContainer', 'affinitybridge.ia7h38nj');
+    map = L.mapbox.map('mapContainer');
+
+    if (SiteSpecificConfig.mapTileAPI == null) {
+        L.mapbox.tileLayer('affinitybridge.ia7h38nj').addTo(map);
+    } else {
+        L.tileLayer(SiteSpecificConfig.mapTileAPI).addTo(map);
+    }
 
     map.locate({setView: false}); // set setView to false so that map doesn't re-center on geolocation
     map.on("locationfound", function(e) {
@@ -60,7 +66,9 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
     polygonLayer = L.geoJson();
 
     // TODO temporarily removed.
-    // map.addLayer(polygonLayer);
+    if (SiteSpecificConfig.includePolygons) {
+        map.addLayer(polygonLayer);
+    }
 
     jQuery.getJSON( "src/polygons.json", function( polygonData ) {
         // Create the polygon layer and add to the map.
