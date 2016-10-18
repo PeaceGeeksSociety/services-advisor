@@ -3,85 +3,43 @@ var controllers = angular.module('controllers');
 /**
  * For the category/region search view
  */
-controllers.controller('SearchCtrl', ['$scope', '$http', '$location', '$rootScope', 'ServicesList', 'Search', '_', '$translate', 'Language', function ($scope, $http, $location, $rootScope, ServicesList, Search, _, $translate, Language) {
+controllers.controller('SearchCtrl', ['$scope', '$http', '$location', '$rootScope', 'ServicesList', 'SectorList', 'Search', '_', '$translate', 'Language', function ($scope, $http, $location, $rootScope, ServicesList, SectorList, Search, _, $translate, Language) {
 
     var renderView = function(services) {
-
-        // get total counts
-        if ($scope.serviceCounts == null){
-          $scope.serviceCounts = {};
-          angular.forEach($rootScope.allServices, function (service) {
-              var category = service.category.name;
-              if (category) {
-                  if ($scope.serviceCounts[category] == null) {
-                      $scope.serviceCounts[category] = {total: 0};
-                  }
-                  $scope.serviceCounts[category].total++;
-              }
-          });
-        }
-
-        // @todo Remove this ASAP.
-        // Sectors are data and not js modules. This should be turned into an
-        // asynchronous callback.
-        switch(Language.getLanguage()) {
-            case 'EN':
-                var sectors = require('../../../js/sectors_EN.json');
-                break;
-            case 'AR':
-                var sectors = require('../../../js/sectors_AR.json');
-                break;
-            case 'KU':
-                var sectors = require('../../../js/sectors_KU.json');
-                break;
-            case 'FA':
-                var sectors = require('../../../js/sectors_FA.json');
-                break;
-            case 'TR':
-                var sectors = require('../../../js/sectors_TR.json');
-                break;
-        }
-
         var categories = {};
 
-        angular.forEach(sectors, function (sector) {
-            if ($scope.serviceCounts[sector.sector.name] == null) {
-                $scope.serviceCounts[sector.sector.name] = {total: 0};
-            }
-            var total = $scope.serviceCounts[sector.sector.name].total;
-            categories[sector.sector.name] = {activities:{}, count: 0, total: total, glyph:sector.sector.glyph};
-        });
+        SectorList.get(function (sectors) {
+            angular.forEach(sectors, function (sector) {
+                categories[sector.name] = {activities:{}, count: 0, total: 0, glyph:sector.glyph, color: sector.markerColor};
+            });
 
-        // Here we're going to extract the list of categories and display them in a simple template
-        // use an object to collect service information since object keys won't allow
-        // for duplicates (this basically acts as a set)
-        angular.forEach(services, function (service) {
-            // add activity and its category to list, and increment counter of this category's available services
-            var category = service.category.name;
-            if (category) {
-                if (categories[category] == null) {
-                    categories[category] = {glyph: iconGlyphs[category].glyph, color: iconGlyphs[category].markerColor, activities:{}, count: 0};
-                }
-                categories[category].count++;
-
+            angular.forEach($rootScope.allServices, function (service) {
+                // add activity and its category to list, and increment counter of this category's available services
+                var category = service.category.name;
                 var activity = service.category.subCategory.name;
-                if (activity) {
-                    if (categories[category].activities[activity] == null) {
-                        categories[category].activities[activity] = {name: activity, count: 0};
+
+                if (category) {
+                    categories[category].count++;
+
+                    if (activity) {
+                        if (categories[category].activities[activity] == null) {
+                            categories[category].activities[activity] = {name: activity, count: 0};
+                        }
+                        categories[category].activities[activity].count++;
                     }
-                    categories[category].activities[activity].count++;
                 }
-            }
+            });
+
+            // now to get an array of categories we just map over the keys of the object
+            var unsortedCategories = $.map(categories, function (value, index) {
+                return {name: index, glyph: value.glyph, color: value.color, count: value.count, total: value.total, activities: value.activities};
+            });
+
+            $scope.categories = unsortedCategories.sort(function (categoryA, categoryB) {
+                return categoryA.name.localeCompare(categoryB.name);
+            });
         });
 
-        // now to get an array of categories we just map over the keys of the object
-        var unsortedCategories = $.map(categories, function (value, index) {
-            return {name: index, glyph: value.glyph, color: value.color, count: value.count, total: value.total, activities: value.activities};
-        });
-
-        $scope.categories = unsortedCategories.sort(function (categoryA, categoryB) {
-            return categoryA.name.localeCompare(categoryB.name);
-        });
         // use object here so we don't get duplicate keys
         var regions = {};
         polygonLayer.getLayers().forEach(function(f) {

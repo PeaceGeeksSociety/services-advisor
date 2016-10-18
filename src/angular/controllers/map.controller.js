@@ -1,33 +1,12 @@
 var controllers = angular.module('controllers');
 
-controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$translate', 'Search','_', 'Language', function ($scope, $rootScope, $location, $translate, Search, _, Language) {
+controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$translate', 'Search','_', 'Language', 'SectorList', function ($scope, $rootScope, $location, $translate, Search, _, Language, SectorList) {
     // Mapbox doesn't need its own var - it automatically attaches to Leaflet's L.
     require('mapbox.js');
     // Use Awesome Markers lib to produce font-icon map markers
     require('../../../src/leaflet.awesome-markers.js');
     // Marker clustering
     require('../../../node_modules/leaflet.markercluster/dist/leaflet.markercluster.js');
-
-    // @todo Remove this ASAP.
-    // Sectors are data and not js modules. This should be turned into an
-    // asynchronous callback.
-    switch(Language.getLanguage()) {
-        case 'EN':
-            var sectors = require('../../../js/sectors_EN.json');
-            break;
-        case 'AR':
-            var sectors = require('../../../js/sectors_AR.json');
-            break;
-        case 'KU':
-            var sectors = require('../../../js/sectors_KU.json');
-            break;
-        case 'FA':
-            var sectors = require('../../../js/sectors_FA.json');
-            break;
-        case 'TR':
-            var sectors = require('../../../js/sectors_TR.json');
-            break;
-    }
 
     // Initialize the map, using Affinity Bridge's mapbox account.
     map = L.mapbox.map('mapContainer', 'affinitybridge.ia7h38nj');
@@ -109,30 +88,6 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
             }, this);
         });
     });
-
-
-    // Match possible Activity Categories to Humanitarian Font icons.
-    // TODO: this is global right now so we can use it in the ServicesList service
-    iconGlyphs = {};
-
-    for (var i = 0; i < sectors.length; i++){
-      var sector = sectors[i].sector;
-      iconGlyphs[$translate.instant(sector.name)] = {glyph: sector.glyph, markerColor: sector.markerColor };
-    }
-
-    // TODO: remove global
-    iconObjects = {};
-
-    // Create the icon objects. We'll reuse the same icon for all markers in the same category.
-    for (var category in iconGlyphs) {
-        iconObjects[category] = L.AwesomeMarkers.icon({
-            icon: iconGlyphs[category].glyph,
-            prefix: 'icon', // necessary because Humanitarian Fonts prefixes its icon names with "icon"
-            iconColor: iconGlyphs[category].markerColor,
-            markerColor: "white",
-            extraClasses: category
-        });
-    }
 
     var onChange = function(event) {
         var results = Search.currResults();
