@@ -3,7 +3,7 @@ var controllers = angular.module('controllers');
 /**
  * For the category/region search view
  */
-controllers.controller('SearchCtrl', ['$scope', '$http', '$location', '$rootScope', 'ServicesList', 'SectorList', 'Search', '_', '$translate', 'Language', function ($scope, $http, $location, $rootScope, ServicesList, SectorList, Search, _, $translate, Language) {
+controllers.controller('SearchCtrl', ['$scope', '$http', '$location', '$rootScope', 'SiteSpecificConfig', 'ServicesList', 'SectorList', 'Search', '_', '$translate', 'Language', function ($scope, $http, $location, $rootScope, SiteSpecificConfig, ServicesList, SectorList, Search, _, $translate, Language) {
 
     var renderView = function(services) {
         var categories = {};
@@ -42,15 +42,19 @@ controllers.controller('SearchCtrl', ['$scope', '$http', '$location', '$rootScop
 
         // use object here so we don't get duplicate keys
         var regions = {};
-        polygonLayer.getLayers().forEach(function(f) {
-            regions[f.feature.properties.adm1_name] = true;
-        });
-        var unsortedRegions = [];
-        $.each(regions, function(k) { unsortedRegions.push(k) });
 
-        $scope.regions = unsortedRegions.sort(function (regionA, regionB) {
-            return regionA.localeCompare(regionB);
-        });
+        if (SiteSpecificConfig.includePolygons) {
+            polygonLayer.getLayers().forEach(function(f) {
+                regions[f.feature.properties.adm1_name] = true;
+            });
+            var unsortedRegions = [];
+            $.each(regions, function(k) { unsortedRegions.push(k) });
+
+            $scope.regions = unsortedRegions.sort(function (regionA, regionB) {
+                return regionA.localeCompare(regionB);
+            });
+        }
+
         var parameters = $location.search();
 
         if (_.has(parameters, 'sector')) {
