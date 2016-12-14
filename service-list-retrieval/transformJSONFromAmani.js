@@ -135,7 +135,7 @@ var transformActivityInfoServices = function(services){
 
     serviceTransformed.officeHours = serviceUntransformed.officeHours;
 
-    var officeHours = serviceUntransformed.officeHours.split(',').filter(function (value) {
+    var officeHours = serviceUntransformed.officeHours.split('|').filter(function (value) {
         return value.length > 0;
     });
 
