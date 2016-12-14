@@ -10,7 +10,7 @@ config.languages = [
     sectors_url : 'http://affinity:bridge@dev.unhcrjordan.peacegeeks.org/service-sectors',
     sectors_file : '../js/sectors_EN.json',
     locale_url : 'http://affinity:bridge@dev.unhcrjordan.peacegeeks.org/service-strings',
-    locale_file : '../js/locale-en.json'
+    locale_file : '../js/locale-EN.json'
   },
   {
     name : 'Arabic',
@@ -21,7 +21,7 @@ config.languages = [
     sectors_url : 'http://affinity:bridge@dev.unhcrjordan.peacegeeks.org/ar/service-sectors',
     sectors_file : '../js/sectors_AR.json',
     locale_url : 'http://affinity:bridge@dev.unhcrjordan.peacegeeks.org/ar/service-strings',
-    locale_file : '../js/locale-ar.json'
+    locale_file : '../js/locale-AR.json'
   },
 ];
 
