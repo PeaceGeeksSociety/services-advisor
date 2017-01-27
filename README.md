@@ -81,5 +81,5 @@ To build the js/css:
 # To update services data
 Run this script. Must have node installed, and have run `npm install`
 ```bash
-service-list-retrieval/update-services.sh
+service-list-retrieval/update-services-from-amani.sh
 ```
