@@ -65,7 +65,9 @@ To install gulp:
 To build the js/css:
 
 - run `npm install` to download the 3rd party libs in `package.json`
-- `cp src/site-specific-config.js.dist src/site-specific-config.js` to use the default config
+- to use default config
+    - `cp src/site-specific-config.js.dist src/site-specific-config.js`
+    - `cp service-list-retrieval/config.js.dist service-list-retrieval/config.js`
 - during development:
     - run `gulp` in the background, i.e. run `gulp` in a terminal and leave it running. It will automatically recompile
       `js/app.js` and `css.main.css` files as you edit the src files.
