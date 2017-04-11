@@ -17,10 +17,13 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
         L.tileLayer(SiteSpecificConfig.mapTileAPI).addTo(map);
     }
 
-    map.locate({setView: false}); // set setView to false so that map doesn't re-center on geolocation
-    map.on("locationfound", function(e) {
-        L.marker(e.latlng).addTo(map);
-    });
+    map.locate()
+        .on('locationfound', function(e) {
+            L.circleMarker(e.latlng).addTo(map);
+        })
+        .on('locationerror', function(e) {
+            console.error(e.message);
+        });
 
 
     /* TODO: Make a inputs dynamic  
