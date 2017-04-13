@@ -58,6 +58,10 @@
               <td class="col-xs-6 pull-right">{{service.endDate}}</td>
             </tr>
             <tr class="col-xs-12">
+              <td class="col-xs-6 pull-left">{{ 'PHONE' | translate }}</td>
+              <td class="col-xs-6 pull-right">{{service.hotlinePhone}}</td>
+            </tr>
+            <tr class="col-xs-12">
               <td class="col-xs-6 pull-left">{{ 'NATIONALITY' | translate }}</td>
               <td class="col-xs-6 pull-right">{{service.nationality}}</td>
             </tr>
@@ -100,6 +104,9 @@
           </tbody>
         </table>
     </div> <!-- /service-details -->
+    <div ng-if="service.infoLink" class="more-info">
+      <a class="btn btn-primary" href="{{service.infoLink}}" target="_blank" role="button">{{ 'INFO_LINK' | translate }}</a>
+    </div>
 
   </div> <!-- /row -->
 

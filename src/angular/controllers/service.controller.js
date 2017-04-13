@@ -23,6 +23,8 @@ controllers.controller('ServiceCtrl', ['$scope', '$routeParams', '$location', 'S
         };
         $scope.service.startDate = service.startDate;
         $scope.service.endDate = service.endDate;
+        $scope.service.hotlinePhone = service.hotlinePhone;
+        $scope.service.infoLink = service.infoLink;
 
         $scope.service.partnerLogoUrl = service.logoUrl;
 

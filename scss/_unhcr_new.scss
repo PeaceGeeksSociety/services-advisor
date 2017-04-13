@@ -597,7 +597,9 @@ h3 {
   }
 }
 
-
+div.more-info {
+  text-align: center;
+}
 
 /* Toggle styles */
 #map-list-toggler {
@@ -858,3 +860,4 @@ body.lang-EN {
 .lang-AR .glyphicon-chevron-right.glyphicon{
       transform: scaleX(-1) !important;
 }
+

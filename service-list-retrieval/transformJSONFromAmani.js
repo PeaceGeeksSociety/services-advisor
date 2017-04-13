@@ -128,6 +128,8 @@ var transformActivityInfoServices = function(services){
     serviceTransformed.feedbackMechanism   = serviceUntransformed.feedbackMechanism;
     serviceTransformed.feedbackDelay       = serviceUntransformed.feedbackDelay;
     serviceTransformed.complaintsMechanism = serviceUntransformed.complaintsMechanism;
+    serviceTransformed.hotlinePhone        = serviceUntransformed.hotlinePhone;
+    serviceTransformed.infoLink            = serviceUntransformed.infoLink;
 
 		serviceTransformed.referral = transformReferralMethod(serviceUntransformed);
 
