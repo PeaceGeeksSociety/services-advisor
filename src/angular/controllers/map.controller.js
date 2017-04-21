@@ -9,7 +9,7 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
     require('../../../node_modules/leaflet.markercluster/dist/leaflet.markercluster.js');
 
     // Initialize the map, using Affinity Bridge's mapbox account.
-    map = L.mapbox.map('mapContainer');
+    map = L.mapbox.map('mapContainer', null, { minZoom: 3 });
 
     if (SiteSpecificConfig.mapTileAPI == null) {
         L.mapbox.tileLayer('affinitybridge.ia7h38nj').addTo(map);
