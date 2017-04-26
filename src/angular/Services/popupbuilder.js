@@ -34,6 +34,14 @@ services.factory('PopupBuilder', ['$translate', function ($translate) {
         return hours;
     }
 
+    var getInfoLinkHtml = function(service) {
+        if (service.infoLink) {
+            return '<div class="more-info"><a class="btn btn-primary" href="' + service.infoLink + '" target="_blank" role="button">' + $translate.instant('INFO_LINK') + '</a></div>';
+        }
+
+        return '';
+    };
+
     return {
 
         buildPopup: function(service) {
@@ -53,6 +61,8 @@ services.factory('PopupBuilder', ['$translate', function ($translate) {
             var glyph = getIconHtml(service);
             var logo = getLogoHtml(service);
             var hours = getHoursHtml(service);
+            var infoLink = getInfoLinkHtml(service);
+            headerOutput += infoLink;
 
             // Assemble the article header.
             var header = '<header>' + logo + '<h3>' + glyph + service.region + ': ' + service.category.subCategory.name + '</h3>' + '<p class="hours">' + hours + '</p>' + headerOutput + '</header>';
