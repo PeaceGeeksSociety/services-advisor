@@ -61,7 +61,45 @@ var transformReferralMethod = function(service) {
     return referral;
 }
 
+var transformServicesProvided = function (servicesProvided) {
+  var categories = [];
 
+  var addCategory = function (name, depth, siblings) {
+    exists = _.find(siblings, function (v) {
+      return name == v.name;
+    });
+
+    if (!exists) {
+      var item = {
+        name: name,
+        depth: depth,
+        children: []
+      };
+
+      siblings.push(item);
+    } else {
+      item = exists;
+    }
+
+    return item;
+  };
+
+  if (servicesProvided.length > 0) {
+    _.each(servicesProvided.split('||'), function (branch) {
+      var depth = 0;
+      var siblings = categories;
+
+      _.each(branch.split('›'), function (serviceItem) {
+        var item = addCategory(serviceItem, depth, siblings);
+
+        depth++;
+        siblings = item.children;
+      });
+    });
+  }
+
+  return categories;
+}
 /*
 Transforms the data from activity info into a format that services
 advisor can understand.
@@ -99,14 +137,7 @@ var transformActivityInfoServices = function(services){
 		serviceTransformed.startDate = serviceUntransformed.startDate;
 		serviceTransformed.endDate = serviceUntransformed.endDate;
 
-    var servicesProvided = [];
-    if (serviceUntransformed.servicesProvided.match('\|\|')){
-      servicesProvided = serviceUntransformed.servicesProvided.split('||');
-    } else {
-      servicesProvided.push(serviceUntransformed.servicesProvided);
-    }
-
-		serviceTransformed.servicesProvided = servicesProvided;
+    serviceTransformed.servicesProvided = transformServicesProvided(serviceUntransformed.servicesProvided);
 
 		var locationFeature = new Object();
 		locationFeature.type = "Feature";
