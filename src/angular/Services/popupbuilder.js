@@ -36,7 +36,7 @@ services.factory('PopupBuilder', ['$translate', function ($translate) {
 
     var getInfoLinkHtml = function(service) {
         if (service.infoLink) {
-            return '<div class="more-info"><a class="btn btn-primary" href="' + service.infoLink + '" target="_blank" role="button">' + $translate.instant('INFO_LINK') + '</a></div>';
+            return '<div class="more-info"><a class="btn btn-primary btn-xs" href="' + service.infoLink + '" target="_blank" role="button">' + $translate.instant('INFO_LINK') + '</a></div>';
         }
 
         return '';
