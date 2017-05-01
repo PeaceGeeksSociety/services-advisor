@@ -231,5 +231,5 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
 
             return metaDimension.top(Infinity);
         })
-    }
+    };
 }]);

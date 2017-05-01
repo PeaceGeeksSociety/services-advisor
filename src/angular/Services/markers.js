@@ -9,9 +9,6 @@ services.factory('Markers', ['$rootScope', '$location', 'PopupBuilder', function
                 {icon: feature.category.sector.icon}
             );
 
-            // Make the popup, and bind it to the marker.  Add the service's unique ID
-            // as a classname; we'll use it later for the "Show details" action.
-            //serviceMarker.bindPopup(renderServiceText(feature, "marker"), {className:feature.id});
             marker.bindPopup(PopupBuilder.buildPopup(feature));
 
             // when a user clicks on a map marker, show the service in the sidebar

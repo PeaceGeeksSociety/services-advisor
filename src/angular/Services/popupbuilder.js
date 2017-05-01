@@ -11,14 +11,14 @@ services.factory('PopupBuilder', ['$translate', function ($translate) {
         var logo = '<img src="' + service.logoUrl + '" alt="' + partnerName + '" onError="this.onerror=null;this.style.display=\'none\'" />';
         return logo;
 
-    }
+    };
 
     var getIconHtml = function(service) {
         // Get the activity-category icon.
         var activityCategory = service.category.name ? service.category.name : 'default'; // eg "CASH"
         var glyph = '<i class="glyphicon icon-' + service.category.sector.glyph + '"></i>';
         return glyph;
-    }
+    };
 
     var getHoursHtml = function(service) {
         // Prepare the office hours output.
@@ -32,7 +32,7 @@ services.factory('PopupBuilder', ['$translate', function ($translate) {
         hours += '</ul>';
 
         return hours;
-    }
+    };
 
     var getInfoLinkHtml = function(service) {
         if (service.infoLink) {

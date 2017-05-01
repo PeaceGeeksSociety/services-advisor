@@ -16,6 +16,9 @@ require('./register.module.js');
 // require the config file that will change between deployments
 require('../site-specific-config.js');
 
+// Directives
+require('./Directives/servicecategorycollection.js');
+
 // Routes
 require('./Routes/routes.js');
 
