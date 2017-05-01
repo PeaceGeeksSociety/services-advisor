@@ -1,11 +1,11 @@
 var services = angular.module('services');
-
+var gju = require('../../../node_modules/geojson-utils');
 
 /**
  * Holds the state of the current search and the current results of that search
  */
 services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', function ($location, ServicesList, $rootScope, _) {
-    var gju = require('../../../node_modules/geojson-utils');
+    var crossfilter = require('crossfilter')();
 
     // asynchronously initialize crossfilter
     ServicesList.get(function (allServices) {
@@ -13,11 +13,8 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
         crossfilter.add(allServices);
 
         // trigger initial map load
-        $rootScope.$emit('FILTER_CHANGED')
+        $rootScope.$emit('FILTER_CHANGED');
     });
-
-    /** Crossfilter Setup **/
-    var crossfilter = require('crossfilter')();
 
     // TODO: not sure why they do || undefined, but previously they had "|| option.empty" where empty was never defined
     var categoryDimension = crossfilter.dimension(function (f) {
@@ -43,7 +40,7 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
     });
 
     var referralsDimension = crossfilter.dimension(function (f) {
-        return f.referral["required"];
+        return f.referral.required;
     });
 
     /** Used to get list of currently filtered services rather than re-using an existing dimension **/
@@ -102,19 +99,19 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
                 return false;
             }
         });
-    }
+    };
 
     var _selectCategory = function(category){
         categoryDimension.filter(function(service) {
             return service == category;
         });
-    }
+    };
     
     var _selectSector = function(sector){
         sectorDimension.filter(function(service) {
             return service == sector;
         });
-    }
+    };
 
     var _selectRegion = function (region) {
         var activeRegionLayer = null;
@@ -132,7 +129,7 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
                     coordinates: [parseFloat(pp[1]), parseFloat(pp[0])]
                 };
                 return gju.pointInPolygon(point, activeRegionLayer.toGeoJSON().geometry);
-            })
+            });
         }
     };
 
@@ -144,13 +141,13 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
         }),
         selectId: withClearAndEmit(function (id) {
             idDimension.filter(function(serviceId) {
-                return serviceId == id
+                return serviceId == id;
             });
         }),
         selectPartner: withClearAndEmit(function(partner) {
             partnerDimension.filter(function(servicePartner) {
                 return servicePartner == partner;
-            })
+            });
         }),
         selectOrganizations: _selectOrganizations,
         clearOrganizations: _clearOrganizations,
@@ -170,7 +167,7 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
                     };
 
                     return gju.pointInPolygon(point, activeRegionLayer.toGeoJSON().geometry);
-                })
+                });
             }
         }),
         filterByProxmity: withClearAndEmit(function(geoLocation){
@@ -185,8 +182,8 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
                                     [geoLocation.latitude, geoLocation.longitude],
                                     [geoLocation.latitude, geoLocation.longitude]
                                 ]]
-                })
-                var radius = geoLocation.radius
+                });
+                var radius = geoLocation.radius;
                 regionDimension.filter(function(servicePoint) {
                     var pp = servicePoint.split(',');
                     var point = {
@@ -194,8 +191,8 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
                         coordinates: [parseFloat(pp[1]), parseFloat(pp[0])]
                     };
 
-                    return gju.geometryWithinRadius(point, center, radius)
-                })                
+                    return gju.geometryWithinRadius(point, center, radius);
+                });             
             }else {
                 console.log(' Please provide the pass in object into filterByProxmity method with the following keys: latitude, longitude, and radius');
             }
