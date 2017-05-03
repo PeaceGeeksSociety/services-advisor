@@ -13,7 +13,7 @@ controllers.controller('FilterCtrl', ['$scope', '$rootScope', '$location', 'Sear
     _.each(data, function (service) {
       $scope.organizations[service.organization.name] = { name: service.organization.name, logoUrl: service.logoUrl };
     });
-  }
+  };
 
   $rootScope.filterSelection = [];
 
@@ -29,7 +29,7 @@ controllers.controller('FilterCtrl', ['$scope', '$rootScope', '$location', 'Sear
       .flatten()
       .unique()
       .value();
-  }
+  };
 
   ServicesList.get(collectNationalities);
 
@@ -39,7 +39,7 @@ controllers.controller('FilterCtrl', ['$scope', '$rootScope', '$location', 'Sear
     if ($scope.referral.selection == 'all') {
       //Don't display the 'all' filter
       if (_.has(parameters, 'referrals')){
-        delete parameters.referrals
+        delete parameters.referrals;
       }
     } else {
       parameters.referrals = $scope.referral.selection;
@@ -89,7 +89,7 @@ controllers.controller('FilterCtrl', ['$scope', '$rootScope', '$location', 'Sear
     if (_.has(parameters, 'nationality')) {
       var index = _.indexOf(parameters.nationality, value);
       if (index > -1) {
-        parameters.nationality.splice(index, 1)
+        parameters.nationality.splice(index, 1);
       } else {
         parameters.nationality.push(value);
       }
@@ -99,7 +99,7 @@ controllers.controller('FilterCtrl', ['$scope', '$rootScope', '$location', 'Sear
 
     $location.search(parameters);
     Search.filterByUrlParameters();
-  }
+  };
 
   $scope.toggleFilters = toggleFilters;
 

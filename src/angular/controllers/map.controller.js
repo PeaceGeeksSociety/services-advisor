@@ -109,19 +109,13 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
         // Clear all the map markers.
         clusterLayer.clearLayers();
 
-        // Initialize a list where we'll store the current markers for easy reference when
-        // building the "show on map" functionality.  TODO: can we streamline this out?
-        var markers = {};
-
         // Loop through the filtered results, adding the markers back to the map.
         results.forEach(function (feature) {
             // Add the filtered markers back to the map's data layer
             feature.marker.addTo(clusterLayer);
-            // Store the marker for easy reference.
-            markers[feature.id] = feature.marker;
         });
 
-        map.fitBounds(clusterLayer);
+        map.fitBounds(clusterLayer, { maxZoom: 13 });
     });
 
 
