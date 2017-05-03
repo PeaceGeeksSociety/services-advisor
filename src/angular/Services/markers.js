@@ -27,7 +27,7 @@ services.factory('Markers', ['$rootScope', '$compile', '$location', function ($r
 
             feature.marker = marker;
             service.markers.push(marker);
-            $rootScope.$broadcast('markers.update', marker);
+            $rootScope.$broadcast('markers.add', marker);
         }
     };
 

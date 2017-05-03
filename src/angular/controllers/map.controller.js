@@ -64,7 +64,7 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
             a.layer.zoomToBounds();
         }
     });
-    $scope.$on('markers.update', function (event, marker) {
+    $scope.$on('markers.add', function (event, marker) {
         marker.addTo(clusterLayer);
     });
 
