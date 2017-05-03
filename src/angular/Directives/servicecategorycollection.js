@@ -1,6 +1,6 @@
 var directives = angular.module('directives');
 
-directives.directive('serviceCategoryCollection', function() {
+directives.directive('serviceCategoryCollection', [function() {
     return {
         restrict: 'E',
         replace: true,
@@ -9,7 +9,7 @@ directives.directive('serviceCategoryCollection', function() {
         },
         templateUrl: 'src/angular/Views/components/service-category-collection.html'
     };
-})
+}])
 .directive('serviceCategoryMember', ['$compile', function($compile) {
     return {
         restrict: 'E',

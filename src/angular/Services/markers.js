@@ -1,6 +1,6 @@
 var services = angular.module('services');
 
-services.factory('Markers', ['$rootScope', '$location', 'PopupBuilder', function ($rootScope, $location, PopupBuilder) {
+services.factory('Markers', ['$rootScope', '$compile', '$location', 'PopupBuilder', function ($rootScope, $compile, $location, PopupBuilder) {
     var service = {
         markers: [],
         addMarker: function (feature) {
@@ -9,7 +9,12 @@ services.factory('Markers', ['$rootScope', '$location', 'PopupBuilder', function
                 {icon: feature.category.sector.icon}
             );
 
-            marker.bindPopup(PopupBuilder.buildPopup(feature));
+            // Compile new DOM element (the popup) and link it.
+            var popupLinkFunc = $compile(angular.element('<div ng-controller="ServicePopupCtrl"><ng-include src="\'/src/angular/Views/service-popup.html\'"></ng-include></div>'));
+            var popupScope = $rootScope.$new(true);
+            popupScope.feature = feature;
+            var popup = popupLinkFunc(popupScope)[0];
+            marker.bindPopup(popup);
 
             // when a user clicks on a map marker, show the service in the sidebar
             marker.on('click', function () {
