@@ -27,5 +27,5 @@ services.factory('SectorList', ['$http', 'Language', 'SiteSpecificConfig', funct
     get: function (successCb) {
       return sectors.then(successCb);
     }
-  }
+  };
 }]);

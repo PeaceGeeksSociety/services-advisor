@@ -1,6 +1,6 @@
 var services = angular.module('services');
 
-services.factory('Markers', ['$rootScope', '$compile', '$location', 'PopupBuilder', function ($rootScope, $compile, $location, PopupBuilder) {
+services.factory('Markers', ['$rootScope', '$compile', '$location', function ($rootScope, $compile, $location) {
     var service = {
         markers: [],
         addMarker: function (feature) {

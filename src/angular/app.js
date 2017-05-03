@@ -25,7 +25,6 @@ require('./Routes/routes.js');
 // Services
 require('./Services/language.js');
 require('./Services/markers.js');
-require('./Services/popupbuilder.js');
 require('./Services/search.js');
 require('./Services/sectorlist.js');
 require('./Services/serviceslist.js');

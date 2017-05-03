@@ -54,7 +54,7 @@ services.factory('ServicesList', ['$http', '$translate', 'Language', 'SiteSpecif
                     });
                 }
                 return servicesById[id];
-            })
+            });
         }
-    }
+    };
 }]);
