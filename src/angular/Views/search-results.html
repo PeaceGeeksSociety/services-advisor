@@ -46,9 +46,7 @@
                   <!-- activites detail section -->
                   <div class="col-xs-7">
                     <h3>{{ 'ACTIVITY_DETAILS' | translate }}</h3>
-                    <div data-ng-repeat="serviceProvided in getServicesProvided(result)">
-                      <p> {{ serviceProvided }}</p>
-                    </div>
+                    <service-category-collection collection="result.servicesProvided"></service-category-collection>
                   </div>
 
                 </div><!--  /row  -->
