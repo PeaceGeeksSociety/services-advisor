@@ -25,7 +25,7 @@ transform it into an object like:
  */
 var transformReferralMethod = function(service) {
 	// Check if this feature has referral method "No Referral"
-    referralData = service["referralMethod"];
+    referralData = service.referralMethod;
      /*
      *  There are 7 possible values:
      *  "Email on a per case basis"
@@ -51,16 +51,68 @@ var transformReferralMethod = function(service) {
 
     	_.each(referralData, function (val, type_description) {
     		referralType = type_description;
-        });
+      });
     }
 
-    var referral = new Object();
+    var referral = {};
     referral.required = referralRequired;
     referral.type = referralData;
     // console.log(referral);
     return referral;
-}
+};
 
+var transformServicesProvided = function (newService, servicesProvided) {
+  var categories = [];
+  var categoriesFlat = [];
+
+  var addCategory = function (name, depth, siblings, parent) {
+    exists = _.find(siblings, function (v) {
+      return name == v.name;
+    });
+
+    var item = {};
+
+    if (!exists) {
+      var id = parent === null ? (name + depth) : (parent.id + name + depth);
+      item.id = id.replace(/\s/g, "");
+      item.name = name;
+      item.depth = depth;
+      item.children = [];
+
+      siblings.push(item);
+    } else {
+      item = exists;
+    }
+
+    return item;
+  };
+
+  if (servicesProvided.length > 0) {
+    _.each(servicesProvided.split('||'), function (branch) {
+      var depth = 0;
+      var siblings = categories;
+      var parent = null;
+
+      _.each(branch.split('›'), function (serviceItem) {
+        var item = addCategory(serviceItem, depth, siblings, parent);
+
+        var exists = _.find(categoriesFlat, function (v) {
+          return item.id === v.id;
+        });
+
+        if (!exists) {
+          categoriesFlat.push(item);
+        }
+        depth++;
+        siblings = item.children;
+        parent = item;
+      });
+    });
+  }
+
+  newService.servicesProvided = categories;
+  newService.servicesProvidedFlat = categoriesFlat;
+};
 
 /*
 Transforms the data from activity info into a format that services
@@ -79,19 +131,19 @@ var transformActivityInfoServices = function(services){
     } else {
       nids.push(serviceUntransformed.id);
     }
-		var serviceTransformed = new Object();
+		var serviceTransformed = {};
 		serviceTransformed.id = serviceUntransformed.id;
 		serviceTransformed.region = serviceUntransformed.region;
 
 		//Init the organization
-		var organization = new Object();
+		var organization = {};
 		organization.name = serviceUntransformed.organization;
 		serviceTransformed.organization = organization;
 
 		//Init the category
-		var category = new Object();
+		var category = {};
 		category.name = serviceUntransformed.category;
-		var subCategory = new Object();
+		var subCategory = {};
 		subCategory.name = serviceUntransformed.subCategory;
 		category.subCategory = subCategory;
 		serviceTransformed.category = category;
@@ -99,16 +151,9 @@ var transformActivityInfoServices = function(services){
 		serviceTransformed.startDate = serviceUntransformed.startDate;
 		serviceTransformed.endDate = serviceUntransformed.endDate;
 
-    var servicesProvided = [];
-    if (serviceUntransformed.servicesProvided.match('\|\|')){
-      servicesProvided = serviceUntransformed.servicesProvided.split('||');
-    } else {
-      servicesProvided.push(serviceUntransformed.servicesProvided);
-    }
+    transformServicesProvided(serviceTransformed, serviceUntransformed.servicesProvided);
 
-		serviceTransformed.servicesProvided = servicesProvided;
-
-		var locationFeature = new Object();
+		var locationFeature = {};
 		locationFeature.type = "Feature";
 
     if(serviceUntransformed['locationAlternate:geometry'].length > 0){
@@ -151,25 +196,27 @@ var transformActivityInfoServices = function(services){
 		transformedServices.push(serviceTransformed);
 	}
 	return transformedServices;
-}
+};
 
 // **** MAIN - Loop through each language, transform **** //
 
+var initialize = function (language){
+  console.log("Transforming " + language.name);
+    var untransformedServices = require(language.downloaded_json);
+
+    services = transformActivityInfoServices(untransformedServices);
+
+    var outputFilename = language.transformed_json;
+
+    fs.writeFile(outputFilename, JSON.stringify(services), function (err) {
+        if (err) {
+            console.log(err);
+        }
+    });
+};
+
 for (var i in config.languages) {
-  (function (language){
-    console.log("Transforming " + language.name);
-      var untransformedServices = require(language.downloaded_json);
-
-      services = transformActivityInfoServices(untransformedServices);
-
-      var outputFilename = language.transformed_json;
-
-      fs.writeFile(outputFilename, JSON.stringify(services), function (err) {
-          if (err) {
-              console.log(err);
-          }
-      });
-  })(config.languages[i]);
+  initialize(config.languages[i]);
 }
 
 

@@ -12,7 +12,7 @@ controllers.controller('ResultsCtrl', ['$scope', '$location', '$translate', 'Sea
             // ****** RESULTS OBJECT *********
             $scope.results = Search.filterByUrlParameters();
         }
-    )
+    );
 
     $scope.getPartnerLogoUrl = function(result) {
         return result.logoUrl;
@@ -24,9 +24,8 @@ controllers.controller('ResultsCtrl', ['$scope', '$location', '$translate', 'Sea
     };
 
     $scope.selectService = function(service_id) {
-        var parameters = $location.search();
-        parameters.hideOthers = "true";
-        $location.path('services/'+service_id).search(parameters);
+        $location.search().hideOthers = true;
+        $location.path('services/'+service_id);
     };
 
     $scope.goBackFromResults = function() {
@@ -45,5 +44,5 @@ controllers.controller('ResultsCtrl', ['$scope', '$location', '$translate', 'Sea
             Search.filterByUrlParameters();
         }
         $location.path('').search(parameters);
-    }
+    };
 }]);

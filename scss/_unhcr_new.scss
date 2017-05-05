@@ -357,9 +357,9 @@ h3 {
     font-size: 12px;
     margin: 0;
   }
-  > .serviceText {
-      margin: 0;
-      border-bottom: none;
+  .serviceText {
+    margin: 0;
+    border-bottom: none;
   }
 }
 
@@ -396,7 +396,7 @@ h3 {
    div.col-xs-7 {
     background-color: white;
     padding: 5px;
-    text-align: center;
+
     &:first-child {
       border-left: 10px solid $grey-medium;
       padding: 10px;
@@ -594,6 +594,9 @@ h3 {
     td.day-time {
       text-align: left;
     }
+  }
+  #activity-details ul {
+    text-align: left;
   }
 }
 

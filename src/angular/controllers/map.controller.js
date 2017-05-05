@@ -1,6 +1,6 @@
 var controllers = angular.module('controllers');
 
-controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$translate', 'SiteSpecificConfig', 'Search','_', 'Language', 'SectorList', function ($scope, $rootScope, $location, $translate, SiteSpecificConfig, Search, _, Language, SectorList) {
+controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$translate', 'SiteSpecificConfig', 'Search','_', 'Language', 'Markers', function ($scope, $rootScope, $location, $translate, SiteSpecificConfig, Search, _, Language, Markers) {
     // Mapbox doesn't need its own var - it automatically attaches to Leaflet's L.
     require('mapbox.js');
     // Use Awesome Markers lib to produce font-icon map markers
@@ -9,9 +9,9 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
     require('../../../node_modules/leaflet.markercluster/dist/leaflet.markercluster.js');
 
     // Initialize the map, using Affinity Bridge's mapbox account.
-    map = L.mapbox.map('mapContainer', null, { minZoom: 3 });
+    var map = L.mapbox.map('mapContainer', null, { minZoom: 3 });
 
-    if (SiteSpecificConfig.mapTileAPI == null) {
+    if (SiteSpecificConfig.mapTileAPI === null || SiteSpecificConfig.mapTileAPI === undefined) {
         L.mapbox.tileLayer('affinitybridge.ia7h38nj').addTo(map);
     } else {
         L.tileLayer(SiteSpecificConfig.mapTileAPI).addTo(map);
@@ -22,7 +22,7 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
             L.circleMarker(e.latlng).addTo(map);
         })
         .on('locationerror', function(e) {
-            console.error(e.message);
+            console.info(e.message);
         });
 
 
@@ -44,7 +44,7 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
 
     // Initialize the empty layer for the markers, and add it to the map.
     // TODO: don't use global var here
-    clusterLayer = new L.MarkerClusterGroup({
+    var clusterLayer = new L.MarkerClusterGroup({
         zoomToBoundsOnClick: false,
         spiderfyDistanceMultiplier: 2,
         showCoverageOnHover: false
@@ -63,6 +63,9 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
             // If the markers in this cluster are NOT all in the same place, zoom in on them.
             a.layer.zoomToBounds();
         }
+    });
+    $scope.$on('markers.add', function (event, marker) {
+        marker.addTo(clusterLayer);
     });
 
     // TODO: don't make global but needed now for use in search controller
@@ -100,56 +103,20 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
         });
     });
 
-    var onChange = function(event) {
+    $rootScope.$on('FILTER_CHANGED', function(event) {
         var results = Search.currResults();
 
         // Clear all the map markers.
         clusterLayer.clearLayers();
 
-        // Initialize the list-view output.
-        //var listOutput = '<h3 class="hide">Services</h3>';
-
-        // Initialize a list where we'll store the current markers for easy reference when
-        // building the "show on map" functionality.  TODO: can we streamline this out?
-        var markers = {};
-
         // Loop through the filtered results, adding the markers back to the map.
-        results.forEach( function (feature) {
+        results.forEach(function (feature) {
             // Add the filtered markers back to the map's data layer
-            clusterLayer.addLayer(feature.marker);
-            // Store the marker for easy reference.
-            markers[feature.id] = feature.marker;
-            // Build the output for the filtered list view
-        } );
+            feature.marker.addTo(clusterLayer);
+        });
 
-        map.fitBounds(clusterLayer.getBounds());
-
-        // TODO: do this zooming when someone clicks into the service detailed view
-
-        // Bind "show on map" behavior.  Do this here because now the list exists.
-        //$(".show-on-map").click(function(e) {
-        //    // Get the unique ID of this service.
-        //    var id = e.target.id;
-        //    // Close any popups that are open already.
-        //    map.closePopup();
-        //    // Fire the map/list toggler click event, to switch to viewing the map.
-        //    $("#map-list-toggler").click();
-        //    // Pan and zoom the map.
-        //    map.panTo(markers[id]._latlng);
-        //    if (map.getZoom() < 12) { map.setZoom(12); }
-        //    // Clone the popup for this marker.  We'll show it at the correct lat-long, but
-        //    // unbound from the marker.  We do this in case the marker is in a cluster.
-        //    var unboundPopup = markers[id].getPopup();
-        //    // Send the service's unique ID as the className of the popup, so that the "Show
-        //    // details" binding will work as usual when the popupopen event fires; also, offset
-        //    // the Y position so the popup is a little bit above the marker or cluster.
-        //    map.openPopup(L.popup({className:id, offset: new L.Point(0,-25)})
-        //        .setLatLng(markers[id]._latlng)
-        //        .setContent(markers[id].getPopup()._content));
-        //});
-    };
-
-    $rootScope.$on('FILTER_CHANGED', onChange);
+        map.fitBounds(clusterLayer, { maxZoom: 13 });
+    });
 
 
     // Doing some stuff for the results views here because this controller is active
@@ -169,5 +136,5 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
     toggleMap = function() {
         mc.toggleClass('map-hide');
         map.invalidateSize();
-    }
+    };
 }]);

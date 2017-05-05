@@ -16,24 +16,28 @@ require('./register.module.js');
 // require the config file that will change between deployments
 require('../site-specific-config.js');
 
+// Directives
+require('./Directives/servicecategorycollection.js');
+
 // Routes
 require('./Routes/routes.js');
 
 // Services
 require('./Services/language.js');
-require('./Services/popupbuilder.js');
+require('./Services/markers.js');
 require('./Services/search.js');
 require('./Services/sectorlist.js');
 require('./Services/serviceslist.js');
 require('./Services/underscore.js');
 
 // Controllers
-require('./controllers/search.controller.js');
-require('./controllers/results.controller.js');
-require('./controllers/navbar.controller.js');
-require('./controllers/map.controller.js');
-require('./controllers/service.controller.js');
 require('./controllers/filter.controller.js');
+require('./controllers/map.controller.js');
+require('./controllers/navbar.controller.js');
+require('./controllers/results.controller.js');
+require('./controllers/search.controller.js');
+require('./controllers/service.controller.js');
+require('./controllers/servicepopup.controller.js');
 
 // Translations
 require('./translations/translations.config.js');
