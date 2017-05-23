@@ -175,6 +175,7 @@ var transformActivityInfoServices = function(services){
     serviceTransformed.complaintsMechanism = serviceUntransformed.complaintsMechanism;
     serviceTransformed.hotlinePhone        = serviceUntransformed.hotlinePhone;
     serviceTransformed.infoLink            = serviceUntransformed.infoLink;
+    serviceTransformed.publicAddress       = serviceUntransformed.publicAddress;
 
 		serviceTransformed.referral = transformReferralMethod(serviceUntransformed);
 

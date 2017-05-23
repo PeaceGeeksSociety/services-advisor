@@ -33,6 +33,7 @@ controllers.controller('ServiceCtrl', ['$scope', '$routeParams', '$location', 'S
         // Details
         $scope.service.nationality = service.nationality;
         $scope.service.intakeCriteria = service.intakeCriteria;
+        $scope.service.publicAddress = service.publicAddress;
         $scope.service.accessibility = service.accessibility;
         $scope.service.coverage = service.coverage;
         $scope.service.availability = service.availability;

@@ -61,6 +61,10 @@
               <td class="col-xs-6 pull-left">{{ 'PHONE' | translate }}</td>
               <td class="col-xs-6 pull-right">{{service.hotlinePhone}}</td>
             </tr>
+            <tr ng-if="service.publicAddress" class="col-xs-12">
+              <td class="col-xs-6 pull-left">{{ 'ADDRESS' | translate }}</td>
+              <td class="col-xs-6 pull-right">{{service.publicAddress}}</td>
+            </tr>
             <tr ng-if="service.nationality" class="col-xs-12">
               <td class="col-xs-6 pull-left">{{ 'NATIONALITY' | translate }}</td>
               <td class="col-xs-6 pull-right">{{service.nationality}}</td>
