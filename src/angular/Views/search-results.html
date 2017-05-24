@@ -2,7 +2,7 @@
 
       <div data-ng-controller="ResultsCtrl">
         <div class="row">
-          <div class="col-xs-6">
+          <div class="col-xs-4">
             <button id="backButton" type="button" class="btn btn-default" ng-click="goBackFromResults();">
               <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
               {{ 'BACK' | translate }}
@@ -15,8 +15,11 @@
               {{ 'TOGGLE_MAP' | translate }}
             </button>
           </div>
+          <div class="col-xs-2">
+            <button class="btn btn-default pull-right" ng-print print-element-id="servicesList">{{ 'PRINT' | translate }}</button>
+          </div>
         </div>
-        <div class="row">
+        <div class="row" id="servicesList">
           <h4 class="x-search-result-header">{{ 'SEARCH_RESULTS' | translate }}</h4>
           <ul class="list-group list-group-padding">
 
