@@ -17,7 +17,7 @@
         </div>
         <div id="preferences" class="col-xs-2 col-md-1">
           <select id="selectedLanguage" class="form-control" ng-model="selectedLanguage" ng-change="changeLanguage(selectedLanguage)">
-            <option ng-repeat="lang in languages">{{lang}}</option>
+            <option ng-repeat="lang in languages" ng-selected="lang.languageCode == selectedLanguage" value="{{lang.languageCode}}">{{lang.languageName}}</option>
           </select>
         </div>
       </div><!-- /.navbar-collapse -->

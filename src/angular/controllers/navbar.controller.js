@@ -26,6 +26,6 @@ controllers.controller('NavbarCtrl', ['$scope', 'Language', function ($scope, La
 }]);
 
 toggleFilters = function () {
-  $('#filters').toggleClass('active');  
+  $('#filters').toggleClass('active');
   $('.overlay-tint').toggleClass('active');
 };
