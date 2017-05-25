@@ -125,7 +125,6 @@ controllers.controller('SearchCtrl', ['$scope', '$http', '$location', '$rootScop
 
     $scope.showRegionResults = function(regionName) {
         var parameters = $location.search();
-        console.log(parameters);
         parameters.region = regionName;
         $location.path('results').search(parameters);
         Search.filterByUrlParameters();

@@ -1,15 +1,15 @@
 var controllers = angular.module('controllers');
 
-controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$translate', 'SiteSpecificConfig', 'Search','_', 'Language', 'Markers', function ($scope, $rootScope, $location, $translate, SiteSpecificConfig, Search, _, Language, Markers) {
+controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$translate', 'SiteSpecificConfig', 'Search','_', 'Language', 'Markers', 'Map', function ($scope, $rootScope, $location, $translate, SiteSpecificConfig, Search, _, Language, Markers, Map) {
     // Mapbox doesn't need its own var - it automatically attaches to Leaflet's L.
     require('mapbox.js');
     // Use Awesome Markers lib to produce font-icon map markers
     require('../../../src/leaflet.awesome-markers.js');
     // Marker clustering
     require('../../../node_modules/leaflet.markercluster/dist/leaflet.markercluster.js');
-
     // Initialize the map, using Affinity Bridge's mapbox account.
     var map = L.mapbox.map('mapContainer', null, { minZoom: 3 });
+    Map.set(map);
 
     if (SiteSpecificConfig.mapTileAPI === null || SiteSpecificConfig.mapTileAPI === undefined) {
         L.mapbox.tileLayer('affinitybridge.ia7h38nj').addTo(map);
@@ -25,21 +25,30 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
             console.info(e.message);
         });
 
+    // On initial load see if we have bounding box info on the query string.
+    // If yes, use it and then unset it.
+    // If no, we'll user the points to fix to zoom.
+    var parameters = $location.search();
+    if (_.has(parameters, 'bbox')){
+        var bbox = JSON.parse(decodeURI(parameters.bbox));
+        delete parameters.bbox;
+        map.fitBounds([[bbox._northEast.lat, bbox._northEast.lng], [bbox._southWest.lat, bbox._southWest.lng]]);
+    }
 
-    /* TODO: Make a inputs dynamic  
+    /* TODO: Make a inputs dynamic
     *
     *   1. Need users location input
-    *   2. Need proximity radius 
+    *   2. Need proximity radius
     */
 
         // Geolocation object to input user's location and the selected locations
         // var geoLocationObject = {
         //     latitude: 35.7333333333333,
-        //     longitude: 30.2, 
+        //     longitude: 30.2,
         //     radius: 1000000
         // }
 
-        // Filter by proximity 
+        // Filter by proximity
         // Search.filterByProxmity(geoLocationObject);
 
     // Initialize the empty layer for the markers, and add it to the map.
@@ -115,9 +124,12 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
             feature.marker.addTo(clusterLayer);
         });
 
-        map.fitBounds(clusterLayer, { maxZoom: 13 });
+        if (typeof bbox !== 'undefined'){
+          bbox = undefined;
+        } else {
+          map.fitBounds(clusterLayer, { maxZoom: 13 });
+        }
     });
-
 
     // Doing some stuff for the results views here because this controller is active
     // for the whole application

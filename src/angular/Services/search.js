@@ -174,11 +174,11 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
 
             var requiredArgumentGiven =  _.has(geoLocation, 'latitude') &&
                                         _.has(geoLocation, 'longitude') &&
-                                        _.has(geoLocation, 'radius');            
-            if(requiredArgumentGiven){                
+                                        _.has(geoLocation, 'radius');
+            if(requiredArgumentGiven){
                 var center = gju.rectangleCentroid({
                   "type": "Polygon",
-                  "coordinates": [[ [geoLocation.latitude, geoLocation.longitude], 
+                  "coordinates": [[ [geoLocation.latitude, geoLocation.longitude],
                                     [geoLocation.latitude, geoLocation.longitude],
                                     [geoLocation.latitude, geoLocation.longitude]
                                 ]]
@@ -192,7 +192,7 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
                     };
 
                     return gju.geometryWithinRadius(point, center, radius);
-                });             
+                });
             }else {
                 console.log(' Please provide the pass in object into filterByProxmity method with the following keys: latitude, longitude, and radius');
             }
