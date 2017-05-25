@@ -2,17 +2,6 @@
     <header>
         <img src="{{ service.logoUrl }}" alt="{{ service.organization.name }}" onError="this.onerror=null;this.style.display='none'"/>
         <h3><i class="glyphicon icon-{{ service.category.sector.glyph }}"></i> {{ service.region }}: {{ service.category.subCategory.name }}</h3>
-        <p class="hours">
-            <strong>{{ 'HOURS' | translate }}</strong>
-            <ul>
-                <li ng-repeat="hours in service.officeHours">{{ hours.name }}: {{ hours.time }}</li>
-            </ul>
-        </p>
-        <p>
-            <strong>{{ 'ACTIVITY_DETAILS' | translate }}:</strong>
-            <service-category-collection ng-if="service.servicesProvided" collection="service.servicesProvided"></service-category-collection>
-            <span ng-if="service.servicesProvided == false">{{ 'UNKNOWN' | translate }}</span>
-        </p>
         <p>
             <strong>{{ 'REFERRAL_METHOD' | translate }}:</strong>
             <span ng-if="service.referral.type">{{ service.referral.type }}</span>
