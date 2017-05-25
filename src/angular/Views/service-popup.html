@@ -3,9 +3,19 @@
         <img src="{{ service.logoUrl }}" alt="{{ service.organization.name }}" onError="this.onerror=null;this.style.display='none'"/>
         <h3><i class="glyphicon icon-{{ service.category.sector.glyph }}"></i> {{ service.region }}: {{ service.category.subCategory.name }}</h3>
         <p>
+            <strong>{{ 'ADDRESS' | translate }}:</strong>
+            <service-category-collection ng-if="service.publicAddress" collection="service.publicAddress"></service-category-collection>
+            <span ng-if="service.publicAddress == false">{{ 'UNKNOWN' | translate }}</span>
+        </p>
+        <p>
             <strong>{{ 'REFERRAL_METHOD' | translate }}:</strong>
             <span ng-if="service.referral.type">{{ service.referral.type }}</span>
             <span ng-if="service.referral.type == false">{{ 'UNKNOWN' | translate }}</span>
+        </p>
+        <p>
+            <strong>{{ 'INTAKE_CRITERIA' | translate }}:</strong>
+            <span ng-if="service.intakeCriteria">{{ service.intakeCriteria }}</span>
+            <span ng-if="service.intakeCriteria == false">{{ 'UNKNOWN' | translate }}</span>
         </p>
         <div ng-if="service.infoLink" class="more-info"><a class="btn btn-primary btn-xs" href="{{ service.infoLink }}" target="_blank" role="button">{{ 'INFO_LINK' | translate }}</a></div>
     </header>
