@@ -34,7 +34,7 @@
     <div id="serviceDetails" class="panel panel-default col-xs-12">
 
         <!-- First row  -->
-        <div class="col-xs-6 service-details-container-row-1">
+        <div class="col-md-6 service-details-container-row-1">
           <h2>{{ 'HOURS' | translate }}</h2>
           <table class="office-hours">
             <tr data-ng-repeat="day in officeHours">
@@ -42,7 +42,7 @@
             </tr>
           </table>
         </div>
-        <div id="activity-details" class="col-xs-6 service-details-container-row-1">
+        <div id="activity-details" class="col-md-6 service-details-container-row-1">
           <h2>{{ 'ACTIVITY_DETAILS' | translate }}</h2>
           <service-category-collection collection="service.servicesProvided"></service-category-collection>
         </div>

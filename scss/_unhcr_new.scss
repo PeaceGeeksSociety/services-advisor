@@ -340,8 +340,10 @@ h3 {
 }
 
 /* Map Popup styles */
-.leaflet-popup-content {
+.leaflet-container .leaflet-popup-content {
   font-size: 12px;
+  max-height: 400px;
+  overflow: auto;
 
   p {
     font-size: 12px;
