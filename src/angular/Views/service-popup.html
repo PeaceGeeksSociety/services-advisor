@@ -12,7 +12,7 @@
             <span ng-if="service.referral.type">{{ service.referral.type }}</span>
             <span ng-if="service.referral.type == false">{{ 'UNKNOWN' | translate }}</span>
         </p>
-        <p>
+        <p ng-if="service.intakeCriteria != false" class="text-crimson">
             <strong>{{ 'INTAKE_CRITERIA' | translate }}:</strong>
             <span ng-if="service.intakeCriteria">{{ service.intakeCriteria }}</span>
             <span ng-if="service.intakeCriteria == false">{{ 'UNKNOWN' | translate }}</span>
