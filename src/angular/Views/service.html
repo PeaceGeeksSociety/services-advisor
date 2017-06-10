@@ -13,8 +13,8 @@
 
   <div class="row" id="serviceInformation">
     <!-- service details header section -->
-    <div>
-      <img class="service-details-partner-logo" ng-src="{{service.partnerLogoUrl}}" onError="this.onerror=null;this.style.display='none'"/>
+    <div class="service-header">
+      <img class="service-details-partner-logo pull-right" ng-src="{{service.partnerLogoUrl}}" onError="this.onerror=null;this.style.display='none'"/>
       <div>
         <h1>{{service.region}}</h1>
         <p> {{service.category.subCategory.name}}</p>
