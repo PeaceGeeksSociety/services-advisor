@@ -1,6 +1,6 @@
 var directives = angular.module('directives');
 
-directives.directive('languageDirection', ['$compile', 'Language', function($compile, Language) {
+directives.directive('languageDirectionClass', ['Language', function(Language) {
     return {
         restrict: 'AC',
         link: function(scope, element, attrs) {
