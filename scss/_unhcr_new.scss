@@ -16,7 +16,7 @@ $brown-light: #e6c68b;
 $header-bg-color: $grey-dark;
 $crimson: #ed143d;
 
-$navbar-height: 50px;
+$navbar-height: 55px;
 $checkbox-height: 30px;
 
 /** From Bootstrap **/
@@ -28,17 +28,31 @@ $screen-md-min: 992px;
 
 html,
 body,
-main
+main,
+main > .row
 { height: 100%; }
 
 /* this class is added to the body once we determine our language */
-body.lang-AR {
+body.lang-rtl {
   direction: rtl;
   @media (min-width: $screen-xs-max) {
     font-size: 16px;
+
     h3 {
       font-size: 16px;
     }
+  }
+
+  #mapContainer,
+  #serviceList {
+    float: right;
+  }
+
+  .pull-left {
+    float: right !important;
+  }
+  .pull-right {
+    float: left !important;
   }
 }
 
@@ -103,6 +117,10 @@ h3 {
   border-top: 17px solid transparent;
   border-bottom: 16px solid transparent;
   border-left: 12px solid #5ED9DB;
+  .lang-rtl & {
+    border-left: 0;
+    border-right: 12px solid #5ED9DB;
+  }
 }
 
 #activeFilters {
@@ -174,6 +192,9 @@ h3 {
       min-height: 40px;
       padding: 10px;
       float: right;
+      body.lang-rtl & {
+        float: left;
+      }
     }
   }
 
@@ -382,11 +403,11 @@ h3 {
 #serviceList {
   height: 94vh; /* compensate for the scroll buttons */
   overflow-y: scroll;
+  padding-top: 15px;
    
   div.col-xs-5 {
     background-color: white;
     padding: 5px;
-    text-align: center;
 
     &:first-child {
       border-left: 10px solid $grey-medium;
@@ -439,7 +460,7 @@ h3 {
   .glyphicon.sector-glyph {
     position:absolute !important;
     left: 5px;
-    .lang-AR & {
+    .lang-rtl & {
       left:auto;
       right:5px;
     }
@@ -452,7 +473,7 @@ h3 {
     color: black;
     cursor: pointer;
     padding-left: 30px;
-    .lang-AR & {
+    .lang-rtl & {
       padding-left: 0px;
       padding-right: 35px;
     }
@@ -470,7 +491,7 @@ h3 {
       background: none;
       font-weight: normal;
       color: black;
-      .lang-AR & {
+      .lang-rtl & {
         float:left !important;
       }
     }
@@ -502,13 +523,11 @@ h3 {
     }
   }
   button {
-    margin: 25px 0px 5px -15px;
-    padding: 7px 15px 6px 10px;
     font-size: 1em;
     border: 1px solid $grey-medium;
   }
 
-  button:hover{
+  button:hover {
     background-color: $grey-medium;
   }
 
@@ -548,23 +567,6 @@ h3 {
   border: 0px;
   padding: 10px;
 
-  .service-details-container-row-1 {
-    padding:5px;
-  }
-
-  div.col-xs-6 {
-    background-color: white;
-    padding: 5px;
-
-    &:first-child {
-      border-right: 10px solid $grey-medium;
-    }
-    &:last-child {
-      border-left: 10px solid $grey-medium;
-      margin-bottom: 20px;
-    }
-  }
-
   .row {
     margin: 0px;
     background-color: $grey-medium;
@@ -587,13 +589,12 @@ h3 {
     }
   }
 
-  div {
-    padding-top:10px;
-    text-align:center;
-  }
-
   table.office-hours {
+    width: 100%;
     margin: 0 auto;
+    td {
+      height: 30px;
+    }
     td.day-name {
       text-align: right;
       padding-right: 10px;
@@ -602,8 +603,18 @@ h3 {
       text-align: left;
     }
   }
-  #activity-details ul {
-    text-align: left;
+}
+
+body.lang-rtl {
+  #serviceDetails table.office-hours {
+    td.day-name {
+      text-align: left;
+      padding-left: 10px;
+      padding-right: 0;
+    }
+    td.day-time {
+      text-align: right;
+    }
   }
 }
 
@@ -872,7 +883,16 @@ body.lang-EN {
     font-size: 14px;
   }
 }
-.lang-AR .glyphicon-chevron-right.glyphicon{
+.lang-rtl .glyphicon-chevron-right.glyphicon{
       transform: scaleX(-1) !important;
 }
 
+.button-group button {
+  margin: 0 15px 0 0;
+}
+
+body.lang-rtl {
+  .button-group button {
+    margin: 0 0 0 15px;
+  }
+}

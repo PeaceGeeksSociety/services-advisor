@@ -1,23 +1,17 @@
 <!-- view when clicked once a category/region is click on -->
 
       <div data-ng-controller="ResultsCtrl">
-        <div class="row">
-          <div class="col-xs-4">
-            <button id="backButton" type="button" class="btn btn-default" ng-click="goBackFromResults();">
-              <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-              {{ 'BACK' | translate }}
-            </button>
-          </div>
-            <div class="col-xs-6">
+        <div class="row button-group">
+          <button id="backButton" type="button" class="btn pull-left btn-default" ng-click="goBackFromResults();">
+            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+            {{ 'BACK' | translate }}
+          </button>
               <!-- TODO: huge hack here using global variable to be able to call map.invalidateSize() on map so it resizes -->
-            <button id="toggleMapButton" type="button" class="btn btn-default visible-xs pull-right"
-                onclick="toggleMap()">
-              {{ 'TOGGLE_MAP' | translate }}
-            </button>
-          </div>
-          <div class="col-xs-2">
-            <button class="btn btn-default pull-right" ng-print print-element-id="servicesList">{{ 'PRINT' | translate }}</button>
-          </div>
+          <button id="toggleMapButton" type="button" class="btn pull-left btn-default visible-xs pull-right"
+              onclick="toggleMap()">
+            {{ 'TOGGLE_MAP' | translate }}
+          </button>
+          <button class="btn pull-left btn-default" ng-print print-element-id="servicesList">{{ 'PRINT' | translate }}</button>
         </div>
         <div class="row" id="servicesList">
           <h4 class="x-search-result-header">{{ 'SEARCH_RESULTS' | translate }}</h4>
@@ -38,7 +32,7 @@
 
                   <!-- hours section -->
                   <div class="col-xs-5">
-                    <h2>{{ 'HOURS' | translate }}</h2>
+                    <h2 class="text-center">{{ 'HOURS' | translate }}</h2>
                     <table class="office-hours">
                       <tr data-ng-repeat="day in result.officeHours">
                         <td class="day-name">{{ day.name }}:</td><td class="day-time">{{ day.time }}</td>
@@ -48,7 +42,7 @@
 
                   <!-- activites detail section -->
                   <div class="col-xs-7">
-                    <h3>{{ 'ACTIVITY_DETAILS' | translate }}</h3>
+                    <h2 class="text-center">{{ 'ACTIVITY_DETAILS' | translate }}</h2>
                     <service-category-collection collection="result.servicesProvided"></service-category-collection>
                   </div>
 

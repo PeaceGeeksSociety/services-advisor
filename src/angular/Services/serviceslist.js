@@ -7,7 +7,7 @@ services.factory('ServicesList', ['$http', '$translate', 'Language', 'SiteSpecif
     var servicesById = null;
 
     // doing this here because we need it right before we load the data
-    var language = Language.getLanguage() || alert("ERROR: site-specific-config.js doesn't have any keys in it!");
+    var language = Language.getLanguageKey() || alert("ERROR: site-specific-config.js doesn't have any keys in it!");
 
     $translate.use(language);
     $('body').addClass('lang-' + language);

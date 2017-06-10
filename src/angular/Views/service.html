@@ -1,29 +1,19 @@
 <div data-ng-controller="ServiceCtrl">
 
-  <div class="row">
-
-    <div class="col-xs-4">
-      <button id="backButton" type="button" class="btn btn-default" href="#"
-          ng-click="goBackFromService();">
-        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> {{ 'BACK' | translate }}
-      </button>
-    </div><!-- /col-xs-6 -->
-    <div class="col-xs-6">
-        <!-- TODO: huge hack here using global variable to be able to call map.invalidateSize() on map so it resizes -->
-        <button id="toggleMapButton" type="button" class="btn btn-default visible-xs pull-right"
-                onclick="toggleMap()">
-        {{ 'TOGGLE_MAP' | translate }}
-      </button>
-    </div> <!-- /col-xs-6 -->
-    <div class="col-xs-2">
-      <button class="btn btn-default pull-right" ng-print print-element-id="serviceInformation">{{ 'PRINT' | translate }}</button>
-    </div>
-
+  <div class="row button-group">
+    <button id="backButton" type="button" class="btn pull-left btn-default" href="#" ng-click="goBackFromService();">
+      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> {{ 'BACK' | translate }}
+    </button>
+    <!-- TODO: huge hack here using global variable to be able to call map.invalidateSize() on map so it resizes -->
+    <button id="toggleMapButton" type="button" class="btn pull-left btn-default visible-xs pull-right" onclick="toggleMap()">
+      {{ 'TOGGLE_MAP' | translate }}
+    </button>
+    <button class="btn pull-left btn-default" ng-print print-element-id="serviceInformation">{{ 'PRINT' | translate }}</button>
   </div> <!-- /row -->
 
   <div class="row" id="serviceInformation">
     <!-- service details header section -->
-    <div class="col-xs-12">
+    <div>
       <img class="service-details-partner-logo" ng-src="{{service.partnerLogoUrl}}" onError="this.onerror=null;this.style.display='none'"/>
       <div>
         <h1>{{service.region}}</h1>
@@ -33,80 +23,78 @@
     </div>
     <!-- service details information section -->
     <div id="serviceDetails" class="panel panel-default col-xs-12">
-
-        <!-- First row  -->
-        <div class="col-md-6 service-details-container-row-1">
-          <h2>{{ 'HOURS' | translate }}</h2>
+      <div class="row service-details-container-row-1">
+        <div class="service-hours col-md-6 pull-left">
+          <h2 class="text-center">{{ 'HOURS' | translate }}</h2>
           <table class="office-hours">
             <tr data-ng-repeat="day in officeHours">
               <td class="day-name">{{ day.name }}</td><td class="day-time">{{ day.time }}</td>
             </tr>
           </table>
         </div>
-        <div id="activity-details" class="col-md-6 service-details-container-row-1">
-          <h2>{{ 'ACTIVITY_DETAILS' | translate }}</h2>
+        <div id="activity-details" class="col-md-6 pull-right">
+          <h2 class="text-center">{{ 'ACTIVITY_DETAILS' | translate }}</h2>
           <service-category-collection collection="service.servicesProvided"></service-category-collection>
         </div>
-
-
+      </div>
         <!-- Second row (Table display) -->
-        <table class="table table-striped col-xs-12">
+        <table class="table table-striped">
           <tbody>
-            <tr ng-if="service.startDate" class="col-xs-12">
-              <td class="col-xs-6 pull-left">{{ 'START_DATE' | translate }}</td>
-              <td class="col-xs-6  pull-right">{{service.startDate}}</td>
+            <tr ng-if="service.startDate">
+              <td>{{ 'START_DATE' | translate }}</td>
+              <td class="col-xs-6 ">{{service.startDate}}</td>
             </tr>
-            <tr ng-if="service.endDate" class="col-xs-12">
-              <td class="col-xs-6 pull-left">{{ 'END_DATE' | translate }}</td>
-              <td class="col-xs-6 pull-right">{{service.endDate}}</td>
+            <tr ng-if="service.endDate">
+              <td>{{ 'END_DATE' | translate }}</td>
+              <td>{{service.endDate}}</td>
             </tr>
-            <tr ng-if="service.hotlinePhone" class="col-xs-12">
-              <td class="col-xs-6 pull-left">{{ 'PHONE' | translate }}</td>
-              <td class="col-xs-6 pull-right">{{service.hotlinePhone}}</td>
+            <tr ng-if="service.hotlinePhone">
+              <td>{{ 'PHONE' | translate }}</td>
+              <td>{{service.hotlinePhone}}</td>
             </tr>
-            <tr ng-if="service.publicAddress" class="col-xs-12">
-              <td class="col-xs-6 pull-left">{{ 'ADDRESS' | translate }}</td>
-              <td class="col-xs-6 pull-right">{{service.publicAddress}}</td>
+            <tr ng-if="service.publicAddress">
+              <td>{{ 'ADDRESS' | translate }}</td>
+              <td>{{service.publicAddress}}</td>
             </tr>
-            <tr ng-if="service.nationality" class="col-xs-12">
-              <td class="col-xs-6 pull-left">{{ 'NATIONALITY' | translate }}</td>
-              <td class="col-xs-6 pull-right">{{service.nationality}}</td>
+            <tr ng-if="service.nationality">
+              <td>{{ 'NATIONALITY' | translate }}</td>
+              <td>{{service.nationality}}</td>
             </tr>
-            <tr ng-if="service.intakeCriteria" class="col-xs-12 text-crimson">
-              <td class="col-xs-6 pull-left">{{ 'INTAKE_CRITERIA' | translate }}</td>
-              <td class="col-xs-6 pull-right">{{service.intakeCriteria}}</td>
+            <tr ng-if="service.intakeCriteria" class="text-crimson">
+              <td>{{ 'INTAKE_CRITERIA' | translate }}</td>
+              <td>{{service.intakeCriteria}}</td>
             </tr>
-            <tr ng-if="service.accessibility" class="col-xs-12">
-              <td class="col-xs-6 pull-left">{{ 'ACCESSIBILITY' | translate }}</td>
-              <td class="col-xs-6 pull-right">{{service.accessibility}}</td>
+            <tr ng-if="service.accessibility">
+              <td>{{ 'ACCESSIBILITY' | translate }}</td>
+              <td>{{service.accessibility}}</td>
             </tr>
-            <tr ng-if="service.coverage" class="col-xs-12">
-              <td class="col-xs-6 pull-left">{{ 'COVERAGE' | translate }}</td>
-              <td class="col-xs-6 pull-right">{{service.coverage}}</td>
+            <tr ng-if="service.coverage">
+              <td>{{ 'COVERAGE' | translate }}</td>
+              <td>{{service.coverage}}</td>
             </tr>
-            <tr ng-if="service.availability" class="col-xs-12">
-              <td class="col-xs-6 pull-left">{{ 'AVAILABILITY' | translate }}</td>
-              <td class="col-xs-6 pull-right">{{service.availability}}</td>
+            <tr ng-if="service.availability">
+              <td>{{ 'AVAILABILITY' | translate }}</td>
+              <td>{{service.availability}}</td>
             </tr>
-            <tr ng-if="service.referralMethod" class="col-xs-12">
-              <td class="col-xs-6 pull-left">{{ 'REFERRAL_METHOD' | translate }}</td>
-              <td class="col-xs-6 pull-right">{{service.referralMethod}}</td>
+            <tr ng-if="service.referralMethod">
+              <td>{{ 'REFERRAL_METHOD' | translate }}</td>
+              <td>{{service.referralMethod}}</td>
             </tr>
-            <tr ng-if="service.referralNextSteps" class="col-xs-12">
-              <td class="col-xs-6 pull-left">{{ 'REFERRAL_NEXT_STEPS' | translate }}</td>
-              <td class="col-xs-6 pull-right">{{service.referralNextSteps}}</td>
+            <tr ng-if="service.referralNextSteps">
+              <td>{{ 'REFERRAL_NEXT_STEPS' | translate }}</td>
+              <td>{{service.referralNextSteps}}</td>
             </tr>
-            <tr ng-if="service.feedbackMechanism" class="col-xs-12">
-              <td class="col-xs-6 pull-left">{{ 'FEEDBACK_MECHANISM' | translate }}</td>
-              <td class="col-xs-6 pull-right">{{service.feedbackMechanism}}</td>
+            <tr ng-if="service.feedbackMechanism">
+              <td>{{ 'FEEDBACK_MECHANISM' | translate }}</td>
+              <td>{{service.feedbackMechanism}}</td>
             </tr>
-            <tr ng-if="service.feedbackDelay" class="col-xs-12">
-              <td class="col-xs-6 pull-left">{{ 'FEEDBACK_DELAY' | translate }}</td>
-              <td class="col-xs-6 pull-right">{{service.feedbackDelay}}</td>
+            <tr ng-if="service.feedbackDelay">
+              <td>{{ 'FEEDBACK_DELAY' | translate }}</td>
+              <td>{{service.feedbackDelay}}</td>
             </tr>
-            <tr ng-if="service.complaintsMechanism" class="col-xs-12">
-              <td class="col-xs-6 pull-left">{{ 'COMPLAINTS_MECHANISM' | translate }}</td>
-              <td class="col-xs-6 pull-right">{{service.complaintsMechanism}}</td>
+            <tr ng-if="service.complaintsMechanism">
+              <td>{{ 'COMPLAINTS_MECHANISM' | translate }}</td>
+              <td>{{service.complaintsMechanism}}</td>
             </tr>
           </tbody>
         </table>

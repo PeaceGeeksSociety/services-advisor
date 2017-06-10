@@ -309,6 +309,14 @@ ul {
     padding: 0 0 0 40px;
 }
 
+body.lang-rtl {
+    menu,
+    ol,
+    ul {
+        padding: 0 40px 0 0;
+    }
+}
+
 /**
  * Correct list images handled incorrectly in IE 7.
  */

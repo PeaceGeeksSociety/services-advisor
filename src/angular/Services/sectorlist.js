@@ -1,7 +1,7 @@
 var services = angular.module('services');
 
 services.factory('SectorList', ['$http', 'Language', 'SiteSpecificConfig', function ($http, Language, SiteSpecificConfig) {
-  var sectorsUrl = 'js/sectors_' + Language.getLanguage() + '.json';
+  var sectorsUrl = 'js/sectors_' + Language.getLanguageKey() + '.json';
 
   var sectors = $http.get(sectorsUrl).then(function (data) {
     var sectors = {};

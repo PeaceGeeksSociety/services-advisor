@@ -2,7 +2,7 @@ var controllers = angular.module('controllers');
 
 controllers.controller('NavbarCtrl', ['$scope', 'Language', function ($scope, Language) {
   $scope.languages = Language.getAllLanguages();
-  $scope.selectedLanguage = Language.getLanguage();
+  $scope.selectedLanguage = Language.getLanguageKey();
 
   $scope.changeLanguage = function (langKey) {
     // we just set the cookie and reload since things aren't set up to properly reload new services list

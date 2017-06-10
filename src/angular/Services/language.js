@@ -1,12 +1,19 @@
 var services = angular.module('services');
 
 services.factory('Language', ['$location', '$window', 'SiteSpecificConfig', '_', 'Map', function ($location, $window, SiteSpecificConfig, _, Map) {
-  return {
+  var Language = {
     getAllLanguages: function() {
       return SiteSpecificConfig.languages;
     },
-    getLanguage: function() {
+    getLanguageKey: function() {
       return $location.search().language || SiteSpecificConfig.defaultLanguage;
+    },
+    getLanguage: function() {
+      var key = Language.getLanguageKey();
+      return Language.getAllLanguages()[key];
+    },
+    getDirection: function() {
+      return Language.getLanguage().languageDirection;
     },
     setLanguage: function(lang) {
       var map = Map.get();
@@ -15,4 +22,6 @@ services.factory('Language', ['$location', '$window', 'SiteSpecificConfig', '_',
       $window.location.reload();
     }
   };
+
+  return Language;
 }]);

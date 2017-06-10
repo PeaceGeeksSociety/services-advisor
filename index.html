@@ -12,7 +12,7 @@
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="shortcut icon" type="image/ico" href="favicon.ico" />
-  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="node_modules/mapbox.js/theme/style.css">
   <link rel="stylesheet" href="humanfont/assets/css/font-humanitarian.css">
@@ -21,33 +21,36 @@
   <link rel="stylesheet" href="node_modules/ngPrint/ngPrint.min.css">
 </head>
 
-<body ng-cloak translate-cloak>
+<body ng-cloak translate-cloak language-direction>
   <!-- search navigation bar -->
   <ng-include src="'/src/angular/Views/navbar.html'"></ng-include>
 
   <!-- Right navigation bar to select filters -->
-  <main role="main">
+  <main role="main" class="container-fluid">
     <div id="filters" class="col-md-12">
       <div ng-controller="FilterCtrl" class="filterCtrl">
         <ng-include src="'/src/angular/Views/filters.html'" class="filterCtrl"></ng-include>
       </div>
     </div>
-    <section id="mapContainer" class="col-xs-12 col-sm-7" ng-controller="MapCtrl"></section>
-    <section id="serviceList" class="col-xs-12 col-sm-5">
-      <!-- IE7 warning - maybe take this out, it's probably unhelpful in this case -->
-      <!--[if lt IE 7]>
-              <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-          <![endif]-->
-      <div ng-view class="container-fluid"></div>
+    <div class="row">
+      <section id="mapContainer" class="col-xs-12 col-sm-7" ng-controller="MapCtrl"></section>
 
-      <div class="hide">
-        <div id="activityName" />
-        <div id="referralRequired" />
-        <div id="partnerName" />
-        <div id="proximity" />
-        <div id="region" />
-      </div>
-    </section>
+      <section id="serviceList" class="col-xs-12 col-sm-5">
+        <!-- IE7 warning - maybe take this out, it's probably unhelpful in this case -->
+        <!--[if lt IE 7]>
+                <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+            <![endif]-->
+        <div ng-view class="container-fluid"></div>
+
+        <div class="hide">
+          <div id="activityName" />
+          <div id="referralRequired" />
+          <div id="partnerName" />
+          <div id="proximity" />
+          <div id="region" />
+        </div>
+      </section>
+    </div>
   </main>
 
   <div class="overlay-tint"></div>
