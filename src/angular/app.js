@@ -17,6 +17,7 @@ require('./register.module.js');
 require('../site-specific-config.js');
 
 // Directives
+require('./Directives/field.js');
 require('./Directives/languagedirectionattr.js');
 require('./Directives/languagedirectionclass.js');
 require('./Directives/servicecategorycollection.js');

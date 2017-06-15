@@ -6,19 +6,19 @@
             <strong>{{ 'ORGANIZATION' |translate }}:</strong>
             <span>{{ service.organization.name }}</span>
         </p>
-        <p ng-if="service.publicAddress">
+        <p field="publicAddress" ng-if="service.publicAddress">
             <strong>{{ 'ADDRESS' | translate }}:</strong>
             <span>{{ service.publicAddress }}</span>
         </p>
-        <p ng-if="service.referral.type">
+        <p field="referralMethod" ng-if="service.referral.type">
             <strong>{{ 'REFERRAL_METHOD' | translate }}:</strong>
             <span>{{ service.referral.type }}</span>
         </p>
-        <p ng-if="service.intakeCriteria != false" class="text-crimson">
+        <p field="intakeCriteria" ng-if="service.intakeCriteria != false" class="text-crimson">
             <strong>{{ 'INTAKE_CRITERIA' | translate }}:</strong>
             <span ng-if="service.intakeCriteria">{{ service.intakeCriteria }}</span>
         </p>
-        <div ng-if="service.infoLink" class="more-info">
+        <div field="infoLink" ng-if="service.infoLink" class="more-info">
             <a class="btn btn-primary btn-xs" href="{{ service.infoLink }}" target="_blank" role="button">{{ 'INFO_LINK' | translate }}</a>
         </div>
     </header>
