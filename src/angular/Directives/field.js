@@ -5,7 +5,7 @@ var directives = angular.module('directives');
  * service. Keyed by fieldnames they can have boolean values deteremining
  * whether they are displayed or not.
  */
-directives.directive('field', ['$compile', 'SiteSpecificConfig', '_', function($compile, SiteSpecificConfig, _) {
+directives.directive('field', ['SiteSpecificConfig', '_', function(SiteSpecificConfig, _) {
     var fieldAccess = function(fieldname) {
         if (SiteSpecificConfig.fields && _.has(SiteSpecificConfig.fields, fieldname)) {
             return SiteSpecificConfig.fields[fieldname];

@@ -9,30 +9,32 @@
  *      "amani": true or false // whether this source is from amani. If it is, we convert their json schema into ours otherwise we expect it will be our format
  *  }
  *
- *  Delete everything between lines 15 and 24 inclusive and write your own.
+ *  Delete everything between lines 17 and 40 inclusive and write your own.
+ *
+ * @see  src/angular/Services/defaultsettings.js
  */
 var services = angular.module('services');
-services.factory('SiteSpecificConfig', [function () {
-    return {
-        "defaultLanguage": "EN",
-        "mapId": null,
-        "includePolygons": true,
-        "languages": {
-            "AR": {
-                "languageDirection": "rtl",
-                "languageCode": "AR",
-                "languageName": "العربية",
-                "servicesUrl": "js/services_AR.json",
-                "amani": true
-            },
-            "EN": {
-                "languageDirection": "ltr",
-                "languageName": "English",
-                "languageCode": "EN",
-                "servicesUrl": "js/services_EN.json",
-                "amani": true
-            }
+services.factory('SiteSpecificConfig', ['DefaultSettings', function (DefaultSettings) {
+    var settings = angular.extend({}, DefaultSettings);
+
+    settings.defaultLanguage = "AR";
+
+    settings.languages = {
+        "AR": {
+            "languageDirection": "rtl",
+            "languageCode": "AR",
+            "languageName": "العربية",
+            "servicesUrl": "js/services_AR.json",
+            "amani": true
+        },
+        "EN": {
+            "languageDirection": "ltr",
+            "languageName": "English",
+            "languageCode": "EN",
+            "servicesUrl": "js/services_EN.json",
+            "amani": true
         }
     };
-}
-]);
+
+    return settings;
+}]);

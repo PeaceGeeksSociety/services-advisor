@@ -20,12 +20,14 @@ require('../site-specific-config.js');
 require('./Directives/field.js');
 require('./Directives/languagedirectionattr.js');
 require('./Directives/languagedirectionclass.js');
+require('./Directives/logo.js');
 require('./Directives/servicecategorycollection.js');
 
 // Routes
 require('./Routes/routes.js');
 
 // Services
+require('./Services/defaultsettings.js');
 require('./Services/language.js');
 require('./Services/markers.js');
 require('./Services/map.js');
