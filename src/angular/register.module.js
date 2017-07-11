@@ -11,7 +11,7 @@ angular.module('servicesAdvisorApp', ['ngRoute', 'controllers', 'directives', 's
 
             // track pageview on state change
             $rootScope.$on('$routeChangeSuccess', function (event) {
-                $window.ga('send', 'pageview', $location.path());
+                $window.ga('send', 'pageview', $location.url());
             });
         }
     }]);
