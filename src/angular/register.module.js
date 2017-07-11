@@ -2,7 +2,19 @@
 // with their dependencies
 
 /*** Routes ***/
-angular.module('servicesAdvisorApp', ['ngRoute', 'controllers', 'directives', 'services', 'pascalprecht.translate', 'ngPrint']);
+angular.module('servicesAdvisorApp', ['ngRoute', 'controllers', 'directives', 'services', 'pascalprecht.translate', 'ngPrint'])
+    .run(['$rootScope', '$location', '$window', 'SiteSpecificConfig', function($rootScope, $location, $window, SiteSpecificConfig) {
+
+        if (SiteSpecificConfig.analyticsId) {
+            // initialise google analytics
+            $window.ga('create', SiteSpecificConfig.analyticsId, 'auto');
+
+            // track pageview on state change
+            $rootScope.$on('$stateChangeSuccess', function (event) {
+                $window.ga('send', 'pageview', $location.path());
+            });
+        }
+    }]);
 
 /*** Services ***/
 angular.module('services', ['ngResource','underscore']);

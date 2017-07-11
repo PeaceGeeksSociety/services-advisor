@@ -15,6 +15,7 @@ services.factory('DefaultSettings', [function () {
         mapTileAPI: null,
         includePolygons: false,
         defaultLogo: "css/images/logo.png",
+        analyticsId: false,
         languages: {},
         fields: {}
     };
