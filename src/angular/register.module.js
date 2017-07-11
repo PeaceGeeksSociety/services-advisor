@@ -10,7 +10,7 @@ angular.module('servicesAdvisorApp', ['ngRoute', 'controllers', 'directives', 's
             $window.ga('create', SiteSpecificConfig.analyticsId, 'auto');
 
             // track pageview on state change
-            $rootScope.$on('$stateChangeSuccess', function (event) {
+            $rootScope.$on('$routeChangeSuccess', function (event) {
                 $window.ga('send', 'pageview', $location.path());
             });
         }
