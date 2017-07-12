@@ -176,6 +176,8 @@ var transformActivityInfoServices = function(services){
     serviceTransformed.hotlinePhone        = serviceUntransformed.hotlinePhone;
     serviceTransformed.infoLink            = serviceUntransformed.infoLink;
     serviceTransformed.publicAddress       = serviceUntransformed.publicAddress;
+    serviceTransformed.additionalDetails   = serviceUntransformed.additionalDetails;
+    serviceTransformed.comments            = serviceUntransformed.comments;
 
 		serviceTransformed.referral = transformReferralMethod(serviceUntransformed);
 

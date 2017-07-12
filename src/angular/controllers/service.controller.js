@@ -42,6 +42,8 @@ controllers.controller('ServiceCtrl', ['$scope', '$routeParams', '$location', 'S
         $scope.service.feedbackMechanism = service.feedbackMechanism;
         $scope.service.feedbackDelay = service.feedbackDelay;
         $scope.service.complaintsMechanism = service.complaintsMechanism;
+        $scope.service.additionalDetails = service.additionalDetails;
+        $scope.service.comments = service.comments;
 
         $scope.officeHours = service.officeHours;
 
