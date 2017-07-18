@@ -9,7 +9,12 @@ directives.directive('serviceCategoryCollection', [function() {
         },
         templateUrl: 'src/angular/Views/components/service-category-collection.html',
         link: function (scope, element, attr) {
-            var newCollection = scope.collection.slice();
+            var newCollection = [];
+
+            if (scope.collection !== undefined) {
+                var newCollection = scope.collection.slice();
+            }
+
             if (angular.isUndefined(attr.reduce)) {
                 attr.reduce = true;
             }
