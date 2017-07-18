@@ -12,7 +12,7 @@ services.factory('Markers', ['$rootScope', '$compile', '$location', function ($r
             // Compile new DOM element (the popup) and link it.
             var popup = L.popup();
 
-            var popupLinkFunc = $compile(angular.element('<div ng-controller="ServicePopupCtrl"><ng-include src="\'/src/angular/Views/service-popup.html\'"></ng-include></div>'));
+            var popupLinkFunc = $compile(angular.element('<div ng-controller="ServicePopupCtrl"><ng-include src="\'views/service-popup.html\'"></ng-include></div>'));
             var popupScope = $rootScope.$new(true);
             popupScope.feature = feature;
             popupScope.popup = popup;

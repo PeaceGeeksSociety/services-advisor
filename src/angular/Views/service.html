@@ -96,11 +96,11 @@
               <td>{{ 'COMPLAINTS_MECHANISM' | translate }}</td>
               <td>{{service.complaintsMechanism}}</td>
             </tr>
-            <tr field="additionalDetails">
+            <tr field="additionalDetails" ng-if="service.additionalDetails">
               <td>{{ 'ADDITIONAL_DETAILS' | translate }}</td>
               <td>{{service.additionalDetails}}</td>
             </tr>
-            <tr field="comments">
+            <tr field="comments" ng-if="service.comments">
               <td>{{ 'COMMENTS' | translate }}</td>
               <td>{{service.comments}}</td>
             </tr>
