@@ -7,7 +7,7 @@ directives.directive('serviceCategoryCollection', [function() {
         scope: {
             collection: '='
         },
-        templateUrl: 'src/angular/Views/components/service-category-collection.html',
+        templateUrl: 'views/components/service-category-collection.html',
         link: function (scope, element, attr) {
             var newCollection = [];
 

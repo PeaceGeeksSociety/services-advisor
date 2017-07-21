@@ -1,12 +1,13 @@
+// Mapbox doesn't need its own var - it automatically attaches to Leaflet's L.
+require('mapbox.js');
+// Use Awesome Markers lib to produce font-icon map markers
+require('drmonty-leaflet-awesome-markers');
+// Marker clustering
+require('leaflet.markercluster');
+
 var controllers = angular.module('controllers');
 
 controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$translate', 'SiteSpecificConfig', 'Search','_', 'Language', 'Markers', 'Map', function ($scope, $rootScope, $location, $translate, SiteSpecificConfig, Search, _, Language, Markers, Map) {
-    // Mapbox doesn't need its own var - it automatically attaches to Leaflet's L.
-    require('mapbox.js');
-    // Use Awesome Markers lib to produce font-icon map markers
-    require('../../../src/leaflet.awesome-markers.js');
-    // Marker clustering
-    require('../../../node_modules/leaflet.markercluster/dist/leaflet.markercluster.js');
     // Initialize the map, using Affinity Bridge's mapbox account.
     var map = L.mapbox.map('mapContainer', null, { minZoom: 3 });
     Map.set(map);
@@ -85,7 +86,7 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
         map.addLayer(polygonLayer);
     }
 
-    jQuery.getJSON( "src/polygons.json", function( polygonData ) {
+    jQuery.getJSON( "polygons.json", function( polygonData ) {
         // Create the polygon layer and add to the map.
         polygonLayer.addData(polygonData);
 

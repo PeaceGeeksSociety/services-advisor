@@ -1,13 +1,12 @@
 # Include your project-specific ignores in this file
 # Read about how to use .gitignore: https://help.github.com/articles/ignoring-files
 node_modules/*
-css/main.css
-.idea/
-*.iml
-bower_components/
-js/*
-!js/.gitkeep
 .DS_Store
+web/*
+!web/favicon.ico
+!web/humans.txt
+!web/robots.txt
+!web/.htaccess
 
 # people running the site will copy the .dist files
 src/site-specific-config.js
