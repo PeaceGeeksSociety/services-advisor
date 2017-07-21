@@ -40,6 +40,8 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
         createIcon: function(oldIcon) {
             var count = this.options.clusterCount || 0;
             var backgroundColor;
+            var innerBackgroundColor;
+
             if (count < 10) {
                 backgroundColor = SiteSpecificConfig.clusterColors.small;
                 innerBackgroundColor = SiteSpecificConfig.clusterColors.smallInner;
