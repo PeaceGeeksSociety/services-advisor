@@ -1,0 +1,14 @@
+{
+    "globals": {
+        "angular": true,
+        "jQuery": true,
+        "$": true
+    },
+    "env": {
+        "browser": true
+    },
+    "rules": {
+        "no-console": 0,
+        "no-unused-vars": 1
+    }
+}
