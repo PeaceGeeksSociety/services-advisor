@@ -36,6 +36,31 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
         map.fitBounds([[bbox._northEast.lat, bbox._northEast.lng], [bbox._southWest.lat, bbox._southWest.lng]]);
     }
 
+    L.DivIcon.CustomColor = L.DivIcon.extend({
+        createIcon: function(oldIcon) {
+            var count = this.options.clusterCount || 0;
+            var backgroundColor;
+            if (count < 10) {
+                backgroundColor = SiteSpecificConfig.clusterColors.small;
+                innerBackgroundColor = SiteSpecificConfig.clusterColors.smallInner;
+            } else if (count < 100) {
+                backgroundColor = SiteSpecificConfig.clusterColors.medium;
+                innerBackgroundColor = SiteSpecificConfig.clusterColors.mediumInner;
+            } else {
+                backgroundColor = SiteSpecificConfig.clusterColors.large;
+                innerBackgroundColor = SiteSpecificConfig.clusterColors.largeInner;
+            }
+
+            var icon = L.DivIcon.prototype.createIcon.call(this, oldIcon);
+            var inner = icon.getElementsByTagName('div')[0];
+            icon.style.color = SiteSpecificConfig.clusterColors.text;
+            icon.style.backgroundColor = backgroundColor;
+            inner.style.backgroundColor = innerBackgroundColor;
+
+            return icon;
+        }
+    });
+
     /* TODO: Make a inputs dynamic
     *
     *   1. Need users location input
@@ -53,11 +78,24 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
         // Search.filterByProxmity(geoLocationObject);
 
     // Initialize the empty layer for the markers, and add it to the map.
-    // TODO: don't use global var here
     var clusterLayer = new L.MarkerClusterGroup({
         zoomToBoundsOnClick: false,
         spiderfyDistanceMultiplier: 2,
-        showCoverageOnHover: false
+        showCoverageOnHover: false,
+        iconCreateFunction: function(cluster) {
+            var childCount = cluster.getChildCount();
+
+            var c = ' marker-cluster-';
+            if (childCount < 10) {
+                c += 'small';
+            } else if (childCount < 100) {
+                c += 'medium';
+            } else {
+                c += 'large';
+            }
+
+            return new L.DivIcon.CustomColor({ html: '<div><span>' + childCount + '</span></div>', className: 'marker-cluster' + c, iconSize: new L.Point(40, 40), clusterCount: childCount });
+        }
     }).addTo(map);
     // When user clicks on a cluster, zoom directly to its bounds.  If we don't do this,
     // they have to click repeatedly to zoom in enough for the cluster to spiderfy.

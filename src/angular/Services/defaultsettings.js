@@ -17,7 +17,23 @@ services.factory('DefaultSettings', [function () {
         defaultLogo: "images/logo.png",
         analyticsId: false,
         languages: {},
-        fields: {}
+        fields: {},
+        clusterColors: {
+            // Text color inside cluster markers.
+            text:        'rgba(0, 0, 0, 1)',
+            // Outer circle color for clusters of 10 or less.
+            small:       'rgba(181, 226, 140, 0.6)',
+            // Inner circle color for clusters of 10 or less.
+            smallInner:  'rgba(110, 204, 57, 0.6)',
+            // Outer circle color for clusters of 10 to 100.
+            medium:      'rgba(241, 211, 87, 0.6)',
+            // Inner circle color for clusters of 10 to 100.
+            mediumInner: 'rgba(240, 194, 12, 0.6)',
+            // Outer circle color for clusters of 100 or more.
+            large:       'rgba(253, 156, 115, 0.6)',
+            // Inner circle color for clusters of 100 or more.
+            largeInner:  'rgba(241, 128, 23, 0.6)',
+        }
     };
 }
 ]);
