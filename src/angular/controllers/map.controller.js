@@ -7,6 +7,9 @@ require('leaflet.markercluster');
 
 var VersionControl = require('./../../utility/leaflet-version-control.js');
 
+// Configurable cluster icon colors.
+require('./../../utility/leaflet-divicon-color.js');
+
 var controllers = angular.module('controllers');
 
 controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$translate', 'SiteSpecificConfig', 'Search','_', 'Language', 'Markers', 'Map', function ($scope, $rootScope, $location, $translate, SiteSpecificConfig, Search, _, Language, Markers, Map) {
@@ -20,6 +23,7 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
         L.tileLayer(SiteSpecificConfig.mapTileAPI).addTo(map);
     }
 
+    // Add version number to map corner.
     map.addControl(new VersionControl(SiteSpecificConfig.version));
 
     map.locate()
@@ -39,33 +43,6 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
         delete parameters.bbox;
         map.fitBounds([[bbox._northEast.lat, bbox._northEast.lng], [bbox._southWest.lat, bbox._southWest.lng]]);
     }
-
-    L.DivIcon.CustomColor = L.DivIcon.extend({
-        createIcon: function(oldIcon) {
-            var count = this.options.clusterCount || 0;
-            var backgroundColor;
-            var innerBackgroundColor;
-
-            if (count < 10) {
-                backgroundColor = SiteSpecificConfig.clusterColors.small;
-                innerBackgroundColor = SiteSpecificConfig.clusterColors.smallInner;
-            } else if (count < 100) {
-                backgroundColor = SiteSpecificConfig.clusterColors.medium;
-                innerBackgroundColor = SiteSpecificConfig.clusterColors.mediumInner;
-            } else {
-                backgroundColor = SiteSpecificConfig.clusterColors.large;
-                innerBackgroundColor = SiteSpecificConfig.clusterColors.largeInner;
-            }
-
-            var icon = L.DivIcon.prototype.createIcon.call(this, oldIcon);
-            var inner = icon.getElementsByTagName('div')[0];
-            icon.style.color = SiteSpecificConfig.clusterColors.text;
-            icon.style.backgroundColor = backgroundColor;
-            inner.style.backgroundColor = innerBackgroundColor;
-
-            return icon;
-        }
-    });
 
     /* TODO: Make a inputs dynamic
     *
@@ -100,7 +77,12 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
                 c += 'large';
             }
 
-            return new L.DivIcon.CustomColor({ html: '<div><span>' + childCount + '</span></div>', className: 'marker-cluster' + c, iconSize: new L.Point(40, 40), clusterCount: childCount });
+            return new L.DivIcon.CustomColor({
+                html: '<div><span>' + childCount + '</span></div>', className: 'marker-cluster' + c,
+                iconSize: new L.Point(40, 40),
+                clusterCount: childCount,
+                clusterColors: SiteSpecificConfig.clusterColors
+            });
         }
     }).addTo(map);
     // When user clicks on a cluster, zoom directly to its bounds.  If we don't do this,
