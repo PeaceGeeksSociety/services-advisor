@@ -3,7 +3,7 @@ var controllers = angular.module('controllers');
 /**
  * For the results view
  */
-controllers.controller('ResultsCtrl', ['$scope', '$location', '$translate', 'Search', 'ServicesList', function ($scope, $location, $translate, Search, ServicesList) {
+controllers.controller('ResultsCtrl', ['$scope', '$location', '$translate', '_', 'Search', 'ServicesList', function ($scope, $location, $translate, _, Search, ServicesList) {
 
     // A bit of a hack to get the services to load before we apply any filter on,
     // ServicesList.get will only load the services if they haven't been loaded already.
@@ -24,7 +24,7 @@ controllers.controller('ResultsCtrl', ['$scope', '$location', '$translate', 'Sea
     };
 
     $scope.selectService = function(service_id) {
-        $location.search().hideOthers = true;
+        $location.search('showOthers', false);
         $location.path('services/'+service_id);
     };
 

@@ -1,10 +1,9 @@
 var controllers = angular.module('controllers');
 
-controllers.controller('ServiceCtrl', ['$scope', '$routeParams', '$location', 'ServicesList', 'Search', function ($scope, $routeParams, $location, ServicesList, Search) {
+controllers.controller('ServiceCtrl', ['$scope', '$routeParams', '$location', 'ServicesList', 'Search', '_', function ($scope, $routeParams, $location, ServicesList, Search, _) {
     // when a user clicks on "Show Details" from a map popup, we don't want all the icons on the map to suddenly be hidden
-    // like they do when they come from a list view so we check the hideOthers param
-    var hideOthers = $location.search().hideOthers || false;
-    if (hideOthers === true) {
+    // like they do when they come from a list view so we check the showOthers param
+    if ($location.search().showOthers !== true) {
         // only called when coming from a list view
         Search.selectId($routeParams.serviceId);
     }
@@ -49,7 +48,7 @@ controllers.controller('ServiceCtrl', ['$scope', '$routeParams', '$location', 'S
 
         $scope.goBackFromService = function() {
             var parameters = $location.search();
-            delete parameters.hideOthers;
+            delete parameters.showOthers;
             if (_.has(parameters, 'category') || _.has(parameters, 'region')){
                 $location.path('results').search(parameters);
             } else {

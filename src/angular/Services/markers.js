@@ -21,6 +21,7 @@ services.factory('Markers', ['$rootScope', '$compile', '$location', function ($r
 
             // when a user clicks on a map marker, show the service in the sidebar
             marker.on('click', function () {
+                $location.search('showOthers', true);
                 $location.path("/services/" + feature.id);
                 $rootScope.$apply();
             });
