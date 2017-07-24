@@ -5,6 +5,8 @@ require('drmonty-leaflet-awesome-markers');
 // Marker clustering
 require('leaflet.markercluster');
 
+var VersionControl = require('./../../utility/leaflet-version-control.js');
+
 var controllers = angular.module('controllers');
 
 controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$translate', 'SiteSpecificConfig', 'Search','_', 'Language', 'Markers', 'Map', function ($scope, $rootScope, $location, $translate, SiteSpecificConfig, Search, _, Language, Markers, Map) {
@@ -17,6 +19,8 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
     } else {
         L.tileLayer(SiteSpecificConfig.mapTileAPI).addTo(map);
     }
+
+    map.addControl(new VersionControl(SiteSpecificConfig.version));
 
     map.locate()
         .on('locationfound', function(e) {
