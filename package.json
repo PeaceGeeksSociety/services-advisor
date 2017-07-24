@@ -3,6 +3,23 @@
   "version": "0.0.0",
   "description": "Map of services available to refugees in Jordan",
   "main": "index.js",
+  "eslintConfig": {
+    "extends": "eslint:recommended",
+    "globals": {
+      "angular": true,
+      "jQuery": true,
+      "L": true,
+      "$": true
+    },
+    "env": {
+      "browser": true,
+      "node": true
+    },
+    "rules": {
+      "no-console": 0,
+      "no-unused-vars": ["warn", { "vars": "all", "args": "none" }]
+    }
+  },
   "scripts": {
     "watch": "gulp watch",
     "build": "gulp dist",
