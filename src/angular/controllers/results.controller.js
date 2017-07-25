@@ -24,7 +24,6 @@ controllers.controller('ResultsCtrl', ['$scope', '$location', '$translate', '_',
     };
 
     $scope.selectService = function(service_id) {
-        $location.search('showOthers', false);
         $location.path('services/'+service_id);
     };
 
