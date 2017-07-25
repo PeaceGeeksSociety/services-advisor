@@ -339,13 +339,14 @@ h3 {
   height:90%;
 }
 
-.organization-label {
-  height: 50px;
+#filterForm {
+  .organization-label {
+    height: 50px;
+  }
+  .organization-logo {
+    height: 30px;
+  }
 }
-.organization-logo {
-  height: 30px;
-}
-
 
 /* Map styles */
 #mapContainer {
@@ -558,12 +559,20 @@ h3 {
   flex-flow: column wrap;
 }
 
-
-.service-details-partner-logo {
-  margin: 1em;
+.service-header {
+  .organization-info {
+    h1 {
+      text-align: center;
+    }
+    .organization-logo {
+      display: block;
+      margin: 1em auto;
+    }
+  }
 }
 
-#serviceDetails {
+.service-details,
+.service-fields {
   background-color: $grey-medium;
   border-radius: 0px;
   border: 0px;

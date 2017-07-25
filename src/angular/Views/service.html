@@ -9,108 +9,113 @@
       {{ 'TOGGLE_MAP' | translate }}
     </button>
     <button class="btn pull-left btn-default" ng-print print-element-id="serviceInformation">{{ 'PRINT' | translate }}</button>
-  </div> <!-- /row -->
+  </div>
 
-  <div class="row" id="serviceInformation">
-    <!-- service details header section -->
-    <div class="service-header">
-      <img class="service-details-partner-logo pull-right" ng-src="{{service.partnerLogoUrl}}" onError="this.onerror=null;this.style.display='none'"/>
-      <div>
+  <div id="serviceInformation">
+    <div class="row service-header">
+      <div class="col-md-8">
         <h1>{{service.region}}</h1>
         <p> {{service.category.subCategory.name}}</p>
-        <p>{{ service.organization.name }}</p>
+      </div>
+      <div class="col-md-4">
+        <div class="organization-info pull-right">
+          <h1 class="organization-name">{{ service.organization.name }}</h1>
+          <img class="organization-logo" ng-src="{{service.partnerLogoUrl}}" onError="this.onerror=null;this.style.display='none'"/>
+        </div>
       </div>
     </div>
-    <!-- service details information section -->
-    <div id="serviceDetails" class="panel panel-default col-xs-12">
-      <div class="row service-details-container-row-1">
-        <div field="officeHours" class="service-hours col-md-6 pull-left">
-          <h2 class="text-center">{{ 'HOURS' | translate }}</h2>
-          <table class="office-hours">
-            <tr data-ng-repeat="day in officeHours">
-              <td class="day-name">{{ day.name }}</td><td class="day-time">{{ day.time }}</td>
-            </tr>
-          </table>
-        </div>
-        <div id="activity-details" class="col-md-6 pull-right">
-          <h2 class="text-center">{{ 'ACTIVITY_DETAILS' | translate }}</h2>
-          <service-category-collection collection="service.servicesProvided"></service-category-collection>
-        </div>
-      </div>
-        <!-- Second row (Table display) -->
-        <table class="table table-striped">
-          <tbody>
-            <tr field="startDate" ng-if="service.startDate">
-              <td>{{ 'START_DATE' | translate }}</td>
-              <td class="col-xs-6 ">{{service.startDate}}</td>
-            </tr>
-            <tr field="endDate" ng-if="service.endDate">
-              <td>{{ 'END_DATE' | translate }}</td>
-              <td>{{service.endDate}}</td>
-            </tr>
-            <tr field="hotlinePhone" ng-if="service.hotlinePhone">
-              <td>{{ 'PHONE' | translate }}</td>
-              <td>{{service.hotlinePhone}}</td>
-            </tr>
-            <tr field="publicAddress" ng-if="service.publicAddress">
-              <td>{{ 'ADDRESS' | translate }}</td>
-              <td>{{service.publicAddress}}</td>
-            </tr>
-            <tr field="nationality" ng-if="service.nationality">
-              <td>{{ 'NATIONALITY' | translate }}</td>
-              <td>{{service.nationality}}</td>
-            </tr>
-            <tr field="intakeCriteria" ng-if="service.intakeCriteria" class="text-crimson">
-              <td>{{ 'INTAKE_CRITERIA' | translate }}</td>
-              <td>{{service.intakeCriteria}}</td>
-            </tr>
-            <tr field="accessibility" ng-if="service.accessibility">
-              <td>{{ 'ACCESSIBILITY' | translate }}</td>
-              <td>{{service.accessibility}}</td>
-            </tr>
-            <tr field="coverage" ng-if="service.coverage">
-              <td>{{ 'COVERAGE' | translate }}</td>
-              <td>{{service.coverage}}</td>
-            </tr>
-            <tr field="availability" ng-if="service.availability">
-              <td>{{ 'AVAILABILITY' | translate }}</td>
-              <td>{{service.availability}}</td>
-            </tr>
-            <tr field="referralMethod" ng-if="service.referralMethod">
-              <td>{{ 'REFERRAL_METHOD' | translate }}</td>
-              <td>{{service.referralMethod}}</td>
-            </tr>
-            <tr field="referralNextSteps" ng-if="service.referralNextSteps">
-              <td>{{ 'REFERRAL_NEXT_STEPS' | translate }}</td>
-              <td>{{service.referralNextSteps}}</td>
-            </tr>
-            <tr field="feedbackMechanism" ng-if="service.feedbackMechanism">
-              <td>{{ 'FEEDBACK_MECHANISM' | translate }}</td>
-              <td>{{service.feedbackMechanism}}</td>
-            </tr>
-            <tr field="feedbackDelay" ng-if="service.feedbackDelay">
-              <td>{{ 'FEEDBACK_DELAY' | translate }}</td>
-              <td>{{service.feedbackDelay}}</td>
-            </tr>
-            <tr field="complaintsMechanism" ng-if="service.complaintsMechanism">
-              <td>{{ 'COMPLAINTS_MECHANISM' | translate }}</td>
-              <td>{{service.complaintsMechanism}}</td>
-            </tr>
-            <tr field="additionalDetails" ng-if="service.additionalDetails">
-              <td>{{ 'ADDITIONAL_DETAILS' | translate }}</td>
-              <td>{{service.additionalDetails}}</td>
-            </tr>
-            <tr field="comments" ng-if="service.comments">
-              <td>{{ 'COMMENTS' | translate }}</td>
-              <td>{{service.comments}}</td>
-            </tr>
-          </tbody>
+
+    <div class="row service-details">
+      <div field="officeHours" class="service-hours col-md-6 pull-left">
+        <h2 class="text-center">{{ 'HOURS' | translate }}</h2>
+        <table class="office-hours">
+          <tr data-ng-repeat="day in officeHours">
+            <td class="day-name">{{ day.name }}</td><td class="day-time">{{ day.time }}</td>
+          </tr>
         </table>
-    </div> <!-- /service-details -->
-    <div field="infoLink" ng-if="service.infoLink" class="more-info">
-      <a class="btn btn-primary" href="{{service.infoLink}}" target="_blank" role="button">{{ 'INFO_LINK' | translate }}</a>
+      </div>
+      <div id="activity-details" class="col-md-6 pull-right">
+        <h2 class="text-center">{{ 'ACTIVITY_DETAILS' | translate }}</h2>
+        <service-category-collection collection="service.servicesProvided"></service-category-collection>
+      </div>
     </div>
 
-  </div> <!-- /row -->
+    <div class="row service-fields">
+      <table class="table table-striped">
+        <tbody>
+          <tr field="startDate" ng-if="service.startDate">
+            <td>{{ 'START_DATE' | translate }}</td>
+            <td class="col-xs-6 ">{{service.startDate}}</td>
+          </tr>
+          <tr field="endDate" ng-if="service.endDate">
+            <td>{{ 'END_DATE' | translate }}</td>
+            <td>{{service.endDate}}</td>
+          </tr>
+          <tr field="hotlinePhone" ng-if="service.hotlinePhone">
+            <td>{{ 'PHONE' | translate }}</td>
+            <td>{{service.hotlinePhone}}</td>
+          </tr>
+          <tr field="publicAddress" ng-if="service.publicAddress">
+            <td>{{ 'ADDRESS' | translate }}</td>
+            <td>{{service.publicAddress}}</td>
+          </tr>
+          <tr field="nationality" ng-if="service.nationality">
+            <td>{{ 'NATIONALITY' | translate }}</td>
+            <td>{{service.nationality}}</td>
+          </tr>
+          <tr field="intakeCriteria" ng-if="service.intakeCriteria" class="text-crimson">
+            <td>{{ 'INTAKE_CRITERIA' | translate }}</td>
+            <td>{{service.intakeCriteria}}</td>
+          </tr>
+          <tr field="accessibility" ng-if="service.accessibility">
+            <td>{{ 'ACCESSIBILITY' | translate }}</td>
+            <td>{{service.accessibility}}</td>
+          </tr>
+          <tr field="coverage" ng-if="service.coverage">
+            <td>{{ 'COVERAGE' | translate }}</td>
+            <td>{{service.coverage}}</td>
+          </tr>
+          <tr field="availability" ng-if="service.availability">
+            <td>{{ 'AVAILABILITY' | translate }}</td>
+            <td>{{service.availability}}</td>
+          </tr>
+          <tr field="referralMethod" ng-if="service.referralMethod">
+            <td>{{ 'REFERRAL_METHOD' | translate }}</td>
+            <td>{{service.referralMethod}}</td>
+          </tr>
+          <tr field="referralNextSteps" ng-if="service.referralNextSteps">
+            <td>{{ 'REFERRAL_NEXT_STEPS' | translate }}</td>
+            <td>{{service.referralNextSteps}}</td>
+          </tr>
+          <tr field="feedbackMechanism" ng-if="service.feedbackMechanism">
+            <td>{{ 'FEEDBACK_MECHANISM' | translate }}</td>
+            <td>{{service.feedbackMechanism}}</td>
+          </tr>
+          <tr field="feedbackDelay" ng-if="service.feedbackDelay">
+            <td>{{ 'FEEDBACK_DELAY' | translate }}</td>
+            <td>{{service.feedbackDelay}}</td>
+          </tr>
+          <tr field="complaintsMechanism" ng-if="service.complaintsMechanism">
+            <td>{{ 'COMPLAINTS_MECHANISM' | translate }}</td>
+            <td>{{service.complaintsMechanism}}</td>
+          </tr>
+          <tr field="additionalDetails" ng-if="service.additionalDetails">
+            <td>{{ 'ADDITIONAL_DETAILS' | translate }}</td>
+            <td>{{service.additionalDetails}}</td>
+          </tr>
+          <tr field="comments" ng-if="service.comments">
+            <td>{{ 'COMMENTS' | translate }}</td>
+            <td>{{service.comments}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
+    <div class="row service-footer">
+      <div field="infoLink" ng-if="service.infoLink" class="more-info">
+        <a class="btn btn-primary" href="{{service.infoLink}}" target="_blank" role="button">{{ 'INFO_LINK' | translate }}</a>
+      </div>
+    </div>
+
+  </div>
 </div> <!-- /div ServiceCtrl -->
