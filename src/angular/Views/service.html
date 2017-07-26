@@ -13,11 +13,11 @@
 
   <div id="serviceInformation">
     <div class="row service-header">
-      <div class="col-md-8">
+      <div class="col-md-8 pull-left">
         <h1>{{service.region}}</h1>
         <p> {{service.category.subCategory.name}}</p>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-4 pull-right">
         <div class="organization-info pull-right">
           <h1 class="organization-name">{{ service.organization.name }}</h1>
           <img class="organization-logo" ng-src="{{service.partnerLogoUrl}}" onError="this.onerror=null;this.style.display='none'"/>
