@@ -1,5 +1,7 @@
 var gulp = require('gulp'),
     cssmin = require('gulp-cssmin'),
+    rev = require('gulp-rev'),
+    revReplace = require('gulp-rev-replace'),
     sass = require('gulp-sass'),
     uglify = require('gulp-uglify'),
     watchify = require('gulp-watchify'),
@@ -15,9 +17,18 @@ gulp.task('sass', function () {
     var result = gulp.src('src/scss/*.scss')
         .pipe(sass());
     if (isDist) {
-      result = result.pipe(cssmin());
+      result = result.pipe(cssmin()).pipe(rev());
     }
-    return result.pipe(gulp.dest('./web/css'));
+
+    result.pipe(gulp.dest('./web/css'));
+
+    if (isDist) {
+        result
+            .pipe(rev.manifest({ merge: true }))
+            .pipe(gulp.dest('./'));
+    }
+
+    return result;
 });
 
 gulp.task('copy-images', function() {
@@ -27,6 +38,12 @@ gulp.task('copy-images', function() {
 
 gulp.task('copy-html-index', function() {
     var index = gulp.src('src/index.html');
+    var manifest = gulp.src('rev-manifest.json');
+
+    if (isDist) {
+        index.pipe(revReplace({ manifest: manifest }))
+    }
+
     return index.pipe(gulp.dest('./web'));
 });
 
@@ -51,15 +68,25 @@ gulp.task('copy-libs', function() {
 gulp.task('copy-polygons', function() {
     var result = gulp.src('src/polygons.json');
     return result.pipe(gulp.dest('./web'));
-})
+});
 
 gulp.task('browserify', watchify(function(watchify) {
     var result = gulp.src('src/angular/app.js')
         .pipe(watchify({watch:!isDist}));
+
     if (isDist) {
-      result = result.pipe(buffer()).pipe(uglify());
+      result = result.pipe(buffer()).pipe(rev()).pipe(uglify());
     }
-    return result.pipe(gulp.dest('./web/js'));
+
+    result.pipe(gulp.dest('./web/js'));
+
+    if (isDist) {
+        result
+            .pipe(rev.manifest({ merge: true }))
+            .pipe(gulp.dest('./'));
+    }
+
+    return result;
 }));
 
 gulp.task('copy', ['copy-images', 'copy-html-index', 'copy-html-views', 'copy-libs', 'copy-polygons']);
