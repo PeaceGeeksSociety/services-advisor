@@ -2,6 +2,7 @@ var gulp = require('gulp'),
     cssmin = require('gulp-cssmin'),
     rev = require('gulp-rev'),
     revReplace = require('gulp-rev-replace'),
+    revDel = require('rev-del'),
     runSequence = require('run-sequence'),
     sass = require('gulp-sass'),
     uglify = require('gulp-uglify'),
@@ -10,7 +11,7 @@ var gulp = require('gulp'),
 
 gulp.task('default', ['watch']);
 
-var isDist = true;
+var isDist = false;
 
 gulp.task('enable-dist-mode', function() { isDist = true; });
 
@@ -26,6 +27,7 @@ gulp.task('sass', function () {
     if (isDist) {
         result
             .pipe(rev.manifest({ merge: true }))
+            .pipe(revDel({ oldManifest: 'rev-manifest.json', dest: './web/css', force: true }))
             .pipe(gulp.dest('./'));
     }
 
@@ -84,6 +86,7 @@ gulp.task('browserify', watchify(function(watchify) {
     if (isDist) {
         result
             .pipe(rev.manifest({ merge: true }))
+            .pipe(revDel({ oldManifest: 'rev-manifest.json', dest: './web/js', force: true }))
             .pipe(gulp.dest('./'));
     }
 
