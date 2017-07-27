@@ -2,6 +2,7 @@ var gulp = require('gulp'),
     cssmin = require('gulp-cssmin'),
     rev = require('gulp-rev'),
     revReplace = require('gulp-rev-replace'),
+    runSequence = require('run-sequence'),
     sass = require('gulp-sass'),
     uglify = require('gulp-uglify'),
     watchify = require('gulp-watchify'),
@@ -9,7 +10,7 @@ var gulp = require('gulp'),
 
 gulp.task('default', ['watch']);
 
-var isDist = false;
+var isDist = true;
 
 gulp.task('enable-dist-mode', function() { isDist = true; });
 
@@ -36,12 +37,12 @@ gulp.task('copy-images', function() {
     return result.pipe(gulp.dest('./web/images'));
 });
 
-gulp.task('copy-html-index', function() {
+gulp.task('copy-html-index', ['browserify', 'sass'], function() {
     var index = gulp.src('src/index.html');
     var manifest = gulp.src('rev-manifest.json');
 
     if (isDist) {
-        index.pipe(revReplace({ manifest: manifest }))
+        index.pipe(revReplace({ manifest: manifest }));
     }
 
     return index.pipe(gulp.dest('./web'));
@@ -89,12 +90,26 @@ gulp.task('browserify', watchify(function(watchify) {
     return result;
 }));
 
-gulp.task('copy', ['copy-images', 'copy-html-index', 'copy-html-views', 'copy-libs', 'copy-polygons']);
+gulp.task('copy', ['copy-images', 'copy-html-views', 'copy-libs', 'copy-polygons',  'copy-html-index']);
 
-gulp.task('watch', ['browserify', 'sass', 'copy'], function() {
+gulp.task('watch', function() {
+  runSequence(['browserify', 'sass'], 'copy'), 'watch-callback'
+});
+
+gulp.task('watch-callback', function(callback) {
   gulp.watch('src/scss/*.scss', ['sass']);
   gulp.watch('src/angular/Views/**/**.html', ['copy-html-views']);
   gulp.watch('src/index.html', ['copy-html-index']);
+  callback();
 });
 
-gulp.task('dist', ['enable-dist-mode', 'browserify', 'sass', 'copy']);
+//gulp.task('watch', ['browserify', 'sass', 'copy'], function() {
+//gulp.task('dist', ['enable-dist-mode', 'browserify', 'sass', 'copy']);
+
+gulp.task('dist', function (){
+    runSequence('enable-dist-mode',
+                ['browserify', 'sass'],
+                'copy');
+});
+
+
