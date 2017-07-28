@@ -11,3 +11,4 @@ web/*
 # people running the site will copy the .dist files
 src/site-specific-config.js
 service-list-retrieval/config.js
+rev-manifest.json
