@@ -11,7 +11,7 @@
 var services = angular.module('services');
 services.factory('DefaultSettings', [function () {
     return {
-        version: 'v0.17.1',
+        version: 'v0.18.0',
         defaultLanguage: "EN",
         mapTileAPI: null,
         includePolygons: false,
