@@ -25,10 +25,14 @@ var jsonSources = [],
             // Parse the string into JSON objects.
             var data = JSON.parse(json);
             // Put all the JSON objects into the jsonSources array.
-            jsonSectors = data.nodes;
-            console.log("Writing to " + language.sectors_file);
+            var jsonSectors = data.nodes;
+
             // Write the JSON to the output file
-            fs.writeFile(language.sectors_file, JSON.stringify(jsonSectors));
+            fs.writeFile(language.sectors_file, JSON.stringify(jsonSectors), function(error) {
+                if (error) { throw error; }
+
+                console.log("Writing to " + language.sectors_file);
+            });
         });
     },
     onError = function (err) {

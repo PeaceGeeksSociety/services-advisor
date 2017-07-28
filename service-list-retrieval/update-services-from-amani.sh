@@ -9,7 +9,8 @@ cd $( dirname "${BASH_SOURCE[0]}" )
 node getSectors.js
 
 echo "Getting latest service data and writing to services.json"
-node getJSONFromAmani.js
+# node getJSONFromAmani.js
+node getJSONServices.js
 
 echo "Transforming JSON"
 node transformJSONFromAmani.js

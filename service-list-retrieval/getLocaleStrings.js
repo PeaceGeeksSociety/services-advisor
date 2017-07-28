@@ -26,10 +26,12 @@ onSuccess = function (res, language) {
         // Parse the string into JSON objects.
         var data = JSON.parse(json);
 
-        console.log("Writing to " + language.locale_file);
-
         // Write the JSON to the output file
-        fs.writeFile(language.locale_file, JSON.stringify(data));
+        fs.writeFile(language.locale_file, JSON.stringify(data), function(error) {
+            if (error) { throw error; }
+
+            console.log("Writing to " + language.locale_file);
+        });
     });
 },
 onError = function (err) {
