@@ -73,6 +73,7 @@
     "ngPrint": "git+https://github.com/gilf/ngPrint.git",
     "request-promise": "^4.2.1",
     "split": "^0.3.0",
+    "tree-model": "^1.0.6",
     "underscore": "*"
   }
 }

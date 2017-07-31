@@ -1,4 +1,5 @@
-var services = angular.module('services');
+var services = angular.module('services'),
+    _ = require('underscore');
 
 /**
  * Provides the list of services (compiled.json)
@@ -18,7 +19,7 @@ services.factory('ServicesList', ['$http', '$translate', 'Language', 'SiteSpecif
 
     var servicesList = SiteSpecificConfig.languages[language].servicesUrl;
 
-    var services = SectorList.get(function (sectors) {
+    var services = SectorList.getRootSectors(function (rootSectors) {
 
         return $http.get(servicesList, {cache: true}).then(function (data) {
             data = data.data.filter(function (feature) {
@@ -32,7 +33,10 @@ services.factory('ServicesList', ['$http', '$translate', 'Language', 'SiteSpecif
             });
 
             angular.forEach(data, function (feature) {
-                feature.category.sector = sectors[feature.category.name];
+                var sector = _.find(rootSectors, function(v) {
+                    return v.model.name == feature.category.name;
+                });
+                feature.category.sector = sector.model;
                 Markers.addMarker(feature);
             });
 

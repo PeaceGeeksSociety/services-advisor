@@ -8,8 +8,9 @@ controllers.controller('SearchCtrl', ['$scope', '$http', '$location', '$rootScop
     var renderView = function(services) {
         var categories = {};
 
-        SectorList.get(function (sectors) {
-            angular.forEach(sectors, function (sector) {
+        SectorList.getRootSectors(function (sectors) {
+            angular.forEach(sectors, function (item) {
+                var sector = item.model;
                 categories[sector.name] = {activities:{}, count: 0, total: 0, glyph:sector.glyph, color: sector.markerColor};
             });
 
