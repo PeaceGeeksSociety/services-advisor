@@ -4,8 +4,9 @@ var services = angular.module('services'),
 services.factory('SectorList', ['$http', 'Language', 'SiteSpecificConfig', function ($http, Language, SiteSpecificConfig) {
     var treeconfig = new TreeModel();
     var sectorsPromise = null;
+    var sectorsByIdPromise = {};
 
-    var getSectors = function() {
+    var getSectors = function () {
         if (sectorsPromise === null) {
             sectorsPromise = $http.get('js/sectors_' + Language.getLanguageKey() + '.json').then(function (sectors) {
                 angular.forEach(sectors.data, function (sector) {
@@ -25,12 +26,28 @@ services.factory('SectorList', ['$http', 'Language', 'SiteSpecificConfig', funct
         return sectorsPromise;
     };
 
-    var getRootSectors = function() {
+    var getRootSectors = function () {
         return getSectors().then(function (sectors) {
             return sectors.all(function (node) {
                 return node.model.depth == 1;
             });
         });
+    };
+
+    var first = function (predicate) {
+        return getSectors().then(function (sectors) {
+            return sectors.first(predicate);
+        });
+    };
+
+    var find = function (id) {
+        if (sectorsByIdPromise[id] === undefined) {
+            sectorsByIdPromise[id] = first(function (node) {
+                return node.model.id == id;
+            });
+        }
+
+        return sectorsByIdPromise[id];
     };
 
     return {
@@ -39,6 +56,12 @@ services.factory('SectorList', ['$http', 'Language', 'SiteSpecificConfig', funct
         },
         getRootSectors: function (successCb) {
             return getRootSectors().then(successCb);
+        },
+        first: function(predicate, successCb) {
+            return first(predicate).then(successCb);
+        },
+        find: function (id, successCb) {
+            return find(id).then(successCb);
         }
     };
 }]);

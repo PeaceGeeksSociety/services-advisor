@@ -1,5 +1,4 @@
-var services = angular.module('services'),
-    _ = require('underscore');
+var services = angular.module('services');
 
 /**
  * Provides the list of services (compiled.json)
