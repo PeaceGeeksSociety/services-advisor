@@ -54,6 +54,11 @@ directives.directive('menuItem', ['$compile', '$location', '_', function($compil
                 }
             };
 
+            scope.viewResults = function() {
+                scope.activate();
+                $location.path('/results');
+            };
+
             // if the search query shows this item as active set to active.
             var search = $location.search()[scope.type];
 
