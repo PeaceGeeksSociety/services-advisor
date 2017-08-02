@@ -11,7 +11,10 @@
 </div>
 <div class="row">
   <h3>{{'CATEGORY' | translate}}</h3>
-  <div class="list-group">
+  <ul class="menu list-group">
+    <li ng-repeat="item in categories" class="list-group-item"><menu-item item="item" type="'category'"></menu-item></li>
+  </ul>
+  <!-- <div class="list-group">
     <div ng-init="categoryId = 'category-' + $index" id="{{categoryId}}" ng-repeat="category in categories">
       <a class="list-group-item category" ng-click="toggleSectorResults(category.name); toggleCategory(categoryId, category.name); ">
           <span class="glyphicon {{ category.name == activeCategory ? 'glyphicon-chevron-down' : 'glyphicon-chevron-right'}}"></span>
@@ -26,7 +29,7 @@
         </a>
       </div>
     </div>
-  </div>
+  </div> -->
 </div>
 <div class="row" ng-if="regions">
   <h3>{{'REGION' | translate}}</h3>

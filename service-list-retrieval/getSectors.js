@@ -34,7 +34,6 @@ function Sector(source) {
     this.depth    = source.depth;
     this.name     = source.name;
     this.weight   = source.weight;
-    this.active   = false;
     this.glyph    = source.glyph || null;
     this.markerColor = source.markerColor || null;
     this.children = [];

@@ -425,7 +425,7 @@ h3 {
     }
   }
 
-   div.col-xs-7 {
+  div.col-xs-7 {
     background-color: white;
     padding: 5px;
 
@@ -453,77 +453,12 @@ h3 {
       padding-top: 0px;
     }
   }
-
-  //--main list
-//  .list-group {
-//    :first-child,
-//    :last-child {
-//      margin-top: 5px;
-//    }
-//  }
   .glyphicon.sector-glyph {
     position:absolute !important;
     left: 5px;
     .lang-rtl & {
       left:auto;
       right:5px;
-    }
-  }
-  .ng-scope > a.list-group-item {
-    margin-top:7px;
-    border-radius: 0px !important;
-    background-color: $grey-medium;
-    border: 1px solid $grey-light;
-    color: black;
-    cursor: pointer;
-    padding-left: 30px;
-    .lang-rtl & {
-      padding-left: 0px;
-      padding-right: 35px;
-    }
-    position: relative;
-    &.active {
-      background-color: $grey-medium !important;
-      border-radius: 0px;
-    }
-
-    .icon {
-      padding: 3px;
-    }
-
-    .badge {
-      background: none;
-      font-weight: normal;
-      color: black;
-      .lang-rtl & {
-        float:left !important;
-      }
-    }
-
-    .media-heading{
-      margin-bottom: 5px;
-      padding-top: 10px;
-    }
-
-    .media-object {
-      display: block;
-      padding-right: 5px;
-    }
-
-  }
-  .activities > a.list-group-item {
-    margin: 0 1px;
-    border: 1px solid $grey-medium;
-    border-top:0px;
-    border-bottom:0px;
-    background:$grey-light;
-    line-height:1;
-    border-radius:0px !important;
-    color: #337ab7 !important;
-    border-bottom: 1px solid $grey-medium;
-    cursor:pointer;
-    &:last-child {
-//      border-top: 1px solid $grey-medium;
     }
   }
   button {
@@ -537,6 +472,12 @@ h3 {
 
   .instructions {
     margin-top: 20px;
+  }
+}
+
+ul.menu {
+  a {
+    cursor: pointer;
   }
 }
 
