@@ -8,6 +8,11 @@ controllers.controller('SearchCtrl', ['$scope', '$http', '$location', '$rootScop
     SectorList.get(function (sectors) {
         $scope.categories = sectors.children;
     });
+
+    $scope.$on('$locationChangeSuccess', function () {
+        Search.filterByUrlParameters();
+    });
+
     // var renderView = function(services) {
     //     var categories = {};
 

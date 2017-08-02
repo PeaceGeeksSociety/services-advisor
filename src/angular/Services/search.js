@@ -18,11 +18,9 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
 
     // TODO: not sure why they do || undefined, but previously they had "|| option.empty" where empty was never defined
     var categoryDimension = crossfilter.dimension(function (f) {
-        return f.category.subCategory.name || undefined;
+        return f.servicesProvided;
     });
-    var sectorDimension = crossfilter.dimension(function (f) {
-        return f.category.name || undefined;
-    });
+
     var partnerDimension = crossfilter.dimension(function (f) {
         return f.organization.name || undefined;
     });
@@ -46,7 +44,7 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
     /** Used to get list of currently filtered services rather than re-using an existing dimension **/
     var metaDimension = crossfilter.dimension(function (f) { return f.category.subCategory.name; });
 
-    var allDimensions = [categoryDimension, partnerDimension, nationalityDimension, regionDimension, idDimension, referralsDimension, sectorDimension];
+    var allDimensions = [categoryDimension, partnerDimension, nationalityDimension, regionDimension, idDimension, referralsDimension];
 
     var clearAll = function () {
         angular.forEach(allDimensions, function(filter) {
@@ -101,15 +99,10 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
         });
     };
 
-    var _selectCategory = function(category){
-        categoryDimension.filter(function(service) {
-            return service == category;
-        });
-    };
-    
-    var _selectSector = function(sector){
-        sectorDimension.filter(function(service) {
-            return service == sector;
+    var _selectCategory = function(categories){
+        categoryDimension.filter(function(f) {
+            var intersection = _.intersection(f, categories);
+            return _.isEqual(intersection, categories);
         });
     };
 

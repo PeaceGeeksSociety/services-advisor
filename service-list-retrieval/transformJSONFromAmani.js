@@ -152,7 +152,9 @@ var transformActivityInfoServices = function(services){
 		serviceTransformed.startDate = serviceUntransformed.startDate;
 		serviceTransformed.endDate = serviceUntransformed.endDate;
 
-    transformServicesProvided(serviceTransformed, serviceUntransformed.servicesProvided);
+    serviceTransformed.servicesProvided = serviceUntransformed.servicesProvided.split(',');
+
+    // transformServicesProvided(serviceTransformed, serviceUntransformed.servicesProvided);
 
 		var locationFeature = {};
 		locationFeature.type = "Feature";
