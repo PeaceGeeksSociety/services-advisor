@@ -11,6 +11,9 @@ directives.directive('menuItem', ['$compile', '$location', '_', function($compil
         link: function (scope, element, attr) {
             scope.active = false;
 
+            scope.name = scope.item.model.name;
+            scope.glyph = scope.item.model.glyph;
+
             scope.toggle = function() {
                 if (scope.active) {
                     scope.deactivate();
