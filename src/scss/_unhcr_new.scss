@@ -131,7 +131,7 @@ h3 {
 /* Header */
 #searchNav {
   background-color: $dark-blue;
-  min-height: $navbar-height;  
+  min-height: $navbar-height;
   box-shadow:0px 1px 10px rgba(0, 0, 0, 0.35);
 
   #filterSummary {
@@ -299,10 +299,10 @@ h3 {
   }
 }
 
-#filters.active { 
-  
-  @media screen and (max-width: 985px) {    
-    left:-4px;    
+#filters.active {
+
+  @media screen and (max-width: 985px) {
+    left:-4px;
   }
 
   @media (min-width: 990px) {
@@ -310,13 +310,13 @@ h3 {
   }
 }
 
-@media screen and (max-width: 981px){  
+@media screen and (max-width: 981px){
   .overlay-tint {
       height: 100%;
       width: 100%;
-      background-color: rgba(0, 0, 0, 0.4);    
+      background-color: rgba(0, 0, 0, 0.4);
       position: fixed;
-      bottom: 0;    
+      bottom: 0;
       left:0;
       opacity:0;
       visibility:hidden;
@@ -325,17 +325,17 @@ h3 {
       -moz-transition: opacity 0.8s;
       -o-transition: opacity 0.8s;
       transition: opacity 0.8s;
-      
-      &.active {             
-          visibility:visible;            
+
+      &.active {
+          visibility:visible;
           opacity:1;
           cursor: pointer;
-      }        
-      
+      }
+
   }
 }
 
-.filterCtrl {  
+.filterCtrl {
   height:90%;
 }
 
@@ -408,7 +408,7 @@ h3 {
   height: 94vh; /* compensate for the scroll buttons */
   overflow-y: scroll;
   padding-top: 15px;
-   
+
   div.col-xs-5 {
     background-color: white;
     padding: 5px;
@@ -834,7 +834,7 @@ ul.filter-togglers {
 #partnerName {
   max-height: 300px;
   overflow: auto;
-  
+
   label {
     float: left;
     height: 40px;
@@ -908,11 +908,22 @@ body.lang-rtl {
 }
 
 div.logo-space {
+
+  logo{
+    position: relative;
+    margin-bottom: 70px;
+    display: block;
+    img.logo {
+      vertical-align: top;
+      position: absolute;
+      left: 0px;
+      top: 22px;
+      max-width: 50%;
+    }
+  }
   a {
     color: #000000;
     text-decoration: none;
   }
-  img {
-    max-width: 100%;
-  }
+
 }
