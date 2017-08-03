@@ -13,6 +13,7 @@ directives.directive('menuItem', ['$compile', '$location', '_', function($compil
 
             scope.name = scope.item.model.name;
             scope.glyph = scope.item.model.glyph;
+            scope.count = scope.item.model.count;
 
             scope.toggle = function() {
                 if (scope.active) {
@@ -55,7 +56,6 @@ directives.directive('menuItem', ['$compile', '$location', '_', function($compil
             };
 
             scope.viewResults = function() {
-                scope.activate();
                 $location.path('/results');
             };
 

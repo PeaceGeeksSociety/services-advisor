@@ -12,7 +12,7 @@
 <div class="row">
   <h3>{{'CATEGORY' | translate}}</h3>
   <ul class="menu list-group">
-    <li ng-repeat="item in categories" class="list-group-item"><menu-item item="item" type="'category'"></menu-item></li>
+    <li ng-repeat="item in categories.children" class="list-group-item"><menu-item item="item" type="'category'"></menu-item></li>
   </ul>
   <!-- <div class="list-group">
     <div ng-init="categoryId = 'category-' + $index" id="{{categoryId}}" ng-repeat="category in categories">

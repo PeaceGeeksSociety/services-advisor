@@ -13,13 +13,39 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
         crossfilter.add(allServices);
 
         // trigger initial map load
-        $rootScope.$emit('FILTER_CHANGED');
+        $rootScope.$broadcast('FILTER_CHANGED');
     });
 
     // TODO: not sure why they do || undefined, but previously they had "|| option.empty" where empty was never defined
     var categoryDimension = crossfilter.dimension(function (f) {
         return f.servicesProvided;
     });
+
+    function reduceAdd(p, v) {
+        _.each(v.servicesProvided, function (value, key, list) {
+            if (p[value] === undefined) {
+                p[value] = 0;
+            }
+
+            p[value]++;
+        });
+
+        return p;
+    }
+
+    function reduceRemove(p, v) {
+        _.each(v.servicesProvided, function (value, key, list) {
+            p[value]--;
+        });
+
+        return p;
+    }
+
+    function reduceInitial() {
+      return {};  
+    }
+
+    var categoryGroup = categoryDimension.groupAll().reduce(reduceAdd, reduceRemove, reduceInitial);
 
     var partnerDimension = crossfilter.dimension(function (f) {
         return f.organization.name || undefined;
@@ -45,6 +71,12 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
     var metaDimension = crossfilter.dimension(function (f) { return f.category.subCategory.name; });
 
     var allDimensions = [categoryDimension, partnerDimension, nationalityDimension, regionDimension, idDimension, referralsDimension];
+
+    var _getCurrResults = function() {
+        var results = metaDimension.top(Infinity);
+
+        return results;
+    };
 
     var clearAll = function () {
         angular.forEach(allDimensions, function(filter) {
@@ -193,9 +225,7 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
         }),
         selectReferrals : _selectReferrals,
         clearAll: withClearAndEmit(function(){}),
-        currResults: function () {
-            return metaDimension.top(Infinity);
-        },
+        currResults: _getCurrResults,
         filterByUrlParameters: withClearAndEmit(function() {
             var parameters = $location.search();
 
@@ -214,15 +244,13 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
             if (_.has(parameters, 'category')) {
                 _selectCategory(parameters.category);
             }
-            if (_.has(parameters, 'sector')) {
-                _selectSector(parameters.sector);
-            }
 
             if (_.has(parameters, 'region')){
                 _selectRegion(parameters.region);
             }
 
-            return metaDimension.top(Infinity);
-        })
+            return _getCurrResults();
+        }),
+        getCategoryGroup: categoryGroup
     };
 }]);
