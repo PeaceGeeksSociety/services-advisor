@@ -15,6 +15,10 @@ directives.directive('menuItem', ['$compile', '$location', '_', function($compil
             scope.glyph = scope.item.model.glyph;
             scope.count = scope.item.model.count;
 
+            scope.$watch('item.model.count', function (newValue, oldValue) {
+                scope.count = newValue;
+            });
+
             scope.toggle = function() {
                 if (scope.active) {
                     scope.deactivate();

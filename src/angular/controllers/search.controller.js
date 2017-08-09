@@ -13,8 +13,9 @@ controllers.controller('SearchCtrl', ['$scope', '$http', '$location', '$rootScop
         Search.filterByUrlParameters();
     });
 
-    $scope.$on('FILTER_CHANGED', function () {
+    $scope.$on('FILTER_CHANGED', function (event, results) {
         var counts = Search.getCategoryGroup.value();
+
         $scope.categories.walk(function (node) {
             node.model.count = counts[node.model.id] || 0;
         });

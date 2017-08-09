@@ -13,7 +13,7 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
         crossfilter.add(allServices);
 
         // trigger initial map load
-        $rootScope.$broadcast('FILTER_CHANGED');
+        $rootScope.$broadcast('FILTER_CHANGED', _getCurrResults());
     });
 
     // TODO: not sure why they do || undefined, but previously they had "|| option.empty" where empty was never defined
@@ -94,9 +94,9 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
     var withClearAndEmit = function(fn) {
         return function () {
             clearAll();
-            var result = fn.apply(this, arguments);
-            $rootScope.$emit('FILTER_CHANGED');
-            return result;
+            var results = fn.apply(this, arguments);
+            $rootScope.$broadcast('FILTER_CHANGED', results);
+            return results;
         };
     };
 
@@ -226,7 +226,7 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
         selectReferrals : _selectReferrals,
         clearAll: withClearAndEmit(function(){}),
         currResults: _getCurrResults,
-        filterByUrlParameters: withClearAndEmit(function() {
+        filterByUrlParameters: withClearAndEmit(function () {
             var parameters = $location.search();
 
             if (_.has(parameters, 'organization') && parameters.organization.length > 0){
