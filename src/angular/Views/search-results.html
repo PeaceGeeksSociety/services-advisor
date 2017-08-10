@@ -14,6 +14,9 @@
           <button class="btn pull-left btn-default" ng-print print-element-id="servicesList">{{ 'PRINT' | translate }}</button>
         </div>
         <div class="row" id="servicesList">
+          <ul>
+            <li ng-repeat="category in categories">{{ category.model.name }}</li>
+          </ul>
           <h4 class="x-search-result-header">{{ 'SEARCH_RESULTS' | translate }}</h4>
           <ul class="list-group list-group-padding">
 
