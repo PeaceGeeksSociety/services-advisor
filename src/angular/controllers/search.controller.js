@@ -24,4 +24,5 @@ controllers.controller('SearchCtrl', ['$scope', '$http', '$location', '$rootScop
         });
     });
 
+
 }]);

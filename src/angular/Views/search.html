@@ -9,6 +9,7 @@
 <div class="row">
   <p class="instructions">{{'SEARCH_TEXT' | translate}}</p>
 </div>
+<search></search>
 <div class="row">
   <h3>{{'CATEGORY' | translate}}</h3>
   <ul class="menu list-group" language-direction-attr>
@@ -16,22 +17,6 @@
       <menu-item item="item" type="'category'"></menu-item>
     </li>
   </ul>
-  <!-- <div class="list-group">
-    <div ng-init="categoryId = 'category-' + $index" id="{{categoryId}}" ng-repeat="category in categories">
-      <a class="list-group-item category" ng-click="toggleSectorResults(category.name); toggleCategory(categoryId, category.name); ">
-          <span class="glyphicon {{ category.name == activeCategory ? 'glyphicon-chevron-down' : 'glyphicon-chevron-right'}}"></span>
-          <i class="glyphicon sector-glyph icon-{{category.glyph}} "></i>
-          {{category.name}}
-          <span class="badge">{{category.count}}</span>
-      </a>
-      <div id="{{category.name}}Activities" class="activities {{ category.name == activeCategory ? '' : 'hidden'}}">
-        <a ng-repeat="activity in category.activities" ng-click="showCategoryResults(activity.name);" ng-class="'list-group-item activityname-filter-value-' + toCssClass(activity.name)">
-          <span style="color: {{category.color}}" class="glyphicon icon-{{ category.glyph }}"></span>{{activity.name}}
-          <span class="badge">{{activity.count}}</span>
-        </a>
-      </div>
-    </div>
-  </div> -->
 </div>
 <div class="row" ng-if="regions">
   <h3>{{'REGION' | translate}}</h3>
