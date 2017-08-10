@@ -22,7 +22,7 @@ require('./Directives/languagedirectionattr.js');
 require('./Directives/languagedirectionclass.js');
 require('./Directives/logo.js');
 require('./Directives/menuitem.js');
-require('./Directives/servicecategorycollection.js');
+require('./Directives/servicecategorysummary.js');
 
 // Routes
 require('./Routes/routes.js');

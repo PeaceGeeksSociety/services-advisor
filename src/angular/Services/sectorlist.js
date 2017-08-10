@@ -1,7 +1,7 @@
 var services = angular.module('services'),
     TreeModel = require('tree-model');
 
-services.factory('SectorList', ['$http', 'Language', 'SiteSpecificConfig', function ($http, Language, SiteSpecificConfig) {
+services.factory('SectorList', ['$http', 'Language', 'SiteSpecificConfig', '_', function ($http, Language, SiteSpecificConfig, _) {
     var treeconfig = new TreeModel();
     var sectorsPromise = null;
     var sectorsByIdPromise = {};
@@ -40,6 +40,18 @@ services.factory('SectorList', ['$http', 'Language', 'SiteSpecificConfig', funct
         });
     };
 
+    var all = function (predicate) {
+        return getSectors().then(function (sectors) {
+            return sectors.all(predicate);
+        });
+    };
+
+    var walk = function(predicate) {
+        return getSectors().then(function (sectors) {
+            return sectors.walk(predicate);
+        });
+    }
+
     var find = function (id) {
         if (sectorsByIdPromise[id] === undefined) {
             sectorsByIdPromise[id] = first(function (node) {
@@ -48,6 +60,12 @@ services.factory('SectorList', ['$http', 'Language', 'SiteSpecificConfig', funct
         }
 
         return sectorsByIdPromise[id];
+    };
+
+    var findAll = function (ids) {
+        return all(function (node) {
+            return _.contains(ids, node.model.id);
+        });
     };
 
     return {
@@ -60,8 +78,17 @@ services.factory('SectorList', ['$http', 'Language', 'SiteSpecificConfig', funct
         first: function(predicate, successCb) {
             return first(predicate).then(successCb);
         },
+        all: function(predicate, successCb) {
+            return all(predicate).then(successCb);
+        },
+        walk: function(predicate, successCb) {
+            return walk(predicate).then(successCb);
+        },
         find: function (id, successCb) {
             return find(id).then(successCb);
-        }
+        },
+        findAll: function (ids, successCb) {
+            return findAll(ids).then(successCb);
+        },
     };
 }]);

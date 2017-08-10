@@ -1,0 +1,5 @@
+<ul class="services-provided-summary">
+    <li ng-class="item.model.parentId == '0' ? 'summary-header' : 'summary-leaf'" ng-repeat="item in items">
+        {{ item.model.name }}
+    </li>
+</ul>

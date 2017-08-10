@@ -143,16 +143,18 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
         // Clear all the map markers.
         clusterLayer.clearLayers();
 
-        // Loop through the filtered results, adding the markers back to the map.
-        results.forEach(function (feature) {
-            // Add the filtered markers back to the map's data layer
-            feature.marker.addTo(clusterLayer);
-        });
+        if (results.length > 0) {
+            // Loop through the filtered results, adding the markers back to the map.
+            results.forEach(function (feature) {
+                // Add the filtered markers back to the map's data layer
+                feature.marker.addTo(clusterLayer);
+            });
 
-        if (typeof bbox !== 'undefined'){
-          bbox = undefined;
-        } else {
-          map.fitBounds(clusterLayer, { maxZoom: 13 });
+            if (typeof bbox !== 'undefined'){
+              bbox = undefined;
+            } else {
+              map.fitBounds(clusterLayer, { maxZoom: 13 });
+            }
         }
     });
 

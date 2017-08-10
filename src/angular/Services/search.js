@@ -68,7 +68,7 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
     });
 
     /** Used to get list of currently filtered services rather than re-using an existing dimension **/
-    var metaDimension = crossfilter.dimension(function (f) { return f.category.subCategory.name; });
+    var metaDimension = crossfilter.dimension(function (f) { return f.id; });
 
     var allDimensions = [categoryDimension, partnerDimension, nationalityDimension, regionDimension, idDimension, referralsDimension];
 
@@ -136,6 +136,8 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
             var intersection = _.intersection(f, categories);
             return _.isEqual(intersection, categories);
         });
+
+        return _getCurrResults();
     };
 
     var _selectRegion = function (region) {
@@ -156,6 +158,8 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
                 return gju.pointInPolygon(point, activeRegionLayer.toGeoJSON().geometry);
             });
         }
+
+        return _getCurrResults();
     };
 
     return {
@@ -163,16 +167,22 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
             categoryDimension.filter(function(service) {
                 return service == category;
             });
+
+            return _getCurrResults();
         }),
         selectId: withClearAndEmit(function (id) {
             idDimension.filter(function(serviceId) {
                 return serviceId == id;
             });
+
+            return _getCurrResults();
         }),
         selectPartner: withClearAndEmit(function(partner) {
             partnerDimension.filter(function(servicePartner) {
                 return servicePartner == partner;
             });
+
+            return _getCurrResults();
         }),
         selectOrganizations: _selectOrganizations,
         clearOrganizations: _clearOrganizations,
