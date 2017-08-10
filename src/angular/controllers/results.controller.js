@@ -29,16 +29,8 @@ controllers.controller('ResultsCtrl', ['$scope', '$location', '$translate', '_',
 
     $scope.goBackFromResults = function() {
         var parameters = $location.search();
-        if (_.has(parameters, 'category')){
-            delete parameters.category;
-            // refilter as we changed the parameters.
-            Search.filterByUrlParameters();
-        } else if (_.has(parameters, 'region')){
+        if (_.has(parameters, 'region')){
             delete parameters.region;
-            // refilter as we changed the parameters.
-            Search.filterByUrlParameters();
-        } else if (_.has(parameters, 'sector')){
-            delete parameters.sector;
             // refilter as we changed the parameters.
             Search.filterByUrlParameters();
         }

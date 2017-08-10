@@ -476,11 +476,26 @@ h3 {
 }
 
 ul.menu {
-  a {
-    cursor: pointer;
+  ul { margin-bottom: 0; }
+  li {
+    padding-right: 0;
+
+    li {
+      border: 0;
+    }
+    menu-item {
+      padding-left: 15px;
+
+      a {
+        cursor: pointer;
+      }
+    }
   }
-  menu-item {
-    padding: 0 15px;
+  > li {
+    padding-right: 15px;
+  }
+  .view-list {
+    margin: 0 0 0 5px;
   }
 }
 

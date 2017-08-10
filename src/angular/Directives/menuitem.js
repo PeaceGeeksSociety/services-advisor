@@ -14,6 +14,7 @@ directives.directive('menuItem', ['$compile', '$location', '_', function($compil
             scope.name = scope.item.model.name;
             scope.glyph = scope.item.model.glyph;
             scope.count = scope.item.model.count;
+            scope.hasChildren = scope.item.hasChildren();
 
             scope.$watch('item.model.count', function (newValue, oldValue) {
                 scope.count = newValue;
@@ -40,6 +41,10 @@ directives.directive('menuItem', ['$compile', '$location', '_', function($compil
                 });
 
                 $location.search(scope.type, ids);
+
+                if (!scope.item.hasChildren()) {
+                    $location.path('/results');
+                }
             };
 
             scope.deactivate = function() {
@@ -60,6 +65,7 @@ directives.directive('menuItem', ['$compile', '$location', '_', function($compil
             };
 
             scope.viewResults = function() {
+                scope.activate();
                 $location.path('/results');
             };
 
@@ -75,6 +81,9 @@ directives.directive('menuItem', ['$compile', '$location', '_', function($compil
                     scope.active = true;
                 }
             }
+
+            // Prevent deepest items from opening.
+            scope.open = scope.active && scope.hasChildren;
 
             if (scope.item.hasChildren()) {
                 element.append("<ul ng-show='active' class='list-group'><li ng-repeat='child in item.children' class='list-group-item'><menu-item item='child' type='type'></menu-item></li></ul>");
