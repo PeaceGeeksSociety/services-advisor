@@ -139,9 +139,7 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
         });
     });
 
-    $rootScope.$on('FILTER_CHANGED', function(event) {
-        var results = Search.currResults();
-
+    $rootScope.$on('FILTER_CHANGED', function(event, results) {
         // Clear all the map markers.
         clusterLayer.clearLayers();
 

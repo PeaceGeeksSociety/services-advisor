@@ -1,0 +1,5 @@
+<i class="glyphicon sector-glyph icon-{{glyph}} "></i>
+<span ng-class="active ? 'glyphicon-chevron-down' : 'glyphicon-chevron-right'" class="glyphicon"></span>
+<a ng-class="{ 'active-item': active }" ng-click="toggle()">{{ name }}</a>
+<span ng-click="viewResults()">View List</span>
+<span class="badge pull-right">{{ count }}</span>

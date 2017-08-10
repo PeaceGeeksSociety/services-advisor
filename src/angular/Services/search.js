@@ -13,16 +13,40 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
         crossfilter.add(allServices);
 
         // trigger initial map load
-        $rootScope.$emit('FILTER_CHANGED');
+        $rootScope.$broadcast('FILTER_CHANGED', _getCurrResults());
     });
 
     // TODO: not sure why they do || undefined, but previously they had "|| option.empty" where empty was never defined
     var categoryDimension = crossfilter.dimension(function (f) {
-        return f.category.subCategory.name || undefined;
+        return f.servicesProvided;
     });
-    var sectorDimension = crossfilter.dimension(function (f) {
-        return f.category.name || undefined;
-    });
+
+    function reduceAdd(p, v) {
+        _.each(v.servicesProvided, function (value, key, list) {
+            if (p[value] === undefined) {
+                p[value] = 0;
+            }
+
+            p[value]++;
+        });
+
+        return p;
+    }
+
+    function reduceRemove(p, v) {
+        _.each(v.servicesProvided, function (value, key, list) {
+            p[value]--;
+        });
+
+        return p;
+    }
+
+    function reduceInitial() {
+      return {};  
+    }
+
+    var categoryGroup = categoryDimension.groupAll().reduce(reduceAdd, reduceRemove, reduceInitial);
+
     var partnerDimension = crossfilter.dimension(function (f) {
         return f.organization.name || undefined;
     });
@@ -46,7 +70,13 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
     /** Used to get list of currently filtered services rather than re-using an existing dimension **/
     var metaDimension = crossfilter.dimension(function (f) { return f.category.subCategory.name; });
 
-    var allDimensions = [categoryDimension, partnerDimension, nationalityDimension, regionDimension, idDimension, referralsDimension, sectorDimension];
+    var allDimensions = [categoryDimension, partnerDimension, nationalityDimension, regionDimension, idDimension, referralsDimension];
+
+    var _getCurrResults = function() {
+        var results = metaDimension.top(Infinity);
+
+        return results;
+    };
 
     var clearAll = function () {
         angular.forEach(allDimensions, function(filter) {
@@ -64,9 +94,9 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
     var withClearAndEmit = function(fn) {
         return function () {
             clearAll();
-            var result = fn.apply(this, arguments);
-            $rootScope.$emit('FILTER_CHANGED');
-            return result;
+            var results = fn.apply(this, arguments);
+            $rootScope.$broadcast('FILTER_CHANGED', results);
+            return results;
         };
     };
 
@@ -101,15 +131,10 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
         });
     };
 
-    var _selectCategory = function(category){
-        categoryDimension.filter(function(service) {
-            return service == category;
-        });
-    };
-    
-    var _selectSector = function(sector){
-        sectorDimension.filter(function(service) {
-            return service == sector;
+    var _selectCategory = function(categories){
+        categoryDimension.filter(function(f) {
+            var intersection = _.intersection(f, categories);
+            return _.isEqual(intersection, categories);
         });
     };
 
@@ -200,10 +225,8 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
         }),
         selectReferrals : _selectReferrals,
         clearAll: withClearAndEmit(function(){}),
-        currResults: function () {
-            return metaDimension.top(Infinity);
-        },
-        filterByUrlParameters: withClearAndEmit(function() {
+        currResults: _getCurrResults,
+        filterByUrlParameters: withClearAndEmit(function () {
             var parameters = $location.search();
 
             if (_.has(parameters, 'organization') && parameters.organization.length > 0){
@@ -221,15 +244,13 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
             if (_.has(parameters, 'category')) {
                 _selectCategory(parameters.category);
             }
-            if (_.has(parameters, 'sector')) {
-                _selectSector(parameters.sector);
-            }
 
             if (_.has(parameters, 'region')){
                 _selectRegion(parameters.region);
             }
 
-            return metaDimension.top(Infinity);
-        })
+            return _getCurrResults();
+        }),
+        getCategoryGroup: categoryGroup
     };
 }]);

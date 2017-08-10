@@ -96,7 +96,7 @@ gulp.task('browserify', watchify(function(watchify) {
 gulp.task('copy', ['copy-images', 'copy-html-views', 'copy-libs', 'copy-polygons',  'copy-html-index']);
 
 gulp.task('watch', function() {
-  runSequence(['browserify', 'sass'], 'copy'), 'watch-callback'
+  runSequence(['browserify', 'sass'], 'copy', 'watch-callback');
 });
 
 gulp.task('watch-callback', function(callback) {
