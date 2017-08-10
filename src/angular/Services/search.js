@@ -1,17 +1,19 @@
 var services = angular.module('services');
 var gju = require('../../../node_modules/geojson-utils');
+var Fuse = require('fuse.js');
 
 /**
  * Holds the state of the current search and the current results of that search
  */
-services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', function ($location, ServicesList, $rootScope, _) {
+services.factory('Search', ['SiteSpecificConfig', '$location', 'ServicesList', '$rootScope', '_', function (SiteSpecificConfig, $location, ServicesList, $rootScope, _) {
     var crossfilter = require('crossfilter')();
+    var fuse;
 
     // asynchronously initialize crossfilter
     ServicesList.get(function (allServices) {
         $rootScope.allServices = allServices;
         crossfilter.add(allServices);
-
+        fuse = new Fuse(allServices, SiteSpecificConfig.search);
         // trigger initial map load
         $rootScope.$broadcast('FILTER_CHANGED', _getCurrResults());
     });
@@ -57,6 +59,10 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
 
     var regionGroup = regionDimension.groupAll().reduce(reduceAdd('region'), reduceRemove('region'), reduceInitial);
 
+    var textDimension = crossfilter.dimension(function (f) {
+        return f.id || undefined;
+    });
+
     var partnerDimension = crossfilter.dimension(function (f) {
         return f.organization.name || undefined;
     });
@@ -80,7 +86,7 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
     /** Used to get list of currently filtered services rather than re-using an existing dimension **/
     var metaDimension = crossfilter.dimension(function (f) { return f.id; });
 
-    var allDimensions = [categoryDimension, regionDimension, partnerDimension, nationalityDimension, locationDimension, idDimension, referralsDimension];
+    var allDimensions = [categoryDimension, regionDimension, textDimension, partnerDimension, nationalityDimension, locationDimension, idDimension, referralsDimension];
 
     var _getCurrResults = function() {
         var results = metaDimension.top(Infinity);
@@ -105,6 +111,13 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
             return results;
         };
     };
+
+    var _searchText = function(search) {
+        var result = search.length > 0 ? fuse.search(search): [];
+        textDimension.filter(function (serviceId) {
+            return _.contains(result, serviceId);
+        });
+    }
 
     var _clearOrganizations = function() {
         partnerDimension.filterAll();
@@ -255,6 +268,9 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
         filterByUrlParameters: withClearAndEmit(function () {
             var parameters = $location.search();
 
+            if (_.has(parameters, 'search')) {
+                _searchText(parameters.search);
+            }
             if (_.has(parameters, 'organization') && parameters.organization.length > 0){
                 _selectOrganizations(parameters.organization);
             }
