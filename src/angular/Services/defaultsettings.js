@@ -36,15 +36,24 @@ services.factory('DefaultSettings', [function () {
             largeInner:  'rgba(241, 128, 23, 0.6)',
         },
         search: {
-            shouldSort: true,
+            shouldSort: false,
             tokenize: true,
             matchAllTokens: true,
-            threshold: 0.6,
+            threshold: 0.1,
             location: 0,
             distance: 100,
             maxPatternLength: 32,
             minMatchCharLength: 2,
             keys: [
+                {
+                    name: 'id',
+                    weight: 0.9
+                },
+                {
+                    name: 'region',
+                    weight: 0.7
+                },
+                'organization.name',
                 'nationality',
                 'intakeCriteria',
                 'accessibility',
