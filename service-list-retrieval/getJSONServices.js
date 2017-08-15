@@ -43,7 +43,7 @@ function getRequest(config) {
                 config.last_page      = response.headers['x-pager-last_page'];
                 config.total_items    = response.headers['x-pager-total_items'];
 
-                return body.nodes;
+                return body.data;
             },
             json: true
         };

@@ -125,7 +125,7 @@ var transformActivityInfoServices = function(services){
   var nids = [];
 
 	for (var i = 0; i < services.length; i++){
-		var serviceUntransformed = services[i].node;
+		var serviceUntransformed = services[i];
     if (nids.indexOf(serviceUntransformed.id) >= 0){
       continue;
     } else {
@@ -138,7 +138,7 @@ var transformActivityInfoServices = function(services){
 
 		//Init the organization
 		var organization = {};
-		organization.name = serviceUntransformed.organization;
+		organization.name = serviceUntransformed.organization.title;
 		serviceTransformed.organization = organization;
 
 		//Init the category
@@ -159,10 +159,10 @@ var transformActivityInfoServices = function(services){
 		var locationFeature = {};
 		locationFeature.type = "Feature";
 
-    if(serviceUntransformed['locationAlternate:geometry'].length > 0){
-      locationFeature.geometry = JSON.parse(serviceUntransformed['locationAlternate:geometry']);
+    if (serviceUntransformed.locationAlternate){
+      locationFeature.geometry = serviceUntransformed.locationAlternate;
     } else {
-      locationFeature.geometry = JSON.parse(serviceUntransformed['location:geometry']);
+      locationFeature.geometry = serviceUntransformed.location;
     }
 		serviceTransformed.location = locationFeature;
 
@@ -184,7 +184,7 @@ var transformActivityInfoServices = function(services){
 
 		serviceTransformed.referral = transformReferralMethod(serviceUntransformed);
 
-    serviceTransformed.logoUrl = serviceUntransformed.organizationLogo.src;
+    serviceTransformed.logoUrl = serviceUntransformed.organization.logoURL;
 
     serviceTransformed.officeHours = serviceUntransformed.officeHours;
 
