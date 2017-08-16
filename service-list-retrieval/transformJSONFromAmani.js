@@ -9,6 +9,7 @@ Run with `node transformJSON.js`
 
 */
 
+var Path = require('path');
 var fs = require('fs');
 // var _ = require('underscore');
 var config = require('./config');
@@ -134,9 +135,11 @@ var transformActivityInfoServices = function(services) {
         serviceTransformed.region = serviceUntransformed.region;
 
         //Init the organization
-        var organization = {};
-        organization.name = serviceUntransformed.organization.title;
-        serviceTransformed.organization = organization;
+        var untransformedOrganization = serviceUntransformed.organization || {};
+        var transformedOrganization = {};
+        transformedOrganization.name = untransformedOrganization.title || "";
+        serviceTransformed.logoUrl = untransformedOrganization.logoURL || "";
+        serviceTransformed.organization = transformedOrganization;
 
         //Init the category
         var category = {};
@@ -149,7 +152,7 @@ var transformActivityInfoServices = function(services) {
         serviceTransformed.startDate = serviceUntransformed.startDate;
         serviceTransformed.endDate = serviceUntransformed.endDate;
 
-        serviceTransformed.servicesProvided = serviceUntransformed.servicesProvided.split(',');
+        serviceTransformed.servicesProvided = serviceUntransformed.servicesProvided;
 
         // transformServicesProvided(serviceTransformed, serviceUntransformed.servicesProvided);
 
@@ -181,8 +184,6 @@ var transformActivityInfoServices = function(services) {
 
         serviceTransformed.referral = transformReferralMethod(serviceUntransformed);
 
-        serviceTransformed.logoUrl = serviceUntransformed.organization.logoURL;
-
         serviceTransformed.officeHours = transformOfficeHours(serviceUntransformed.officeHours);
 
         transformedServices.push(serviceTransformed);
@@ -198,7 +199,7 @@ var initialize = function (language){
 
     var services = transformActivityInfoServices(untransformedServices);
 
-    var outputFilename = language.transformed_json;
+    var outputFilename = Path.resolve(__dirname, language.transformed_json);
 
     fs.writeFile(outputFilename, JSON.stringify(services), function (err) {
         if (err) {
