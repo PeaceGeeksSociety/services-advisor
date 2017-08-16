@@ -10,52 +10,33 @@ var measureTime = require('measure-time');
 var config = require('./config');
 
 function fetchServices(languageInfo) {
-    var results = [];
+    function fetchWorker(url, done) {
+        log('\t', "fetching: " + url);
 
-    return new Promise(function(resolve, reject) {
-        var queue = async.queue(fetchWorker);
-
-        queue.error = function (error, url) {
-            log('\t', "ERROR: '" + url + "'");
-            reject("'" + error + "' occurred while fetching " + url);
+        var requestOptions = {
+            url: url,
+            json: true,
+            resolveWithFullResponse: true
         };
 
-        queue.push(languageInfo.url);
+        rp(requestOptions)
+            .then(function (response) {
+                log("\t", response.statusCode + " response");
+                log("\t", "fetched " + response.body.data.length + " items");
+                var next = null;
+                if (response.body.next) {
+                    log("\t", "next: " + response.body.next.href);
+                    next = response.body.next.href;
+                }
+                done(null, response.body.data, next);
+            })
+            .catch(function (error) {
+                // If there's an error notify queue.
+                done("'" + error + "' occurred while fetching " + url);
+            });
+    }
 
-        function fetchWorker(url, done) {
-            log('\t', "fetching: " + url);
-
-            var requestOptions = {
-                url: url,
-                json: true,
-                resolveWithFullResponse: true
-            };
-
-            rp(requestOptions)
-                .then(function (response) {
-                    log("\t", response.statusCode + " response");
-                    // Collecting results.
-                    results = results.concat(response.body.data);
-
-                    log("\t", "fetched " + response.body.data.length + " items. Total fetched: " + results.length + "/" + response.body.count + " items" + "\nDATA:\t" + prettyStringify(response.body.data.map(function (item, count) {return count +': '+ item.serviceName;})));
-
-                    // If there's more results, add next url to queue.
-                    if (response.body.next) {
-                        log("\t", "next: " + response.body.next.href);
-                        queue.push(response.body.next.href);
-                        done();
-                    } else {
-                        // Finish queue.
-                        queue.kill();
-                        resolve(results);
-                    }
-                })
-                .catch(function (error) {
-                    // If there's an error notify queue.
-                    done(error);
-                });
-        }
-    });
+    return runAsyncQueue(fetchWorker, languageInfo.url);
 }
 
 var queue = async.queue(function (language, done) {
@@ -66,6 +47,8 @@ var queue = async.queue(function (language, done) {
     var timer = measureTime();
 
     fetchServices(language)
+        // We need to flatten results.
+        .then(flattenNestedArray)
         .then(prettyStringify)
         .then(function (data) {
             log(language.name, "writing: " + filepath);
@@ -91,10 +74,46 @@ config.languages.forEach(function (language) {
     queue.push(language);
 });
 
+function runAsyncQueue(worker, firstTask) {
+    return new Promise(function(resolve, reject) {
+        var results = [];
+        var queue = async.queue(function(task, completeFn) {
+            worker(task, function (error, result, next) {
+                if (error) {
+                    completeFn(error);
+                }
+                results.push(result);
+                if (next) {
+                    queue.push(next);
+                    completeFn();
+                } else {
+                    resolve(results);
+                }
+            })
+        });
+
+        queue.error = function (error, task) {
+            log('\t', "ERROR: '" + task + "'");
+            reject(error);
+        };
+
+        queue.push(firstTask);
+    });
+}
+
 function log(ref, message) {
     console.log("[" + ref + "] " + message);
 }
 
 function prettyStringify(value) {
     return JSON.stringify(value, null, '  ');
+}
+
+function flattenNestedArray(arr) {
+    return arr.reduce(
+        function (flat, nested) {
+            return flat.concat(nested);
+        },
+        []
+    );
 }
