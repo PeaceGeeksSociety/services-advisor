@@ -183,18 +183,7 @@ var transformActivityInfoServices = function(services) {
 
         serviceTransformed.logoUrl = serviceUntransformed.organization.logoURL;
 
-        serviceTransformed.officeHours = serviceUntransformed.officeHours;
-
-        var officeHours = serviceUntransformed.officeHours.split('|').filter(function (value) {
-            return value.length > 0;
-        });
-
-        serviceTransformed.officeHours = [];
-
-        for (var j = 0; j < officeHours.length; j++) {
-            var dayParts = officeHours[j].split(': ');
-            serviceTransformed.officeHours.push({'name': dayParts[0], 'time': dayParts[1]});
-        }
+        serviceTransformed.officeHours = transformOfficeHours(serviceUntransformed.officeHours);
 
         transformedServices.push(serviceTransformed);
     }
@@ -220,4 +209,24 @@ var initialize = function (language){
 
 for (var i in config.languages) {
     initialize(config.languages[i]);
+}
+
+function transformOfficeHours(sourceOfficeHours) {
+    var officeHours = sourceOfficeHours.reduce(
+        function (hours, value) {
+            if (!hours[value.day]) {
+                hours[value.day] = [];
+            }
+            hours[value.day].push(value.start + "-" + value.end);
+            return hours;
+        },
+        {}
+    );
+
+    return  Object.keys(officeHours).map(function (day) {
+        return {
+            name: day,
+            time: officeHours[day].join(', ')
+        };
+    });
 }
