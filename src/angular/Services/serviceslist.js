@@ -32,8 +32,9 @@ services.factory('ServicesList', ['$http', '$translate', 'Language', 'SiteSpecif
             });
 
             angular.forEach(data, function (feature) {
+                var categoryId = feature.servicesProvided[0];
                 var sector = _.find(rootSectors, function(v) {
-                    return v.model.name == feature.category.name;
+                    return v.model.id == categoryId;
                 });
                 feature.category.sector = sector.model;
                 Markers.addMarker(feature);
