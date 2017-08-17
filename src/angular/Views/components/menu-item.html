@@ -1,4 +1,4 @@
-<i style="color: {{ markerColor }}" class="item-icon glyphicon sector-glyph icon-{{glyph}} "></i>
+<span class="menu-item-icon" ng-show="glyph"><i style="color: {{ markerColor }}" class="glyphicon sector-glyph icon-{{glyph}} "></i></span>
 <span ng-class="open ? 'glyphicon-chevron-down' : 'glyphicon-chevron-right'" class="glyphicon"></span>
 <a ng-class="{ 'active-item': active }" ng-click="toggle()">{{ name }}</a>
 <span class="view-list pull-right glyphicon glyphicon-th-list" ng-click="viewResults()"></span>
