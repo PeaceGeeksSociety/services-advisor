@@ -9,7 +9,7 @@ config.languages = [
   {
     name : 'English',
     abbrev : 'EN',
-    url : 'http://affinity:bridge@dev.unhcrjordan.peacegeeks.org/service-locations',
+    url : 'http://dev.unhcrjordan.peacegeeks.org/en/api/service_location',
     auth: {
       username: 'username',
       password: 'password1'
@@ -24,7 +24,7 @@ config.languages = [
   {
     name : 'Arabic',
     abbrev: 'AR',
-    url : 'http://affinity:bridge@dev.unhcrjordan.peacegeeks.org/ar/service-locations',
+    url : 'http://dev.unhcrjordan.peacegeeks.org/ar/api/service_location',
     downloaded_json : '../web/js/services_amani_AR.json',
     transformed_json : '../web/js/services_AR.json',
     sectors_url : 'http://affinity:bridge@dev.unhcrjordan.peacegeeks.org/ar/service-sectors',
