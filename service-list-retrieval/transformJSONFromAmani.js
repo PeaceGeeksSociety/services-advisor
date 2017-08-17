@@ -132,6 +132,7 @@ var transformActivityInfoServices = function(services) {
         var serviceTransformed = {};
         serviceTransformed.id = serviceUntransformed.id;
         serviceTransformed.originalId = serviceUntransformed.originalId;
+        serviceTransformed.name = serviceUntransformed.serviceName;
         serviceTransformed.region = serviceUntransformed.region;
 
         //Init the organization

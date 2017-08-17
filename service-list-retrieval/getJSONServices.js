@@ -19,6 +19,13 @@ function fetchServices(languageInfo) {
             resolveWithFullResponse: true
         };
 
+        if (config.api_user) {
+            requestOptions.auth = {
+                user: config.api_user.user,
+                pass: config.api_user.pass
+            }
+        }
+
         rp(requestOptions)
             .then(function (response) {
                 log("\t", response.statusCode + " response");

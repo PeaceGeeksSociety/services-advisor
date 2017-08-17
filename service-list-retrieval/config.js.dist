@@ -1,5 +1,10 @@
 var config = {};
 
+config.api_user = {
+    user: 'username',
+    pass: 'password'
+};
+
 config.languages = [
   {
     name : 'English',
