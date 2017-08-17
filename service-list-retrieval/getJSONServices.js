@@ -1,100 +1,119 @@
 #!/usr/bin/env node
 
 // Require some node.js modules
-var fs = require('fs');
+var Path = require('path');
 var rp = require('request-promise');
+var async = require('async');
 var Promise = require('bluebird');
+var fsWriteFile = Promise.promisify(require('fs').writeFile);
 var measureTime = require('measure-time');
 var config = require('./config');
 
-function getLanguage(language) {
-    var options = {
-        timer: measureTime(),
-        language: language,
-        current_page: 0,
-        items_per_page: null,
-        last_page: 0,
-        total_items: null,
-    };
+function fetchServices(languageInfo) {
+    function fetchWorker(url, done) {
+        log('\t', "fetching: " + url);
 
-    return new Promise(function (resolve, reject) {
-        console.log('Starting ' + language.name);
-        getRequest(options).then(function (results) {
-            var elapsed = options.timer();
-
-            fs.writeFile(language.downloaded_json, JSON.stringify(results), function (error) {
-                resolve(results.length + "/" + options.total_items + " " + language.name + " services imported in " + (elapsed.millisecondsTotal / 1000) + " seconds.");
-            });
-        });
-    });
-}
-
-function getRequest(config) {
-    var get = function(config, page) {
-        console.log('Running ' + config.language.name + ' page: ' + page);
-        var options = {
-            uri: config.language.url,
-            qs: {
-                page: page
-            },
-            transform: function(body, response, resolveWithFullResponse) {
-                config.current_page   = response.headers['x-pager-current_page'];
-                config.items_per_page = response.headers['x-pager-items_per_page'];
-                config.last_page      = response.headers['x-pager-last_page'];
-                config.total_items    = response.headers['x-pager-total_items'];
-
-                return body.nodes;
-            },
-            json: true
+        var requestOptions = {
+            url: url,
+            json: true,
+            resolveWithFullResponse: true
         };
 
-        return rp(options).then(function (results) {
-            console.log('Finished running page: ' + page);
-            return results;
-        });
-    };
-
-    var results = [];
-
-    return get(config, 0).then(function (response) {
-        var chain = [];
-        results = results.concat(response);
-
-        for (var j = 1; j <= config.last_page; j++) {
-            chain.push({
-                page: j,
-                callback: function (pageNum) {
-                    return get(config, pageNum);
+        rp(requestOptions)
+            .then(function (response) {
+                log("\t", response.statusCode + " response");
+                log("\t", "fetched " + response.body.data.length + " items");
+                var next = null;
+                if (response.body.next) {
+                    log("\t", "next: " + response.body.next.href);
+                    next = response.body.next.href;
                 }
+                done(null, response.body.data, next);
+            })
+            .catch(function (error) {
+                // If there's an error notify queue.
+                done("'" + error + "' occurred while fetching " + url);
             });
-        }
+    }
 
-        return chain;
-    }).then(function (chain) {
-        return Promise.each(chain, function (obj) {
-            return obj.callback(obj.page).then(function (response) {
-                results = results.concat(response);
-            });
+    return runAsyncQueue(fetchWorker, languageInfo.url);
+}
+
+var queue = async.queue(function (language, done) {
+    log(language.name, 'starting');
+
+    var name = language.name;
+    var filepath = Path.resolve(__dirname, language.downloaded_json);
+    var timer = measureTime();
+
+    fetchServices(language)
+        // We need to flatten results.
+        .then(flattenNestedArray)
+        .then(prettyStringify)
+        .then(function (data) {
+            log(language.name, "writing: " + filepath);
+            return fsWriteFile(filepath, data);
+        })
+        .then(function () {
+            var elapsed = timer();
+            var numSeconds = (elapsed.millisecondsTotal / 1000);
+            log(name, "complete; services imported in " + numSeconds + " seconds");
+            done();
+        })
+        .catch(function (error) {
+            done(error);
         });
-    }).then(function () {
-        return results;
+});
+
+queue.error = function (error, language) {
+    console.error("There was an error fetching Service Locations: '" + error + "' during language: " + language.name);
+};
+
+config.languages.forEach(function (language) {
+    console.log("Adding " + language.name + " to Service Location fetch queue.");
+    queue.push(language);
+});
+
+function runAsyncQueue(worker, firstTask) {
+    return new Promise(function(resolve, reject) {
+        var results = [];
+        var queue = async.queue(function(task, completeFn) {
+            worker(task, function (error, result, next) {
+                if (error) {
+                    completeFn(error);
+                }
+                results.push(result);
+                if (next) {
+                    queue.push(next);
+                    completeFn();
+                } else {
+                    resolve(results);
+                }
+            })
+        });
+
+        queue.error = function (error, task) {
+            log('\t', "ERROR: '" + task + "'");
+            reject(error);
+        };
+
+        queue.push(firstTask);
     });
 }
 
-var chain = [];
-
-for (var i in config.languages) {
-    (function (chain, language) {
-        chain.push(function() {
-            return getLanguage(language);
-        });
-    })(chain, config.languages[i]);
+function log(ref, message) {
+    console.log("[" + ref + "] " + message);
 }
 
-Promise.each(chain, function(cb) {
+function prettyStringify(value) {
+    return JSON.stringify(value, null, '  ');
+}
 
-    return cb().then(function(response) {
-        console.log(response);
-    });
-
-}).catch(console.log.bind(console));
+function flattenNestedArray(arr) {
+    return arr.reduce(
+        function (flat, nested) {
+            return flat.concat(nested);
+        },
+        []
+    );
+}
