@@ -10,6 +10,10 @@ config.languages = [
     name : 'English',
     abbrev : 'EN',
     url : 'http://affinity:bridge@dev.unhcrjordan.peacegeeks.org/service-locations',
+    auth: {
+      username: 'username',
+      password: 'password1'
+    },
     downloaded_json  : '../web/js/services_amani_EN.json',
     transformed_json : '../web/js/services_EN.json',
     sectors_url : 'http://affinity:bridge@dev.unhcrjordan.peacegeeks.org/service-sectors',

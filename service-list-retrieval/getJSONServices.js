@@ -16,7 +16,8 @@ function fetchServices(languageInfo) {
         var requestOptions = {
             url: url,
             json: true,
-            resolveWithFullResponse: true
+            resolveWithFullResponse: true,
+            auth: languageInfo.auth
         };
 
         if (config.api_user) {
