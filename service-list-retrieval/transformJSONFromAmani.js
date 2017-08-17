@@ -129,6 +129,11 @@ var transformActivityInfoServices = function(services) {
         } else {
             nids.push(serviceUntransformed.id);
         }
+
+        if (serviceUntransformed.location.length === 0 && serviceUntransformed.locationAlternate.length === 0) {
+            continue;
+        }
+
         var serviceTransformed = {};
         serviceTransformed.id = serviceUntransformed.id;
         serviceTransformed.originalId = serviceUntransformed.originalId;
