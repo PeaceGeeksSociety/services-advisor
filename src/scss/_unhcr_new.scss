@@ -475,8 +475,10 @@ ul.menu {
   ul { margin-bottom: 0; }
   li {
     menu-item {
-      padding-left: 15px;
 
+      .menu-item-icon {
+        padding-left: 15px;
+      }
       a {
         cursor: pointer;
       }

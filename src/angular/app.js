@@ -32,6 +32,7 @@ require('./Services/defaultsettings.js');
 require('./Services/language.js');
 require('./Services/markers.js');
 require('./Services/map.js');
+require('./Services/regionlist.js');
 require('./Services/search.js');
 require('./Services/sectorlist.js');
 require('./Services/serviceslist.js');

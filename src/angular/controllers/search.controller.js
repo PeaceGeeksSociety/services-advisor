@@ -3,10 +3,14 @@ var controllers = angular.module('controllers');
 /**
  * For the category/region search view
  */
-controllers.controller('SearchCtrl', ['$scope', '$http', '$location', '$rootScope', 'SiteSpecificConfig', 'ServicesList', 'SectorList', 'Search', '_', '$translate', 'Language', function ($scope, $http, $location, $rootScope, SiteSpecificConfig, ServicesList, SectorList, Search, _, $translate, Language) {
+controllers.controller('SearchCtrl', ['$scope', '$http', '$location', '$rootScope', 'SiteSpecificConfig', 'ServicesList', 'SectorList', 'RegionList', 'Search', '_', '$translate', 'Language', function ($scope, $http, $location, $rootScope, SiteSpecificConfig, ServicesList, SectorList, RegionList, Search, _, $translate, Language) {
 
     SectorList.get(function (sectors) {
         $scope.categories = sectors;
+    });
+
+    RegionList.get(function (regions) {
+        $scope.regions = regions;
     });
 
     $scope.$on('$locationChangeSuccess', function () {
