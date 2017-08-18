@@ -6,7 +6,7 @@ services.factory('Markers', ['$rootScope', '$compile', '$location', function ($r
         addMarker: function (feature) {
             var marker = L.marker(
                 feature.location.geometry.coordinates.reverse(),
-                {icon: feature.category.sector.icon}
+                {icon: feature.sector.icon}
             );
 
             // Compile new DOM element (the popup) and link it.

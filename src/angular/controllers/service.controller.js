@@ -10,15 +10,10 @@ controllers.controller('ServiceCtrl', ['$scope', '$routeParams', '$location', 'S
     ServicesList.findById($routeParams.serviceId).then(function(service) {
         $scope.service = {};
         $scope.service.id = service.id;
+        $scope.service.name = service.name;
         $scope.service.region = service.region;
         $scope.service.organization = {
             name: service.organization.name
-        };
-        $scope.service.category = {
-            name: service.category.name,
-            subCategory: {
-                name: service.category.subCategory.name
-            }
         };
         $scope.service.startDate = service.startDate;
         $scope.service.endDate = service.endDate;

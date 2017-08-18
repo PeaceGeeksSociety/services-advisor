@@ -36,7 +36,7 @@ services.factory('ServicesList', ['$http', '$translate', 'Language', 'SiteSpecif
                 var sector = _.find(rootSectors, function(v) {
                     return v.model.id == categoryId;
                 });
-                feature.category.sector = sector.model;
+                feature.sector = sector.model;
                 Markers.addMarker(feature);
             });
 
