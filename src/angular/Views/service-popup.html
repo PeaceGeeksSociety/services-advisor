@@ -1,7 +1,7 @@
 <article class="serviceText" language-direction-attr>
     <header>
         <img class="pull-right" src="{{ service.logoUrl }}" alt="{{ service.organization.name }}" onError="this.onerror=null;this.style.display='none'"/>
-        <h3><i class="glyphicon icon-{{ service.sector.glyph }}"></i> {{ service.name }}</h3>
+        <h3><i style="color: {{ service.sector.markerColor }}" class="glyphicon icon-{{ service.sector.glyph }}"></i> {{ service.name }}</h3>
         <p>
             <strong>{{ 'ORGANIZATION' |translate }}:</strong>
             <span>{{ service.organization.name }}</span>
