@@ -130,7 +130,7 @@ var transformActivityInfoServices = function(services) {
             nids.push(serviceUntransformed.id);
         }
 
-        if (serviceUntransformed.location.length === 0 && serviceUntransformed.locationAlternate.length === 0) {
+        if ((serviceUntransformed.location == null || serviceUntransformed.location.location == null) && serviceUntransformed.locationAlternate == null) {
             continue;
         }
 
@@ -168,7 +168,7 @@ var transformActivityInfoServices = function(services) {
         if (serviceUntransformed.locationAlternate){
             locationFeature.geometry = serviceUntransformed.locationAlternate;
         } else {
-            locationFeature.geometry = serviceUntransformed.location;
+            locationFeature.geometry = serviceUntransformed.location.location;
         }
         serviceTransformed.location = locationFeature;
 
