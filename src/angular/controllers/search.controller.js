@@ -10,7 +10,10 @@ controllers.controller('SearchCtrl', ['$scope', '$http', '$location', '$rootScop
     });
 
     $scope.$on('$locationChangeSuccess', function () {
-        Search.filterByUrlParameters();
+        // Only filter results if we stay on front route.
+        if ($location.path() === '/') {
+            Search.filterByUrlParameters();
+        }
     });
 
     $scope.$on('FILTER_CHANGED', function (event, results) {
