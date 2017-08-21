@@ -13,6 +13,7 @@ directives.directive('menuItem', ['$compile', '$location', '_', function($compil
 
             scope.name = scope.item.model.name;
             scope.glyph = scope.item.model.glyph;
+            scope.markerColor = scope.item.model.markerColor;
             scope.count = scope.item.model.count;
             scope.hasChildren = scope.item.hasChildren();
 
