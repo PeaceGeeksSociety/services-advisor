@@ -7,3 +7,5 @@ var config = {
     languages: ['en', 'ar'],
     dest: '../web/js'
 };
+
+module.exports = config;
