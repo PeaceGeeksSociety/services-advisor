@@ -1,37 +1,9 @@
-var config = {};
-
-config.api_user = {
-    user: 'username',
-    pass: 'password'
-};
-
-config.languages = [
-  {
-    name : 'English',
-    abbrev : 'EN',
-    url : 'http://dev.unhcrjordan.peacegeeks.org/en/api/service_location',
+var config = {
+    host: 'http://example.com',
     auth: {
-      username: 'username',
-      password: 'password1'
+        username: 'example',
+        password: 'password!'
     },
-    downloaded_json  : '../web/js/services_amani_EN.json',
-    transformed_json : '../web/js/services_EN.json',
-    sectors_url : 'http://affinity:bridge@dev.unhcrjordan.peacegeeks.org/service-sectors',
-    sectors_file : '../web/js/sectors_EN.json',
-    locale_url : 'http://affinity:bridge@dev.unhcrjordan.peacegeeks.org/service-strings',
-    locale_file : '../web/js/locale-EN.json'
-  },
-  {
-    name : 'Arabic',
-    abbrev: 'AR',
-    url : 'http://dev.unhcrjordan.peacegeeks.org/ar/api/service_location',
-    downloaded_json : '../web/js/services_amani_AR.json',
-    transformed_json : '../web/js/services_AR.json',
-    sectors_url : 'http://affinity:bridge@dev.unhcrjordan.peacegeeks.org/ar/service-sectors',
-    sectors_file : '../web/js/sectors_AR.json',
-    locale_url : 'http://affinity:bridge@dev.unhcrjordan.peacegeeks.org/ar/service-strings',
-    locale_file : '../web/js/locale-AR.json'
-  },
-];
-
-module.exports = config;
+    languages: ['en', 'ar'],
+    dest: '../web/js'
+};
