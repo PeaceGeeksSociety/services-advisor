@@ -1,5 +1,6 @@
 var config = {
-    host: 'http://example.com',
+    protocol: 'http',
+    host: 'example.com',
     auth: {
         username: 'example',
         password: 'password!'

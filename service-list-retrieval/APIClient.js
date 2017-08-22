@@ -5,7 +5,8 @@ var async = require('async');
 var rp = require('request-promise');
 var assert = require('./assert');
 
-function APIClient(host, langCode, auth) {
+function APIClient(protocol, host, langCode, auth) {
+    this.protocol = protocol || 'http';
     this.host = host;
     this.langCode = langCode || "";
     this.auth = auth || null;
@@ -13,6 +14,7 @@ function APIClient(host, langCode, auth) {
 
 APIClient.prototype.getURL = function (endpoint) {
     return URL.format({
+        protocol: this.protocol,
         host: this.host,
         pathname: Path.join('/', this.langCode, endpoint)
     });

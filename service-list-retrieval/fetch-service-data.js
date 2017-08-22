@@ -21,7 +21,7 @@ var queue = async.queue(function (language, done) {
     var context = {};
 
     var langCode = language.toLowerCase();
-    var apiClient = new APIClient(config.host, langCode, config.auth);
+    var apiClient = new APIClient(config.protocol, config.host, langCode, config.auth);
 
     log(langCode, 'starting');
 
