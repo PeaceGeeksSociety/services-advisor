@@ -38,6 +38,8 @@ function transformActivityInfoServices(services, context) {
             transformedOrganization.name = untransformedOrganization.title || "";
             serviceTransformed.logoUrl = untransformedOrganization.logoURL || "";
             serviceTransformed.organization = transformedOrganization;
+        } else {
+            continue;
         }
 
         //Init the category
