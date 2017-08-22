@@ -1,4 +1,5 @@
 var assert = require('./assert');
+var _ = require('underscore');
 
 /*
 Transforms the data from activity info into a format that services
@@ -53,7 +54,7 @@ function transformActivityInfoServices(services, context) {
         serviceTransformed.startDate = serviceUntransformed.startDate;
         serviceTransformed.endDate = serviceUntransformed.endDate;
 
-        serviceTransformed.servicesProvided = serviceUntransformed.servicesProvided;
+        serviceTransformed.servicesProvided = _.unique(serviceUntransformed.servicesProvided);
 
         // transformServicesProvided(serviceTransformed, serviceUntransformed.servicesProvided);
 

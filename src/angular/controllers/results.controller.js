@@ -11,7 +11,7 @@ controllers.controller('ResultsCtrl', ['$scope', '$location', '$translate', '_',
         function(services){
             // ****** RESULTS OBJECT *********
             $scope.results = Search.filterByUrlParameters();
-
+            $scope.count = $scope.results.length;
             var search = $location.search();
             var sectorIds = search.category || [];
 
