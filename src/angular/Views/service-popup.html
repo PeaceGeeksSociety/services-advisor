@@ -19,7 +19,7 @@
             <span ng-if="service.intakeCriteria">{{ service.intakeCriteria }}</span>
         </p>
         <div field="infoLink" ng-if="service.infoLink" class="more-info">
-            <a class="btn btn-primary btn-xs" href="{{ service.infoLink }}" target="_blank" role="button">{{ 'INFO_LINK' | translate }}</a>
+            <a class="btn btn-primary btn-xs" href="{{ service.infoLink.url }}" target="_blank" role="button">{{ 'INFO_LINK' | translate }}</a>
         </div>
     </header>
 </article>
