@@ -21,10 +21,15 @@ controllers.controller('SearchCtrl', ['$scope', '$http', '$location', '$rootScop
     });
 
     $scope.$on('FILTER_CHANGED', function (event, results) {
-        var counts = Search.getCategoryGroup.value();
+        var categoryCounts = Search.getCategoryGroup.value();
+        var regionCounts = Search.getRegionGroup.value();
 
         $scope.categories.walk(function (node) {
-            node.model.count = counts[node.model.id] || 0;
+            node.model.count = categoryCounts[node.model.id] || 0;
+        });
+
+        $scope.regions.walk(function (node) {
+            node.model.count = regionCounts[node.model.id] || 0;
         });
     });
 

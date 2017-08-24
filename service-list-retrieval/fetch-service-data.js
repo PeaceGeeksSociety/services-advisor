@@ -39,6 +39,16 @@ var queue = async.queue(function (language, done) {
                 .then(prettyStringify)
                 .then(writeFile('sectors_' + langCode.toUpperCase() + '.json'));
         })
+        // First fetch regions, perform transformation and write to file.
+        .then(function () {
+            return apiClient.fetchAll('api/service_region')
+                .then(function (data) {
+                    return sectors.transformSectors(data);
+                })
+                .then(addToContext('regions'))
+                .then(prettyStringify)
+                .then(writeFile('regions_' + langCode.toUpperCase() + '.json'));
+        })
         // Next fetch service partners, save to context.
         .then(function () {
             return apiClient.fetchAll('api/service_partner')
