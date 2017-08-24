@@ -21,31 +21,41 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
         return f.servicesProvided;
     });
 
-    function reduceAdd(p, v) {
-        _.each(v.servicesProvided, function (value, key, list) {
-            if (p[value] === undefined) {
-                p[value] = 0;
-            }
+    var reduceAdd = function(property) {
+        return function(p, v) {
+            _.each(v[property], function (value, key, list) {
+                if (p[value] === undefined) {
+                    p[value] = 0;
+                }
 
-            p[value]++;
-        });
+                p[value]++;
+            });
 
-        return p;
-    }
+            return p;
+        }
+    };
 
-    function reduceRemove(p, v) {
-        _.each(v.servicesProvided, function (value, key, list) {
-            p[value]--;
-        });
+    var reduceRemove = function(property) {
+        return function(p, v) {
+            _.each(v[property], function (value, key, list) {
+                p[value]--;
+            });
 
-        return p;
-    }
+            return p;
+        }
+    };
 
-    function reduceInitial() {
+    var reduceInitial = function() {
       return {};  
     }
 
-    var categoryGroup = categoryDimension.groupAll().reduce(reduceAdd, reduceRemove, reduceInitial);
+    var categoryGroup = categoryDimension.groupAll().reduce(reduceAdd('servicesProvided'), reduceRemove('servicesProvided'), reduceInitial);
+
+    var regionDimension = crossfilter.dimension(function (f) {
+        return f.region;
+    });
+
+    var regionGroup = regionDimension.groupAll().reduce(reduceAdd('region'), reduceRemove('region'), reduceInitial);
 
     var partnerDimension = crossfilter.dimension(function (f) {
         return f.organization.name || undefined;
@@ -55,7 +65,7 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
         return f.nationality.split(', ') || undefined;
     });
 
-    var regionDimension = crossfilter.dimension(function (f) {
+    var locationDimension = crossfilter.dimension(function (f) {
         return f.location.geometry.coordinates[0] + "," + f.location.geometry.coordinates[1] || "";
     });
 
@@ -70,7 +80,7 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
     /** Used to get list of currently filtered services rather than re-using an existing dimension **/
     var metaDimension = crossfilter.dimension(function (f) { return f.id; });
 
-    var allDimensions = [categoryDimension, partnerDimension, nationalityDimension, regionDimension, idDimension, referralsDimension];
+    var allDimensions = [categoryDimension, regionDimension, partnerDimension, nationalityDimension, locationDimension, idDimension, referralsDimension];
 
     var _getCurrResults = function() {
         var results = metaDimension.top(Infinity);
@@ -82,10 +92,6 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
         angular.forEach(allDimensions, function(filter) {
             filter.filterAll();
         });
-    };
-
-    var clearReferralsFilter = function () {
-        referralsDimension.filterAll();
     };
 
     /** End crossfilter setup **/
@@ -131,7 +137,7 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
         });
     };
 
-    var _selectCategory = function(categories){
+    var _selectCategory = function(categories) {
         categoryDimension.filter(function(f) {
             var intersection = _.intersection(f, categories);
             return _.isEqual(intersection, categories);
@@ -140,22 +146,29 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
         return _getCurrResults();
     };
 
-    var _selectRegion = function (region) {
-        var activeRegionLayer = null;
+    var _selectRegion = function(regions) {
+        regionDimension.filter(function (f) {
+            var intersection = _.intersection(f, regions);
+            return _.isEqual(intersection, regions);
+        });
+    };
+
+    var _selectLocation = function (location) {
+        var activeLocationLayer = null;
         polygonLayer.getLayers().forEach(function(f) {
-            if (f.feature.properties.adm1_name == region) {
-                activeRegionLayer = f;
+            if (f.feature.properties.adm1_name == location) {
+                activeLocationLayer = f;
             }
         });
 
-        if (activeRegionLayer) {
-            regionDimension.filter(function(servicePoint) {
+        if (activeLocationLayer) {
+            locationDimension.filter(function(servicePoint) {
                 var pp = servicePoint.split(',');
                 var point = {
                     type: "Point",
                     coordinates: [parseFloat(pp[1]), parseFloat(pp[0])]
                 };
-                return gju.pointInPolygon(point, activeRegionLayer.toGeoJSON().geometry);
+                return gju.pointInPolygon(point, activeLocationLayer.toGeoJSON().geometry);
             });
         }
 
@@ -164,9 +177,12 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
 
     return {
         selectCategory: withClearAndEmit(function (category) {
-            categoryDimension.filter(function(service) {
-                return service == category;
-            });
+            _selectCategory([category]);
+
+            return _getCurrResults();
+        }),
+        selectRegion: withClearAndEmit(function (region) {
+            _selectRegion([region]);
 
             return _getCurrResults();
         }),
@@ -186,7 +202,7 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
         }),
         selectOrganizations: _selectOrganizations,
         clearOrganizations: _clearOrganizations,
-        selectRegion: withClearAndEmit(function(region) {
+        selectLocation: withClearAndEmit(function(region) {
             var activeRegionLayer = null;
             polygonLayer.getLayers().forEach(function(f) {
                 if (f.feature.properties.adm1_name == region) {
@@ -194,7 +210,7 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
                 }
             });
             if (activeRegionLayer) {
-                regionDimension.filter(function(servicePoint) {
+                locationDimension.filter(function(servicePoint) {
                     var pp = servicePoint.split(',');
                     var point = {
                         type: "Point",
@@ -219,7 +235,7 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
                                 ]]
                 });
                 var radius = geoLocation.radius;
-                regionDimension.filter(function(servicePoint) {
+                locationDimension.filter(function(servicePoint) {
                     var pp = servicePoint.split(',');
                     var point = {
                         type: "Point",
@@ -258,9 +274,13 @@ services.factory('Search', ['$location', 'ServicesList', '$rootScope', '_', func
             if (_.has(parameters, 'region')){
                 _selectRegion(parameters.region);
             }
+            if (_.has(parameters, 'location')){
+                _selectLocation(parameters.location);
+            }
 
             return _getCurrResults();
         }),
-        getCategoryGroup: categoryGroup
+        getCategoryGroup: categoryGroup,
+        getRegionGroup: regionGroup,
     };
 }]);
