@@ -167,12 +167,12 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
     // when the map is showing
     $("#serviceList").scroll(_.throttle(function() {
         if (!mc.hasClass('map-hide')) {
-            toggleMap();
+            window.toggleMap();
         }
     }, 10));
 
     // HACK: using a global here so we can use an onclick="toggleMap()"
-    toggleMap = function() {
+    window.toggleMap = function () {
         mc.toggleClass('map-hide');
         map.invalidateSize();
     };

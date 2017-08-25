@@ -1,6 +1,10 @@
 var services = angular.module('services');
 
-services.factory('Markers', ['$rootScope', '$compile', '$location', function ($rootScope, $compile, $location) {
+services.factory('Markers', ['$rootScope', '$compile', '$location', '$templateRequest', '$timeout', function ($rootScope, $compile, $location, $templateRequest, $timeout) {
+    // Eagerly fetching service-popup template as we'll need it and it will be
+    // (in theory) cached.
+    $templateRequest('views/service-popup.html');
+
     var service = {
         markers: [],
         addMarker: function (feature) {
@@ -9,21 +13,20 @@ services.factory('Markers', ['$rootScope', '$compile', '$location', function ($r
                 {icon: feature.sector.icon}
             );
 
-            // Compile new DOM element (the popup) and link it.
-            var popup = L.popup();
-
-            var popupLinkFunc = $compile(angular.element('<div ng-controller="ServicePopupCtrl"><ng-include src="\'views/service-popup.html\'"></ng-include></div>'));
-            var popupScope = $rootScope.$new(true);
-            popupScope.feature = feature;
-            popupScope.popup = popup;
-            popup.setContent(popupLinkFunc(popupScope)[0]);
-            marker.bindPopup(popup);
-
-            // when a user clicks on a map marker, show the service in the sidebar
-            marker.on('click', function () {
+            marker.on('click', function (e) {
                 $location.search('showOthers', true);
                 $location.path("/services/" + feature.id);
                 $rootScope.$apply();
+
+                var marker = e.target;
+                if (!marker.getPopup()) {
+                    var popupScope = $rootScope.$new(true);
+                    popupScope.service = feature;
+                    renderTemplate('views/service-popup.html', popupScope, function ($el) {
+                        marker.bindPopup($el.prop('outerHTML'));
+                        marker.togglePopup();
+                    });
+                }
             });
 
             feature.marker = marker;
@@ -33,4 +36,15 @@ services.factory('Markers', ['$rootScope', '$compile', '$location', function ($r
     };
 
     return service;
+
+    function renderTemplate(templatePath, templateScope, cb) {
+        $templateRequest(templatePath)
+            .then(function (template) {
+                var out = $compile(template)(templateScope);
+                $timeout(function () {
+                    cb(out);
+                });
+            });
+    }
 }]);
+
