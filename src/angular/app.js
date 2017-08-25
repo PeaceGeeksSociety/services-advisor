@@ -22,6 +22,7 @@ require('./Directives/languagedirectionattr.js');
 require('./Directives/languagedirectionclass.js');
 require('./Directives/logo.js');
 require('./Directives/menuitem.js');
+require('./Directives/search.js');
 require('./Directives/servicecategorysummary.js');
 
 // Routes

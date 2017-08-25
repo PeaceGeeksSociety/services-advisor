@@ -34,6 +34,42 @@ services.factory('DefaultSettings', [function () {
             large:       'rgba(253, 156, 115, 0.6)',
             // Inner circle color for clusters of 100 or more.
             largeInner:  'rgba(241, 128, 23, 0.6)',
+        },
+        search: {
+            shouldSort: false,
+            tokenize: true,
+            matchAllTokens: true,
+            threshold: 0.1,
+            location: 0,
+            distance: 100,
+            maxPatternLength: 32,
+            minMatchCharLength: 2,
+            keys: [
+                {
+                    name: 'id',
+                    weight: 0.9
+                },
+                {
+                    name: 'region',
+                    weight: 0.7
+                },
+                'organization.name',
+                'nationality',
+                'intakeCriteria',
+                'accessibility',
+                'coverage',
+                'availability',
+                'referralMethod',
+                'referralNextSteps',
+                'feedbackMechanism',
+                'feedbackDelay',
+                'complaintsMechanism',
+                'hotlinePhone',
+                'publicAddress',
+                'additionalDetails',
+                'comments'
+            ],
+            id: 'id'
         }
     };
 }
