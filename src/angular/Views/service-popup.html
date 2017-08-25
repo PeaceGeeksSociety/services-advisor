@@ -1,25 +1,27 @@
-<article class="serviceText" language-direction-attr>
-    <header>
-        <img class="pull-right" src="{{ service.logoUrl }}" alt="{{ service.organization.name }}" onError="this.onerror=null;this.style.display='none'"/>
-        <h3><i style="color: {{ service.sector.markerColor }}" class="glyphicon icon-{{ service.sector.glyph }}"></i> {{ service.name }}</h3>
-        <p>
-            <strong>{{ 'ORGANIZATION' |translate }}:</strong>
-            <span>{{ service.organization.name }}</span>
-        </p>
-        <p field="publicAddress" ng-if="service.publicAddress">
-            <strong>{{ 'ADDRESS' | translate }}:</strong>
-            <span>{{ service.publicAddress }}</span>
-        </p>
-        <p field="referralMethod" ng-if="service.referral.type">
-            <strong>{{ 'REFERRAL_METHOD' | translate }}:</strong>
-            <span>{{ service.referral.type }}</span>
-        </p>
-        <p field="intakeCriteria" ng-if="service.intakeCriteria != false" class="text-crimson">
-            <strong>{{ 'INTAKE_CRITERIA' | translate }}:</strong>
-            <span ng-if="service.intakeCriteria">{{ service.intakeCriteria }}</span>
-        </p>
-        <div field="infoLink" ng-if="service.infoLink" class="more-info">
-            <a class="btn btn-primary btn-xs" href="{{ service.infoLink.url }}" target="_blank" role="button">{{ 'INFO_LINK' | translate }}</a>
-        </div>
-    </header>
-</article>
+<div>
+  <article class="serviceText" language-direction-attr>
+      <header>
+          <img class="pull-right" src="{{ service.logoUrl }}" alt="{{ service.organization.name }}" onError="this.onerror=null;this.style.display='none'"/>
+          <h3><i style="color: {{ service.sector.markerColor }}" class="glyphicon icon-{{ service.sector.glyph }}"></i> {{ service.name }}</h3>
+          <p>
+              <strong>{{ 'ORGANIZATION' |translate }}:</strong>
+              <span>{{ service.organization.name }}</span>
+          </p>
+          <p field="publicAddress" ng-if="service.publicAddress">
+              <strong>{{ 'ADDRESS' | translate }}:</strong>
+              <span>{{ service.publicAddress }}</span>
+          </p>
+          <p field="referralMethod" ng-if="service.referral.type">
+              <strong>{{ 'REFERRAL_METHOD' | translate }}:</strong>
+              <span>{{ service.referral.type }}</span>
+          </p>
+          <p field="intakeCriteria" ng-if="service.intakeCriteria != false" class="text-crimson">
+              <strong>{{ 'INTAKE_CRITERIA' | translate }}:</strong>
+              <span ng-if="service.intakeCriteria">{{ service.intakeCriteria }}</span>
+          </p>
+          <div field="infoLink" ng-if="service.infoLink" class="more-info">
+              <a class="btn btn-primary btn-xs" href="{{ service.infoLink.url }}" target="_blank" role="button">{{ 'INFO_LINK' | translate }}</a>
+          </div>
+      </header>
+  </article>
+</div>

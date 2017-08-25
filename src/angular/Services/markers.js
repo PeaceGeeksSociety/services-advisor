@@ -1,6 +1,10 @@
 var services = angular.module('services');
 
-services.factory('Markers', ['$rootScope', '$compile', '$location', function ($rootScope, $compile, $location) {
+services.factory('Markers', ['$rootScope', '$compile', '$location', '$templateRequest', '$timeout', function ($rootScope, $compile, $location, $templateRequest, $timeout) {
+    // Eagerly fetching service-popup template as we'll need it and it will be
+    // (in theory) cached.
+    $templateRequest('views/service-popup.html');
+
     var service = {
         markers: [],
         addMarker: function (feature) {
@@ -9,24 +13,20 @@ services.factory('Markers', ['$rootScope', '$compile', '$location', function ($r
                 {icon: feature.sector.icon}
             );
 
-            marker.bindPopup(function (marker) {
-                var id = L.Util.stamp(marker);
-                if (!popups[id]) {
-                    popups[id] = createPopupContent();
-                    // Because rendering with $compile is asynchronous we need to
-                    // schedule popup layout update to occur after it has finished.
-                    // A simple setTimeout() should do it but if it's not working
-                    // on slower devices/networks then try increasing timeout.
-                    setTimeout(function () { marker.getPopup().update(); }, 200);
-                }
-                return popups[id];
-            });
-
-            // when a user clicks on a map marker, show the service in the sidebar
-            marker.on('click', function () {
+            marker.on('click', function (e) {
                 $location.search('showOthers', true);
                 $location.path("/services/" + feature.id);
                 $rootScope.$apply();
+
+                var marker = e.target;
+                if (!marker.getPopup()) {
+                    var popupScope = $rootScope.$new(true);
+                    popupScope.service = feature;
+                    renderTemplate('views/service-popup.html', popupScope, function ($el) {
+                        marker.bindPopup($el.prop('outerHTML'));
+                        marker.togglePopup();
+                    });
+                }
             });
 
             feature.marker = marker;
@@ -36,4 +36,15 @@ services.factory('Markers', ['$rootScope', '$compile', '$location', function ($r
     };
 
     return service;
+
+    function renderTemplate(templatePath, templateScope, cb) {
+        $templateRequest(templatePath)
+            .then(function (template) {
+                var out = $compile(template)(templateScope);
+                $timeout(function () {
+                    cb(out);
+                });
+            });
+    }
 }]);
+
