@@ -18,6 +18,7 @@ services.factory('SiteSpecificConfig', ['DefaultSettings', function (DefaultSett
     var settings = angular.extend({}, DefaultSettings);
 
     settings.defaultLanguage = "AR";
+    settings.mapboxAccessToken = "<your_mapbox_access_token>";
 
     settings.languages = {
         "AR": {

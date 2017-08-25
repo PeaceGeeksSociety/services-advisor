@@ -17,6 +17,8 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
     var map = L.mapbox.map('mapContainer', null, { minZoom: 3 });
     Map.set(map);
 
+    L.mapbox.accessToken = SiteSpecificConfig.mapboxAccessToken;
+
     if (SiteSpecificConfig.mapTileAPI === null || SiteSpecificConfig.mapTileAPI === undefined) {
         L.mapbox.tileLayer('affinitybridge.ia7h38nj').addTo(map);
     } else {
@@ -105,7 +107,7 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
     });
 
     // TODO: don't make global but needed now for use in search controller
-    polygonLayer = L.geoJson();
+    var polygonLayer = L.geoJson();
 
     // TODO temporarily removed.
     if (SiteSpecificConfig.includePolygons) {
@@ -153,7 +155,7 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
             if (typeof bbox !== 'undefined'){
               bbox = undefined;
             } else {
-              map.fitBounds(clusterLayer, { maxZoom: 13 });
+              map.fitBounds(clusterLayer.getBounds(), { maxZoom: 13 });
             }
         }
     });
@@ -175,5 +177,5 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
     window.toggleMap = function () {
         mc.toggleClass('map-hide');
         map.invalidateSize();
-    };
+    }
 }]);
