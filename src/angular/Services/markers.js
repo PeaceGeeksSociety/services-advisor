@@ -9,15 +9,18 @@ services.factory('Markers', ['$rootScope', '$compile', '$location', function ($r
                 {icon: feature.sector.icon}
             );
 
-            // Compile new DOM element (the popup) and link it.
-            var popup = L.popup();
-
-            var popupLinkFunc = $compile(angular.element('<div ng-controller="ServicePopupCtrl"><ng-include src="\'views/service-popup.html\'"></ng-include></div>'));
-            var popupScope = $rootScope.$new(true);
-            popupScope.feature = feature;
-            popupScope.popup = popup;
-            popup.setContent(popupLinkFunc(popupScope)[0]);
-            marker.bindPopup(popup);
+            marker.bindPopup(function (marker) {
+                var id = L.Util.stamp(marker);
+                if (!popups[id]) {
+                    popups[id] = createPopupContent();
+                    // Because rendering with $compile is asynchronous we need to
+                    // schedule popup layout update to occur after it has finished.
+                    // A simple setTimeout() should do it but if it's not working
+                    // on slower devices/networks then try increasing timeout.
+                    setTimeout(function () { marker.getPopup().update(); }, 200);
+                }
+                return popups[id];
+            });
 
             // when a user clicks on a map marker, show the service in the sidebar
             marker.on('click', function () {
