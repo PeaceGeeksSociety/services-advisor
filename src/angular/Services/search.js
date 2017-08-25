@@ -86,11 +86,7 @@ services.factory('Search', ['SiteSpecificConfig', '$location', 'ServicesList', '
     /** Used to get list of currently filtered services rather than re-using an existing dimension **/
     var metaDimension = crossfilter.dimension(function (f) { return f.id; });
 
-<<<<<<< HEAD
-    var allDimensions = [categoryDimension, regionDimension, partnerDimension, nationalityDimension, locationDimension, idDimension, referralsDimension];
-=======
-    var allDimensions = [categoryDimension, textDimension, partnerDimension, nationalityDimension, regionDimension, idDimension, referralsDimension];
->>>>>>> f-55-text-search
+    var allDimensions = [categoryDimension, regionDimension, textDimension, partnerDimension, nationalityDimension, locationDimension, idDimension, referralsDimension];
 
     var _getCurrResults = function() {
         var results = metaDimension.top(Infinity);
