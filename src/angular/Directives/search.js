@@ -17,6 +17,8 @@ directives.directive('search', ['$location', '_', 'Search', function($location, 
 
             scope.clear = function(e) {
                 $location.search('search', null);
+                $location.search('category', null);
+                $location.search('region', null);
                 scope.text = '';
             }
 

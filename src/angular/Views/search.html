@@ -12,21 +12,23 @@
 </div>
 <search></search>
 <div class="row">
-  <h3>{{ 'CATEGORY' | translate }}</h3>
-  <ul class="menu list-group" language-direction-attr>
-    <li ng-repeat="item in categories.children" class="list-group-item">
-      <menu-item item="item" type="'category'"></menu-item>
-    </li>
-  </ul>
+  <collapsible label="'CATEGORY'" collapsed="false">
+    <ul class="menu list-group" language-direction-attr>
+      <li ng-repeat="item in categories.children" class="list-group-item">
+        <menu-item item="item" type="'category'"></menu-item>
+      </li>
+    </ul>
+  </collapsible>
 </div>
 
 <div class="row" ng-if="regions">
-  <h3>{{ 'REGION' | translate }}</h3>
+  <collapsible label="'REGION'" collapsed="regionCollapsed">
     <ul class="menu list-group">
       <li ng-repeat="item in regions.children" class="list-group-item">
         <menu-item item="item" type="'region'"></menu-item>
       </li>
     </ul>
+  </collapsible>
 </div>
 
 <div class="row logo-space">

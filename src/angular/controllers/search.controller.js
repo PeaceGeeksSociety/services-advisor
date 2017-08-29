@@ -33,5 +33,7 @@ controllers.controller('SearchCtrl', ['$scope', '$http', '$location', '$rootScop
         });
     });
 
+    var search = $location.search();
+    $scope.regionCollapsed = search['region'] ? false : true;
 
 }]);
