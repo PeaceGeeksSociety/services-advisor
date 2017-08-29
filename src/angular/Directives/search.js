@@ -12,10 +12,16 @@ directives.directive('search', ['$location', '_', 'Search', function($location, 
         link: function(scope, element, attrs) {
 
             scope.search = function(e) {
-                $location.search('search', scope.text);
+                e.preventDefault();
+                if (scope.text.length > 0) {
+                    $location.search('search', scope.text);
+                } else {
+                    $location.search('search', null);
+                }
             };
 
             scope.clear = function(e) {
+                e.preventDefault();
                 $location.search('search', null);
                 $location.search('category', null);
                 $location.search('region', null);
