@@ -24,7 +24,7 @@
               <label for="referral-not-required" class="col-xs-12 col-md-4 pull-left control-label">
                 {{ 'REFERRAL_NOT_REQUIRED' | translate }}
                 <div class="pull-right">
-                  <input type="radio" name="referral-radio" ng-model="referral.selection" ng-click="toggleReferral(this)" id="referral-not-required" value="referral-not-required">
+                  <input type="radio" name="referral-radio" ng-model="referral.toggleSelectionselection" ng-click="toggleReferral(this)" id="referral-not-required" value="referral-not-required">
                 </div>
               </label>
             </div>
@@ -42,20 +42,6 @@
               </div>
             </label>
           </div>
-        </div>
-
-        <h3>{{ 'ORGANIZATIONS' | translate }}</h3>
-
-        <div class="form-group organizations-form-group">
-            <div ng-repeat="organization in organizations">
-              <label class="col-xs-12 col-md-4 control-label organization-label">
-                {{organization.name}}
-                <div class="pull-right">
-                  <img class="organization-logo" ng-src="{{organization.logoUrl}}" onError="this.onerror=null;this.style.display='none';"/>
-                  <input ng-checked="filterSelection.indexOf(organization.name) > -1" ng-click="toggleSelection(organization.name)" type="checkbox" value="">
-                </div>
-              </label>
-            </div>
         </div>
 
       </form>

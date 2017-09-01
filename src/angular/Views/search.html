@@ -31,6 +31,21 @@
   </collapsible>
 </div>
 
+<div class="row" ng-if="organizations">
+  <collapsible label="'ORGANIZATIONS'" collapsed="true">
+    <div class="form-group organizations-filters">
+        <div class="organization-pill" ng-repeat="organization in organizations">
+          <label class="control-label">
+            <span class="organization-name">{{ organization.name }}</span>
+            <div class="pull-right">
+              <img class="organization-logo" ng-src="{{organization.logoUrl}}" onError="this.onerror=null;this.style.display='none';"/>
+              <search-checkbox value="organization.name" namespace="'organization'"></search-checkbox>
+            </div>
+          </label>
+        </div>
+    </div>
+  </collapsible>
+</div>
 <div class="row logo-space">
   <div class="col-xs-6"><a href="https://peacegeeks.org/" alt="Peacegeeks Homepage" target="_blank">{{ 'POWERED_BY' | translate }}</a></div>
   <div class="col-xs-6"><logo></logo></div>
