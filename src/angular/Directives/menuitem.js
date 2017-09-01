@@ -30,21 +30,25 @@ directives.directive('menuItem', ['$compile', '$location', '_', function($compil
             };
 
             scope.activate = function() {
-                var path = scope.item.getPath();
+                if (!scope.active) {
+                    var path = scope.item.getPath();
 
-                var ids = _.map(path, function (node) {
-                    return node.model.id;
-                });
+                    var ids = _.map(path, function (node) {
+                        return node.model.id;
+                    });
 
-                // getPath returns the root of the tree which has no id.
-                ids = _.reject(ids, function(item) {
-                    return item === undefined;
-                });
+                    // getPath returns the root of the tree which has no id.
+                    ids = _.reject(ids, function(item) {
+                        return item === undefined;
+                    });
 
-                $location.search(scope.type, ids);
+                    $location.search(scope.type, ids);
 
-                if (!scope.item.hasChildren()) {
-                    $location.path('/results');
+                    if (!scope.item.hasChildren()) {
+                        $location.path('/results');
+                    }
+
+                    scope.active = true;
                 }
             };
 
@@ -62,6 +66,8 @@ directives.directive('menuItem', ['$compile', '$location', '_', function($compil
                     search = _.difference(search, allHeirIds);
 
                     $location.search(scope.type, search);
+
+                    scope.active = false;
                 }
             };
 
@@ -70,18 +76,36 @@ directives.directive('menuItem', ['$compile', '$location', '_', function($compil
                 $location.path('/results');
             };
 
-            // if the search query shows this item as active set to active.
-            var search = $location.search()[scope.type];
+            scope.$on('$locationChangeSuccess', function () {
+                // if the search query shows this item as active set to active.
+                scope.getUrlState();
+            });
 
-            if (search !== undefined) {
-                if (!Array.isArray(search)) {
-                    search = [search];
+            scope.activeByUrl = function() {
+                var search = $location.search()[scope.type];
+
+                if (search !== undefined) {
+                    if (!Array.isArray(search)) {
+                        search = [search];
+                    }
+
+                    if (_.contains(search, scope.item.model.id)) {
+                        return true;
+                    }
                 }
 
-                if (_.contains(search, scope.item.model.id)) {
-                    scope.active = true;
+                return false;
+            }
+
+            scope.getUrlState = function () {
+                if (scope.activeByUrl()) {
+                    scope.activate();
+                } else {
+                    scope.deactivate();
                 }
             }
+
+            scope.getUrlState();
 
             // Prevent deepest items from opening.
             scope.open = scope.active && scope.hasChildren;

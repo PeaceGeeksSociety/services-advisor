@@ -12,7 +12,8 @@ servicesAdvisorApp.config(['$routeProvider',
             // home is the category/region search page
             when('/', {
                 templateUrl: basePath + 'search.html',
-                controller: 'SearchCtrl'
+                controller: 'SearchCtrl',
+                reloadOnSearch: false
             }).
 
             // once a category/region is click on, we display the results
