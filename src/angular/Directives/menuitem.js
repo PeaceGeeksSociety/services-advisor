@@ -16,6 +16,7 @@ directives.directive('menuItem', ['$compile', '$location', '_', function($compil
             scope.markerColor = scope.item.model.markerColor;
             scope.count = scope.item.model.count;
             scope.hasChildren = scope.item.hasChildren();
+            scope.openClass = 'glyphicon-chevron-right';
 
             scope.$watch('item.model.count', function (newValue, oldValue) {
                 scope.count = newValue;
@@ -46,6 +47,9 @@ directives.directive('menuItem', ['$compile', '$location', '_', function($compil
 
                     if (!scope.item.hasChildren()) {
                         $location.path('/results');
+                    } else {
+                        // Prevent deepest items from opening.
+                        scope.openClass = 'glyphicon-chevron-down';
                     }
 
                     scope.active = true;
@@ -68,6 +72,7 @@ directives.directive('menuItem', ['$compile', '$location', '_', function($compil
                     $location.search(scope.type, search);
 
                     scope.active = false;
+                    scope.openClass = 'glyphicon-chevron-right';
                 }
             };
 
@@ -106,9 +111,6 @@ directives.directive('menuItem', ['$compile', '$location', '_', function($compil
             }
 
             scope.getUrlState();
-
-            // Prevent deepest items from opening.
-            scope.open = scope.active && scope.hasChildren;
 
             if (scope.item.hasChildren()) {
                 element.append("<ul ng-show='active' class='list-group'><li ng-repeat='child in item.children' class='list-group-item'><menu-item item='child' type='type'></menu-item></li></ul>");
