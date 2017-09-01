@@ -17,11 +17,14 @@ require('./register.module.js');
 require('../site-specific-config.js');
 
 // Directives
+require('./Directives/collapsible.js');
 require('./Directives/field.js');
 require('./Directives/languagedirectionattr.js');
 require('./Directives/languagedirectionclass.js');
 require('./Directives/logo.js');
 require('./Directives/menuitem.js');
+require('./Directives/search.js');
+require('./Directives/searchcheckbox.js');
 require('./Directives/servicecategorysummary.js');
 
 // Routes
@@ -32,6 +35,7 @@ require('./Services/defaultsettings.js');
 require('./Services/language.js');
 require('./Services/markers.js');
 require('./Services/map.js');
+require('./Services/regionlist.js');
 require('./Services/search.js');
 require('./Services/sectorlist.js');
 require('./Services/serviceslist.js');

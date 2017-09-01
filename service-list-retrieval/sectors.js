@@ -37,8 +37,17 @@ function transformSectors(rawSectors) {
 }
 
 function Sector(source) {
-    this.id       = source.id;
-    this.parentId = source.parentId;
+    if (Array.isArray(source.parentId)) {
+        if (source.parentId[0] !== undefined) {
+            this.parentId = source.parentId[0];
+        } else {
+            this.parentId = "0";
+        }
+    } else {
+        this.parentId = source.parentId;
+    }
+
+    this.id       = source.id + "";
     this.depth    = source.depth;
     this.name     = source.name;
     this.count    = source.count = 0;
