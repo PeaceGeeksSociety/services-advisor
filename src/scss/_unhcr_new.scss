@@ -914,14 +914,12 @@ div.logo-space {
 }
 
 .organizations-filters {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 50px;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
-
   .organization-pill {
-    background-color: #E9EDEF;
+    width: 50%;
+    padding: 5px;
+    .pill-inner {
+      background-color: #E9EDEF;
+    }
   }
   label {
     padding: 10px;
