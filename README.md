@@ -52,31 +52,29 @@ git merge upstream/feature
 
 # Building
 
-This build uses npm, gulp, and browserify to manage dependencies.
+This build uses npm to manage javascript dependencies and Webpack for bundling.
 
 Versions of node and npm we know work:
 `npm 3.3.12`
 `node 5.1.0`
 
-To install gulp:
-
-- run `npm install -g gulp`
-
 To build the js/css:
 
 - run `npm install` to download the 3rd party libs in `package.json`
 - `cp src/site-specific-config.js.dist src/site-specific-config.js` to use the default config
-- during development:
-    - run `gulp` in the background, i.e. run `gulp` in a terminal and leave it running. It will automatically recompile
-      `js/app.js` and `css.main.css` files as you edit the src files.
-- when preparing for production:
-    - run `gulp dist` to create minified `js.app.js` and `css/main.css` files.
 
-# To run the project
-- run `npm install -g http-server`
-- run `http-server`
-- go to `http://localhost:8080`
-- in the future, since you've already installed http-server you can just run `http-server`
+### For development
+- run `npm start`
+
+This will:
+
+- compile javascript, css and other assets
+- start watching for changes
+- run a local server (defaults to localhost:8080)
+- open a tab pointing to the site in your web browser
+
+### Preparing for production
+- run `npm run build` to create minified javascript and css files ready for production.
 
 # To update services data
 Run this script. Must have node installed, and have run `npm install`
