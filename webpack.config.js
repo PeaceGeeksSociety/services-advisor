@@ -95,7 +95,7 @@ module.exports = {
         historyApiFallback: false,
         stats: {colors: true}
     },
-    devtool: 'sourcemap'
+    devtool: 'source-map'
 };
 
 const bundleStatistics = new Visualizer({
