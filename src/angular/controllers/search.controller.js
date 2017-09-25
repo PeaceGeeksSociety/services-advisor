@@ -4,6 +4,8 @@ var controllers = angular.module('controllers');
  * For the category/region search view
  */
 controllers.controller('SearchCtrl', ['$scope', '$http', '$location', '$rootScope', 'SiteSpecificConfig', 'ServicesList', 'SectorList', 'RegionList', 'Search', '_', '$translate', 'Language', function ($scope, $http, $location, $rootScope, SiteSpecificConfig, ServicesList, SectorList, RegionList, Search, _, $translate, Language) {
+    $scope.feedbackMail = SiteSpecificConfig.feedbackMail;
+
     $scope.organizations = {};
 
     SectorList.get(function (sectors) {
