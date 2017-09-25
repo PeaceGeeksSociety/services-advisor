@@ -65,6 +65,8 @@ module.exports = {
             // copy-html-index
             {from: 'src/index.html'},
             // {from: 'src/rev-manifest.json', to: 'web'},
+            // copy-fonts
+            {context: 'src/fonts', from: '**/*', to: 'fonts'},
             // copy-images
             {context: 'src/images', from: '**.*', to: 'images'},
             // copy-html-views
