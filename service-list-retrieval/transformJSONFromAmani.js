@@ -172,21 +172,22 @@ var transformActivityInfoServices = function(services) {
         }
         serviceTransformed.location = locationFeature;
 
-        serviceTransformed.nationality         = serviceUntransformed.nationality;
-        serviceTransformed.intakeCriteria      = serviceUntransformed.intakeCriteria;
-        serviceTransformed.accessibility       = serviceUntransformed.accessibility;
-        serviceTransformed.coverage            = serviceUntransformed.coverage;
-        serviceTransformed.availability        = serviceUntransformed.availability;
-        serviceTransformed.referralMethod      = serviceUntransformed.referralMethod;
-        serviceTransformed.referralNextSteps   = serviceUntransformed.referralNextSteps;
-        serviceTransformed.feedbackMechanism   = serviceUntransformed.feedbackMechanism;
-        serviceTransformed.feedbackDelay       = serviceUntransformed.feedbackDelay;
-        serviceTransformed.complaintsMechanism = serviceUntransformed.complaintsMechanism;
-        serviceTransformed.hotlinePhone        = serviceUntransformed.hotlinePhone;
-        serviceTransformed.infoLink            = serviceUntransformed.infoLink;
-        serviceTransformed.publicAddress       = serviceUntransformed.publicAddress;
-        serviceTransformed.additionalDetails   = serviceUntransformed.additionalDetails;
-        serviceTransformed.comments            = serviceUntransformed.comments;
+        serviceTransformed.nationality            = serviceUntransformed.nationality;
+        serviceTransformed.intakeCriteria         = serviceUntransformed.intakeCriteria;
+        serviceTransformed.accessibility          = serviceUntransformed.accessibility;
+        serviceTransformed.coverage               = serviceUntransformed.coverage;
+        serviceTransformed.availability           = serviceUntransformed.availability;
+        serviceTransformed.referralMethod         = serviceUntransformed.referralMethod;
+        serviceTransformed.referralNextSteps      = serviceUntransformed.referralNextSteps;
+        serviceTransformed.feedbackMechanism      = serviceUntransformed.feedbackMechanism;
+        serviceTransformed.feedbackDelay          = serviceUntransformed.feedbackDelay;
+        serviceTransformed.legalDocumentsRequired = serviceUntransformed["Legal Documents Required"]
+        serviceTransformed.complaintsMechanism    = serviceUntransformed.complaintsMechanism;
+        serviceTransformed.hotlinePhone           = serviceUntransformed.hotlinePhone;
+        serviceTransformed.infoLink               = serviceUntransformed.infoLink;
+        serviceTransformed.publicAddress          = serviceUntransformed.publicAddress;
+        serviceTransformed.additionalDetails      = serviceUntransformed.additionalDetails;
+        serviceTransformed.comments               = serviceUntransformed.comments;
 
         serviceTransformed.referral = transformReferralMethod(serviceUntransformed);
 

@@ -77,6 +77,7 @@ function transformActivityInfoServices(services, context) {
         serviceTransformed.referralNextSteps   = serviceUntransformed.referralNextSteps;
         serviceTransformed.feedbackMechanism   = serviceUntransformed.feedbackMechanism;
         serviceTransformed.feedbackDelay       = serviceUntransformed.feedbackDelay;
+        serviceTransformed.legalDocumentsRequired = serviceUntransformed["Legal Documents Required"]
         serviceTransformed.complaintsMechanism = serviceUntransformed.complaintsMechanism;
         serviceTransformed.hotlinePhone        = serviceUntransformed.hotlinePhone;
         serviceTransformed.infoLink            = serviceUntransformed.infoLink;

@@ -23,7 +23,7 @@ controllers.controller('ServiceCtrl', ['$scope', '$routeParams', '$location', 'S
         $scope.service.partnerLogoUrl = service.logoUrl;
 
         $scope.service.servicesProvided = service.servicesProvided;
-
+        console.log(service);
         // Details
         $scope.service.nationality = service.nationality;
         $scope.service.intakeCriteria = service.intakeCriteria;
@@ -35,6 +35,7 @@ controllers.controller('ServiceCtrl', ['$scope', '$routeParams', '$location', 'S
         $scope.service.referralNextSteps = service.referralNextSteps;
         $scope.service.feedbackMechanism = service.feedbackMechanism;
         $scope.service.feedbackDelay = service.feedbackDelay;
+        $scope.service.legalDocumentsRequired = service.legalDocumentsRequired;
         $scope.service.complaintsMechanism = service.complaintsMechanism;
         $scope.service.additionalDetails = service.additionalDetails;
         $scope.service.comments = service.comments;

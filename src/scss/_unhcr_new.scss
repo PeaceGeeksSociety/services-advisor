@@ -209,8 +209,6 @@ h3 {
 
       // override padding from grid because the select box for language was squished against the filters
       padding: 0;
-      position: fixed;
-      right: 5px;
     }
 
     #selectedLanguage {
@@ -928,4 +926,8 @@ div.logo-space {
   .organization-logo {
     height: 30px;
   }
+}
+
+.leaflet-marker-icon.you-are-here {
+  background-image: url('/images/you-are-here.png');
 }

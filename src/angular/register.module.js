@@ -3,7 +3,10 @@
 
 /*** Routes ***/
 angular.module('servicesAdvisorApp', ['ngRoute', 'controllers', 'directives', 'services', 'pascalprecht.translate', 'ngPrint'])
-    .run(['$rootScope', '$location', '$window', 'SiteSpecificConfig', function($rootScope, $location, $window, SiteSpecificConfig) {
+    .run(['$rootScope', '$location', '$window', '$translate', 'SiteSpecificConfig', 'Language', function($rootScope, $location, $window, $translate, SiteSpecificConfig, Language) {
+
+        var language = Language.getLanguageKey() || alert("ERROR: site-specific-config.js doesn't have any keys in it!");
+        $translate.use(language);
 
         if (SiteSpecificConfig.analyticsId) {
             // initialise google analytics

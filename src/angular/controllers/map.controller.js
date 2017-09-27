@@ -28,9 +28,25 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
     // Add version number to map corner.
     map.addControl(new VersionControl(SiteSpecificConfig.version));
 
+    var myIcon = L.divIcon({ className: 'you-are-here' });
+    myIcon.options.iconSize = [20, 46];
+    var locationMarker = L.marker([50.505, 30.57], { icon: myIcon }).addTo(map);
+    $translate('YOU_ARE_HERE').then(function (text) {
+        var myIconPopup = L.popup({ offset: [0, -20] })
+            .setContent(text);
+        locationMarker.bindPopup(myIconPopup);
+    });
+
     map.locate()
         .on('locationfound', function(e) {
-            L.circleMarker(e.latlng).addTo(map);
+            var myIcon = L.divIcon({ className: 'you-are-here' });
+            myIcon.options.iconSize = [20, 46];
+            var locationMarker = L.marker(e.latlng, { icon: myIcon }).addTo(map);
+            $translate('YOU_ARE_HERE').then(function (text) {
+                var myIconPopup = L.popup({ offset: [0, -20] })
+                    .setContent(text);
+                locationMarker.bindPopup(myIconPopup);
+            });
         })
         .on('locationerror', function(e) {
             console.info(e.message);

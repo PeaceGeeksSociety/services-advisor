@@ -94,6 +94,10 @@
             <td>{{ 'FEEDBACK_DELAY' | translate }}</td>
             <td>{{service.feedbackDelay}}</td>
           </tr>
+          <tr field="legalDocumentsRequired" ng-if="service.legalDocumentsRequired">
+            <td>{{ 'LEGAL_DOCUMENTS_REQUIRED' | translate }}</td>
+            <td>{{service.legalDocumentsRequired}}</td>
+          </tr>
           <tr field="complaintsMechanism" ng-if="service.complaintsMechanism">
             <td>{{ 'COMPLAINTS_MECHANISM' | translate }}</td>
             <td>{{service.complaintsMechanism}}</td>
