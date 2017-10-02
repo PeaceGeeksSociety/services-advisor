@@ -23,7 +23,7 @@ controllers.controller('ServiceCtrl', ['$scope', '$routeParams', '$location', 'S
         $scope.service.partnerLogoUrl = service.logoUrl;
 
         $scope.service.servicesProvided = service.servicesProvided;
-        console.log(service);
+
         // Details
         $scope.service.nationality = service.nationality;
         $scope.service.intakeCriteria = service.intakeCriteria;
