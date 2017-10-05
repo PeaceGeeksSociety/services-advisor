@@ -31,7 +31,7 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
     map.locate()
         .on('locationfound', function(e) {
             var myIcon = L.divIcon({ className: 'you-are-here' });
-            myIcon.options.iconSize = [20, 46];
+            myIcon.options.iconSize = [15, 35];
             var locationMarker = L.marker(e.latlng, { icon: myIcon }).addTo(map);
             $translate('YOU_ARE_HERE').then(function (text) {
                 var myIconPopup = L.popup({ offset: [0, -20] })
