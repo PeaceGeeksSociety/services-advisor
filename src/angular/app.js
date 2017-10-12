@@ -10,6 +10,9 @@
 
 ************************************************************************************************* */
 
+// SASS for the project.
+require('../scss/main.scss');
+
 // Register App Modules
 require('./register.module.js');
 

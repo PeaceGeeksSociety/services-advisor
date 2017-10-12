@@ -4,11 +4,14 @@ const process = require('process');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const Visualizer = require('webpack-visualizer-plugin');
+const ManifestPlugin = require('webpack-manifest-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 
 const NODE_ENV = process.env.NODE_ENV;
 
 const extractCSSPlugin = new ExtractTextPlugin({
-    filename: 'css/[name].css',
+    filename: 'css/[name].[chunkhash].css',
     allChunks: true
 });
 
@@ -16,13 +19,10 @@ module.exports = {
     entry: {
         app: [
             Path.join(__dirname, 'src/angular/app.js')
-        ],
-        main: [
-            Path.join(__dirname, 'src/scss/main.scss')
         ]
     },
     output: {
-        filename: 'js/[name].js',
+        filename: 'js/[name].[chunkhash].js',
         path: Path.join(__dirname, 'web'),
         publicPath: '/'
     },
@@ -61,10 +61,8 @@ module.exports = {
         ]
     },
     plugins: [
+        new ManifestPlugin(),
         new CopyWebpackPlugin([
-            // copy-html-index
-            {from: 'src/index.html'},
-            // {from: 'src/rev-manifest.json', to: 'web'},
             // copy-fonts
             {context: 'src/fonts', from: '**/*', to: 'fonts'},
             // copy-images
@@ -89,7 +87,13 @@ module.exports = {
                 }
             }
         }),
-        extractCSSPlugin
+        extractCSSPlugin,
+        new HtmlWebpackPlugin({
+            template: 'src/index.ejs'
+        }),
+        new WebpackCleanupPlugin({
+            exclude: ['.htaccess', 'favicon.ico', 'humans.txt', 'robots.txt', '**/*.json', 'libs/**/*']
+        })
     ],
     devServer: {
         contentBase: Path.join(__dirname, "web"),

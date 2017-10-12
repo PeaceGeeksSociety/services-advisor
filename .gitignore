@@ -3,7 +3,7 @@
 node_modules/*
 .DS_Store
 web/*
-!web/js
+web/js
 !web/favicon.ico
 !web/humans.txt
 !web/robots.txt
