@@ -35,6 +35,10 @@ main > .row
 /* this class is added to the body once we determine our language */
 body.lang-rtl {
   direction: rtl;
+  & .format-plaintext {
+    unicode-bidi: plaintext;
+    text-align: right;
+  }
   @media (min-width: $screen-xs-max) {
     font-size: 16px;
 
