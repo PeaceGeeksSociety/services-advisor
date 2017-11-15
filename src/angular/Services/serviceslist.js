@@ -33,8 +33,9 @@ services.factory('ServicesList', ['$http', '$translate', 'Language', 'SiteSpecif
                     return v.model.id == categoryId;
                 });
                 feature.sector = sector.model;
-                Markers.addMarker(feature);
             });
+
+            Markers.createMarkersFromServices(services);
 
             return services;
         });

@@ -7,13 +7,13 @@ services.factory('Markers', ['$rootScope', '$compile', '$location', '$templateRe
 
     var service = {
         markers: [],
-        addMarker: function (feature) {
+        createMarker: function (feature) {
             var marker = L.marker(
                 feature.location.geometry.coordinates.reverse(),
                 {icon: feature.sector.icon}
             );
 
-            marker.on('click', function (e) {
+            marker.on('click', function onMarkerClick(e) {
                 $location.search('showOthers', true);
                 $location.path("/services/" + feature.id);
                 $rootScope.$apply();
@@ -31,8 +31,12 @@ services.factory('Markers', ['$rootScope', '$compile', '$location', '$templateRe
 
             feature.marker = marker;
             service.markers.push(marker);
-            $rootScope.$broadcast('markers.add', marker);
-        }
+            return marker;
+        },
+        createMarkersFromServices(services) {
+            const markers = services.map(service.createMarker);
+            $rootScope.$broadcast('markers.add', markers);
+        },
     };
 
     return service;

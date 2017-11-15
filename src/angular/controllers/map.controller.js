@@ -39,7 +39,7 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
     if (_.has(parameters, 'bbox')){
         var bbox = JSON.parse(decodeURI(parameters.bbox));
         delete parameters.bbox;
-        map.fitBounds([[bbox._northEast.lat, bbox._northEast.lng], [bbox._southWest.lat, bbox._southWest.lng]]);
+        clusterLayerBugFix.fitBounds([[bbox._northEast.lat, bbox._northEast.lng], [bbox._southWest.lat, bbox._southWest.lng]]);
     }
 
     /* TODO: Make a inputs dynamic
@@ -59,14 +59,16 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
         // Search.filterByProxmity(geoLocationObject);
 
     // Initialize the empty layer for the markers, and add it to the map.
-    var clusterLayer = new L.MarkerClusterGroup({
-        zoomToBoundsOnClick: false,
-        spiderfyDistanceMultiplier: 2,
-        showCoverageOnHover: false,
-        iconCreateFunction: createIcon
-    });
-
-    clusterLayer.addTo(map);
+    var clusterLayerBugFix = ClusterLayerBugFix(map);
+    var clusterLayer = new L.MarkerClusterGroup(angular.extend(
+        {
+            zoomToBoundsOnClick: false,
+            spiderfyDistanceMultiplier: 2,
+            showCoverageOnHover: false,
+            iconCreateFunction: createIcon
+        },
+        clusterLayerBugFix.clusterLayerOptions
+    ));
 
     // When user clicks on a cluster, zoom directly to its bounds.  If we don't do this,
     // they have to click repeatedly to zoom in enough for the cluster to spiderfy.
@@ -164,8 +166,9 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
         }
     }
 
-    function onMarkersAdd(event, marker) {
-        marker.addTo(clusterLayer);
+    function onMarkersAdd(event, markers) {
+        clusterLayer.addLayers(markers);
+        clusterLayer.addTo(map);
     }
 
     function onPolygonMouseOver(e) {
@@ -189,18 +192,65 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
         clusterLayer.clearLayers();
 
         if (results.length > 0) {
-            // Loop through the filtered results, adding the markers back to the map.
-            results.forEach(function (feature) {
-                // Add the filtered markers back to the map's data layer
-                feature.marker.addTo(clusterLayer);
-            });
+            // Add the new result's markers back to the map.
+            const markers = results.map((f) => f.marker);
+            clusterLayer.addLayers(markers)
 
             if (typeof bbox !== 'undefined'){
               bbox = undefined;
             } else {
-              map.fitBounds(clusterLayer.getBounds(), { maxZoom: 13 });
+                // TODO: Because addLayers is asynchronous, we can't calculate
+                //       bounds until it's complete. Therefore we have to
+                //       calculate the bounds ourselves.
+                const bounds = L.featureGroup(markers).getBounds();
+                clusterLayerBugFix.fitBounds(bounds);
             }
         }
+    }
+
+    // Fix to avoid inconsistent state bug during MarkerCluster.addLayers()
+    // Issue: https://github.com/Leaflet/Leaflet.markercluster/issues/743
+    function ClusterLayerBugFix(map, clusterLayerOptions=null, fitBoundsOptions=null) {
+        let _map = map;
+        let _chunkProgressCalled = false;
+        let _bounds;
+        let _fitBoundsOptions = fitBoundsOptions || {maxZoom: 13};
+        let _clusterLayerOptions = clusterLayerOptions || {chunkLoading: true, chunkInterval: 200, chunkDelay: 50};
+        _clusterLayerOptions.onClusterLayerChunkProgress = onClusterLayerChunkProgress;
+
+        return {
+            clusterLayerOptions: _clusterLayerOptions,
+            fitBounds
+        }
+
+        // Wait until first chunkInterval duration as passed before trying to
+        // call fitBounds().
+        // If chunkProgress *has* been called then MarkerClusterLayer hasn't
+        // finished adding markers to map and we'll instead perform the
+        // fitBounds() in onClusterChunkProgress(), when it is complete.
+        function fitBounds(bounds) {
+            _chunkProgressCalled = false;
+            _bounds = bounds;
+            setTimeout(() => {
+                if (!_chunkProgressCalled) {
+                    _fitBounds(_bounds);
+                }
+            }, _clusterLayerOptions.chunkInterval + 1);
+        }
+
+        // Keep track of cluster chunk progress to determine when to call
+        // fitBounds().
+        function onClusterLayerChunkProgress(progress, total) {
+            _chunkProgressCalled = true;
+            if (progress === total) {
+                _fitBounds(_bounds);
+            }
+        }
+
+        function _fitBounds(bounds) {
+            _map.fitBounds(bounds, _fitBoundsOptions)
+        }
+
     }
 
 }]);
