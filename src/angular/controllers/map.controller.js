@@ -29,19 +29,8 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
     map.addControl(new VersionControl(SiteSpecificConfig.version));
 
     map.locate()
-        .on('locationfound', function(e) {
-            var myIcon = L.divIcon({ className: 'you-are-here' });
-            myIcon.options.iconSize = [15, 35];
-            var locationMarker = L.marker(e.latlng, { icon: myIcon }).addTo(map);
-            $translate('YOU_ARE_HERE').then(function (text) {
-                var myIconPopup = L.popup({ offset: [0, -20] })
-                    .setContent(text);
-                locationMarker.bindPopup(myIconPopup);
-            });
-        })
-        .on('locationerror', function(e) {
-            console.info(e.message);
-        });
+        .on('locationfound', onLocationFound)
+        .on('locationerror', onLocationError);
 
     // On initial load see if we have bounding box info on the query string.
     // If yes, use it and then unset it.
@@ -74,29 +63,94 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
         zoomToBoundsOnClick: false,
         spiderfyDistanceMultiplier: 2,
         showCoverageOnHover: false,
-        iconCreateFunction: function(cluster) {
-            var childCount = cluster.getChildCount();
+        iconCreateFunction: createIcon
+    });
 
-            var c = ' marker-cluster-';
-            if (childCount < 10) {
-                c += 'small';
-            } else if (childCount < 100) {
-                c += 'medium';
-            } else {
-                c += 'large';
-            }
+    clusterLayer.addTo(map);
 
-            return new L.DivIcon.CustomColor({
-                html: '<div><span>' + childCount + '</span></div>', className: 'marker-cluster' + c,
-                iconSize: new L.Point(40, 40),
-                clusterCount: childCount,
-                clusterColors: SiteSpecificConfig.clusterColors
-            });
-        }
-    }).addTo(map);
     // When user clicks on a cluster, zoom directly to its bounds.  If we don't do this,
     // they have to click repeatedly to zoom in enough for the cluster to spiderfy.
-    clusterLayer.on('clusterclick', function (a) {
+    clusterLayer.on('clusterclick', onClusterClick);
+    $scope.$on('markers.add', onMarkersAdd);
+
+    // TODO: don't make global but needed now for use in search controller
+    var polygonLayer = L.geoJson();
+
+    // TODO temporarily removed.
+    if (SiteSpecificConfig.includePolygons) {
+        map.addLayer(polygonLayer);
+    }
+
+    jQuery.getJSON( "polygons.json", (polygonData) => {
+        // Create the polygon layer and add to the map.
+        polygonLayer.addData(polygonData);
+
+        polygonLayer.getLayers().forEach((f) => {
+            f.setStyle({
+                opacity: 0.3
+            });
+            L.DomEvent.addListener(f, 'mouseover', onPolygonMouseOver, this);
+            L.DomEvent.addListener(f, 'mouseout', onPolygonMouseOut, this);
+        });
+    });
+
+    $rootScope.$on('FILTER_CHANGED', onFilterChanged);
+
+    // Doing some stuff for the results views here because this controller is active
+    // for the whole application
+    var mc = $('#mapContainer');
+
+    // if the user is on mobile and has the map only partly showing, when they start to scroll
+    // we want to hide the map and show the whole results container since it's too small to try to user
+    // when the map is showing
+    $("#serviceList").scroll(_.throttle(() => {
+        if (!mc.hasClass('map-hide')) {
+            window.toggleMap();
+        }
+    }, 10));
+
+    // HACK: using a global here so we can use an onclick="toggleMap()"
+    window.toggleMap = () => {
+        mc.toggleClass('map-hide');
+        map.invalidateSize();
+    }
+
+    function onLocationFound(e) {
+        var myIcon = L.divIcon({ className: 'you-are-here' });
+        myIcon.options.iconSize = [15, 35];
+        var locationMarker = L.marker(e.latlng, { icon: myIcon }).addTo(map);
+        $translate('YOU_ARE_HERE').then(function (text) {
+            var myIconPopup = L.popup({ offset: [0, -20] })
+                .setContent(text);
+            locationMarker.bindPopup(myIconPopup);
+        });
+    }
+
+    function onLocationError(e) {
+        console.info(e.message);
+    }
+
+    function createIcon(cluster) {
+        var childCount = cluster.getChildCount();
+
+        var c = ' marker-cluster-';
+        if (childCount < 10) {
+            c += 'small';
+        } else if (childCount < 100) {
+            c += 'medium';
+        } else {
+            c += 'large';
+        }
+
+        return new L.DivIcon.CustomColor({
+            html: '<div><span>' + childCount + '</span></div>', className: 'marker-cluster' + c,
+            iconSize: new L.Point(40, 40),
+            clusterCount: childCount,
+            clusterColors: SiteSpecificConfig.clusterColors
+        });
+    }
+
+    function onClusterClick(a) {
         // Close any popups that are open already. This helps if we came via "show on map" link,
         // which spawns an unbound popup.
         map.closePopup();
@@ -108,47 +162,29 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
             // If the markers in this cluster are NOT all in the same place, zoom in on them.
             a.layer.zoomToBounds();
         }
-    });
-    $scope.$on('markers.add', function (event, marker) {
-        marker.addTo(clusterLayer);
-    });
-
-    // TODO: don't make global but needed now for use in search controller
-    var polygonLayer = L.geoJson();
-
-    // TODO temporarily removed.
-    if (SiteSpecificConfig.includePolygons) {
-        map.addLayer(polygonLayer);
     }
 
-    jQuery.getJSON( "polygons.json", function( polygonData ) {
-        // Create the polygon layer and add to the map.
-        polygonLayer.addData(polygonData);
+    function onMarkersAdd(event, marker) {
+        marker.addTo(clusterLayer);
+    }
 
-        polygonLayer.getLayers().forEach(function(f) {
-            f.setStyle({
+    function onPolygonMouseOver(e) {
+        //if(this._activeFilters.indexOf(polygonLayer.getLayerId(e.target)) < 0) {
+            e.target.setStyle({
+                opacity: 0.5
+            });
+        //}
+    }
+
+    function onPolygonMouseOut(e) {
+        //if(this._activeFilters.indexOf(polygonLayer.getLayerId(e.target)) < 0) {
+            e.target.setStyle({
                 opacity: 0.3
             });
+        //}
+    }
 
-            L.DomEvent.addListener(f, 'mouseover', function(e) {
-                //if(this._activeFilters.indexOf(polygonLayer.getLayerId(e.target)) < 0) {
-                    e.target.setStyle({
-                        opacity: 0.5
-                    });
-                //}
-            }, this);
-
-            L.DomEvent.addListener(f, 'mouseout', function(e) {
-                //if(this._activeFilters.indexOf(polygonLayer.getLayerId(e.target)) < 0) {
-                    e.target.setStyle({
-                        opacity: 0.3
-                    });
-                //}
-            }, this);
-        });
-    });
-
-    $rootScope.$on('FILTER_CHANGED', function(event, results) {
+    function onFilterChanged(event, results) {
         // Clear all the map markers.
         clusterLayer.clearLayers();
 
@@ -165,24 +201,6 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
               map.fitBounds(clusterLayer.getBounds(), { maxZoom: 13 });
             }
         }
-    });
-
-    // Doing some stuff for the results views here because this controller is active
-    // for the whole application
-    var mc = $('#mapContainer');
-
-    // if the user is on mobile and has the map only partly showing, when they start to scroll
-    // we want to hide the map and show the whole results container since it's too small to try to user
-    // when the map is showing
-    $("#serviceList").scroll(_.throttle(function() {
-        if (!mc.hasClass('map-hide')) {
-            window.toggleMap();
-        }
-    }, 10));
-
-    // HACK: using a global here so we can use an onclick="toggleMap()"
-    window.toggleMap = function () {
-        mc.toggleClass('map-hide');
-        map.invalidateSize();
     }
+
 }]);

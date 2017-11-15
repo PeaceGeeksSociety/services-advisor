@@ -3,33 +3,46 @@ var controllers = angular.module('controllers');
 /**
  * For the category/region search view
  */
-controllers.controller('SearchCtrl', ['$scope', '$http', '$location', '$rootScope', 'SiteSpecificConfig', 'ServicesList', 'SectorList', 'RegionList', 'Search', '_', '$translate', 'Language', function ($scope, $http, $location, $rootScope, SiteSpecificConfig, ServicesList, SectorList, RegionList, Search, _, $translate, Language) {
+controllers.controller(
+    'SearchCtrl',
+    ['$scope', '$http', '$location', '$rootScope', 'SiteSpecificConfig', 'ServicesList', 'SectorList', 'RegionList', 'Search', '_', '$translate', 'Language',
+    ($scope, $http, $location, $rootScope, SiteSpecificConfig, ServicesList, SectorList, RegionList, Search, _, $translate, Language) => {
+
     $scope.feedbackMail = SiteSpecificConfig.feedbackMail;
 
     $scope.organizations = {};
 
-    SectorList.get(function (sectors) {
+    SectorList.get(onGetSectors);
+    RegionList.get(onGetRegions);
+    ServicesList.get(onGetServices);
+
+    $scope.$on('$locationChangeSuccess', onLocationChangeSuccess);
+    $scope.$on('FILTER_CHANGED', onFilterChanged);
+    // toggle selection for a given organization by name
+    $scope.toggleSelection = toggleSelection;
+
+    function onGetSectors(sectors) {
         $scope.categories = sectors;
-    });
+    }
 
-    RegionList.get(function (regions) {
+    function onGetRegions(regions) {
         $scope.regions = regions;
-    });
+    }
 
-    ServicesList.get(function (services) {
+    function onGetServices(services) {
         _.each(services, function (service) {
             $scope.organizations[service.organization.name] = { name: service.organization.name, logoUrl: service.logoUrl };
         });
-    });
+    }
 
-    $scope.$on('$locationChangeSuccess', function () {
+    function onLocationChangeSuccess() {
         // Only filter results if we stay on front route.
         if ($location.path() === '/') {
             Search.filterByUrlParameters();
         }
-    });
+    }
 
-    $scope.$on('FILTER_CHANGED', function (event, results) {
+    function onFilterChanged(event, results) {
         var categoryCounts = Search.getCategoryGroup.value();
         var regionCounts = Search.getRegionGroup.value();
 
@@ -40,10 +53,9 @@ controllers.controller('SearchCtrl', ['$scope', '$http', '$location', '$rootScop
         $scope.regions.walk(function (node) {
             node.model.count = regionCounts[node.model.id] || 0;
         });
-    });
+    }
 
-    // toggle selection for a given organization by name
-    $scope.toggleSelection = function(organization) {
+    function toggleSelection(organization) {
         var parameters = $location.search();
 
         if (_.has(parameters, 'organization')) {
@@ -66,5 +78,5 @@ controllers.controller('SearchCtrl', ['$scope', '$http', '$location', '$rootScop
         $rootScope.filterSelection = parameters.organization;
         $location.search(parameters);
         Search.filterByUrlParameters();
-    };
+    }
 }]);
