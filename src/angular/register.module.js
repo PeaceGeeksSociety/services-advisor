@@ -28,9 +28,17 @@ angular
             SectorList.all(),
             ServicesList.all()
         ]);
+        // Get a handle on our spinner.
+        const spinner = document.getElementById('spinner-modal');
         awaitData
-            .then((data) => console.log('Data pre-load complete!', data))
-            .catch((e) => console.error(`Error during pre-load: ${e.message}`, e));
+            .then((data) => {
+                console.log('Data pre-load complete!', data);
+                spinner.style.display = 'none';
+            })
+            .catch((e) => {
+                console.error(`Error during pre-load: ${e.message}`, e);
+                spinner.style.display = 'none';
+            });
     }
 ]);
 
