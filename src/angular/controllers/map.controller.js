@@ -39,7 +39,7 @@ controllers.controller('MapCtrl', ['$scope', '$rootScope', '$location', '$transl
     if (_.has(parameters, 'bbox')){
         var bbox = JSON.parse(decodeURI(parameters.bbox));
         delete parameters.bbox;
-        clusterLayerBugFix.fitBounds([[bbox._northEast.lat, bbox._northEast.lng], [bbox._southWest.lat, bbox._southWest.lng]]);
+        map.fitBounds([[bbox._northEast.lat, bbox._northEast.lng], [bbox._southWest.lat, bbox._southWest.lng]]);
     }
 
     /* TODO: Make a inputs dynamic
