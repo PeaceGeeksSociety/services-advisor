@@ -1,3 +1,5 @@
+const L = require("leaflet");
+
 var VersionControl = L.Control.extend({
     version: '',
     options: {

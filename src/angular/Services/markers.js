@@ -1,6 +1,9 @@
 var services = angular.module('services');
 
-services.factory('Markers', ['$rootScope', '$compile', '$location', '$templateRequest', '$timeout', function ($rootScope, $compile, $location, $templateRequest, $timeout) {
+services.factory('Markers', [
+    '$rootScope', '$compile', '$location', '$templateRequest', '$timeout',
+    ($rootScope, $compile, $location, $templateRequest, $timeout) => {
+
     // Eagerly fetching service-popup template as we'll need it and it will be
     // (in theory) cached.
     $templateRequest('views/service-popup.html');
@@ -35,7 +38,7 @@ services.factory('Markers', ['$rootScope', '$compile', '$location', '$templateRe
         },
         createMarkersFromServices(services) {
             const markers = services.map(service.createMarker);
-            $rootScope.$broadcast('markers.add', markers);
+            return markers;
         },
     };
 

@@ -10,29 +10,26 @@ controllers.controller(
 
     $scope.feedbackMail = SiteSpecificConfig.feedbackMail;
 
-    $scope.organizations = {};
+    // $scope.organizations = {};
 
-    SectorList.get(onGetSectors);
-    RegionList.get(onGetRegions);
-    ServicesList.get(onGetServices);
+    const awaitData = Promise.all([RegionList.get(), SectorList.get(), ServicesList.get()]).then(setScopeData);
 
     $scope.$on('$locationChangeSuccess', onLocationChangeSuccess);
     $scope.$on('FILTER_CHANGED', onFilterChanged);
     // toggle selection for a given organization by name
     $scope.toggleSelection = toggleSelection;
 
-    function onGetSectors(sectors) {
-        $scope.categories = sectors;
-    }
-
-    function onGetRegions(regions) {
+    function setScopeData([regions, sectors, services]) {
         $scope.regions = regions;
-    }
-
-    function onGetServices(services) {
-        _.each(services, function (service) {
-            $scope.organizations[service.organization.name] = { name: service.organization.name, logoUrl: service.logoUrl };
-        });
+        $scope.categories = sectors;
+        $scope.organizations = services.reduce((organizations, service) => {
+            const {organization: {name}, logoUrl} = service;
+            if (!organizations.hasOwnProperty(name)) {
+                organizations[name] = {name, logoUrl};
+            }
+            return organizations;
+        }, {});
+        return [regions, sectors, services];
     }
 
     function onLocationChangeSuccess() {
@@ -46,12 +43,15 @@ controllers.controller(
         var categoryCounts = Search.getCategoryGroup.value();
         var regionCounts = Search.getRegionGroup.value();
 
-        $scope.categories.walk(function (node) {
-            node.model.count = categoryCounts[node.model.id] || 0;
-        });
-
-        $scope.regions.walk(function (node) {
-            node.model.count = regionCounts[node.model.id] || 0;
+        awaitData.then(([regions, sectors, services]) => {
+            // sectors.walk((node) => {
+            $scope.categories.walk((node) => {
+                node.model.count = categoryCounts[node.model.id] || 0;
+            });
+            // regions.walk((node) => {
+            $scope.regions.walk((node) => {
+                node.model.count = regionCounts[node.model.id] || 0;
+            });
         });
     }
 

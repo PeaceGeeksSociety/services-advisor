@@ -5,7 +5,7 @@ var Fuse = require('fuse.js');
 /**
  * Holds the state of the current search and the current results of that search
  */
-services.factory('Search', ['SiteSpecificConfig', '$location', 'ServicesList', '$rootScope', '_', function (SiteSpecificConfig, $location, ServicesList, $rootScope, _) {
+services.factory('Search', ['SiteSpecificConfig', '$location', 'RegionList', 'SectorList', 'ServicesList', '$rootScope', '_', function (SiteSpecificConfig, $location, RegionList, SectorList, ServicesList, $rootScope, _) {
     var crossfilter = require('crossfilter')();
     var fuse;
 
@@ -34,7 +34,9 @@ services.factory('Search', ['SiteSpecificConfig', '$location', 'ServicesList', '
     /** End crossfilter setup **/
 
     // asynchronously initialize crossfilter
-    ServicesList.get(onGetServicesList);
+    const awaitData = fetchData()
+        .then(indexServices)
+        .then(broadcastFilterChanged);
 
     return {
         selectCategory: withClearAndEmit(selectCategory),
@@ -52,6 +54,14 @@ services.factory('Search', ['SiteSpecificConfig', '$location', 'ServicesList', '
         getCategoryGroup: categoryGroup,
         getRegionGroup: regionGroup,
     };
+
+    function fetchData() {
+        return Promise.all([
+            RegionList.get(),
+            SectorList.get(),
+            ServicesList.get()
+        ]);
+    }
 
     function reduceInitial() {
         return {};
@@ -79,10 +89,13 @@ services.factory('Search', ['SiteSpecificConfig', '$location', 'ServicesList', '
         }
     }
 
-    function onGetServicesList(allServices) {
-        $rootScope.allServices = allServices;
-        crossfilter.add(allServices);
-        fuse = new Fuse(allServices, SiteSpecificConfig.search);
+    function indexServices([regions, sectors, services]) {
+        $rootScope.allServices = services;
+        crossfilter.add(services);
+        fuse = new Fuse(services, SiteSpecificConfig.search);
+    }
+
+    function broadcastFilterChanged() {
         // trigger initial map load
         $rootScope.$broadcast('FILTER_CHANGED', _getCurrResults());
     }

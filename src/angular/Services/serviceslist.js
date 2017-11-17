@@ -21,25 +21,7 @@ services.factory('ServicesList', ['$http', '$translate', 'Language', 'SiteSpecif
     var awaitServices = $http.get(servicesList, {cache: true}).then(
         (services) => services.data.filter(activeFeatures)
     );
-
-    // TODO: Figure out why Promise.all() causes counts to not load until user clicks on item.
-    // var awaitServicesWithSectors = Promise.all([awaitSectors, awaitServices])
-    //         .then(([rootSectors, services]) => {
-    var awaitServicesWithSectors = awaitSectors.then((rootSectors) => {
-        return awaitServices.then((services) => {
-            angular.forEach(services, (feature) => {
-                var categoryId = feature.servicesProvided[0];
-                var sector = _.find(rootSectors, function(v) {
-                    return v.model.id == categoryId;
-                });
-                feature.sector = sector.model;
-            });
-
-            Markers.createMarkersFromServices(services);
-
-            return services;
-        });
-    });
+    var awaitServicesWithSectors = Promise.all([awaitSectors, awaitServices]).then(joinSectorsWithServices);
 
     return {
         all(successCb) {
@@ -60,13 +42,23 @@ services.factory('ServicesList', ['$http', '$translate', 'Language', 'SiteSpecif
             });
         }
     };
+
+    function joinSectorsWithServices([rootSectors, services]) {
+        return services.map((feature) => {
+            var categoryId = feature.servicesProvided[0];
+            var sector = _.find(rootSectors, function(v) {
+                return v.model.id == categoryId;
+            });
+            feature.sector = sector.model;
+            return feature;
+        });
+    }
 }]);
 
 function activeFeatures(feature) {
     // We want to remove features that are past the endDate.
     var featureEndDate = new Date(feature.endDate);
     var featureEndDateUTC = new Date(featureEndDate.getUTCFullYear(), featureEndDate.getUTCMonth(), featureEndDate.getUTCDate());
-
     var today = new Date();
     var todayUTC = new Date(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate());
     return featureEndDateUTC > todayUTC;

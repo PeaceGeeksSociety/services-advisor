@@ -39,6 +39,11 @@ angular
                 console.error(`Error during pre-load: ${e.message}`, e);
                 spinner.style.display = 'none';
             });
+
+        // TODO temporarily removed.
+        if (SiteSpecificConfig.includePolygons) {
+            jQuery.getJSON("polygons.json", (polygonData) => Map.polygonLayer().addData(polygonData));
+        }
     }
 ]);
 
