@@ -1,6 +1,15 @@
 var services = angular.module('services');
 var VersionControl = require('../../utility/leaflet-version-control');
 
+// Mapbox doesn't need its own var - it automatically attaches to Leaflet's L.
+require('mapbox.js');
+// Use Awesome Markers lib to produce font-icon map markers
+require('drmonty-leaflet-awesome-markers');
+// Marker clustering
+require('leaflet.markercluster');
+// Configurable cluster icon colors.
+require('./../../utility/leaflet-divicon-color.js');
+
 services.factory('Map', [
     '$location', '$translate', '_', 'SiteSpecificConfig',
     ($location, $translate, _, SiteSpecificConfig) => {

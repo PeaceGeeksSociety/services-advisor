@@ -1,48 +1,73 @@
 var services = angular.module('services'),
     TreeModel = require('tree-model');
 
-services.factory('RegionList', ['$http', 'Language', '_', function ($http, Language, _) {
+services.factory('RegionList', [
+    '$http', 'Language', '_',
+    ($http, Language, _) => {
+
     var treeconfig = new TreeModel();
     var regionsPromise = null;
     var regionsByIdPromise = {};
 
-    var getRegions = function () {
-        if (regionsPromise === null) {
-            regionsPromise = $http.get('js/regions_' + Language.getLanguageKey() + '.json').then(function (regions) {
-                return treeconfig.parse({ children: regions.data });
-            });
+    return {
+        get(successCb) {
+            return getRegions().then(successCb);
+        },
+        getRootRegions(successCb) {
+            return getRootRegions().then(successCb);
+        },
+        first(predicate, successCb) {
+            return first(predicate).then(successCb);
+        },
+        all(predicate, successCb) {
+            return all(predicate).then(successCb);
+        },
+        walk(predicate, successCb) {
+            return walk(predicate).then(successCb);
+        },
+        find(id, successCb) {
+            return find(id).then(successCb);
+        },
+        findAll(ids, successCb) {
+            return findAll(ids).then(successCb);
         }
-
-        return regionsPromise;
     };
 
-    var getRootRegions = function () {
+    function getRegions() {
+        if (regionsPromise === null) {
+            regionsPromise = $http.get('js/regions_' + Language.getLanguageKey() + '.json')
+                .then((response) => treeconfig.parse({ children: response.data }));
+        }
+        return regionsPromise;
+    }
+
+    function getRootRegions() {
         return getRegions().then(function (regions) {
             return regions.all(function (node) {
                 return node.model.depth == 1;
             });
         });
-    };
+    }
 
-    var first = function (predicate) {
+    function first(predicate) {
         return getRegions().then(function (regions) {
             return regions.first(predicate);
         });
-    };
+    }
 
-    var all = function (predicate) {
+    function all(predicate) {
         return getRegions().then(function (regions) {
             return regions.all(predicate);
         });
-    };
+    }
 
-    var walk = function(predicate) {
+    function walk(predicate) {
         return getRegions().then(function (regions) {
             return regions.walk(predicate);
         });
     }
 
-    var find = function (id) {
+    function find(id) {
         if (regionsByIdPromise[id] === undefined) {
             regionsByIdPromise[id] = first(function (node) {
                 return node.model.id == id;
@@ -50,35 +75,11 @@ services.factory('RegionList', ['$http', 'Language', '_', function ($http, Langu
         }
 
         return regionsByIdPromise[id];
-    };
+    }
 
-    var findAll = function (ids) {
+    function findAll(ids) {
         return all(function (node) {
             return _.contains(ids, node.model.id);
         });
-    };
-
-    return {
-        get: function (successCb) {
-            return getRegions().then(successCb);
-        },
-        getRootRegions: function (successCb) {
-            return getRootRegions().then(successCb);
-        },
-        first: function(predicate, successCb) {
-            return first(predicate).then(successCb);
-        },
-        all: function(predicate, successCb) {
-            return all(predicate).then(successCb);
-        },
-        walk: function(predicate, successCb) {
-            return walk(predicate).then(successCb);
-        },
-        find: function (id, successCb) {
-            return find(id).then(successCb);
-        },
-        findAll: function (ids, successCb) {
-            return findAll(ids).then(successCb);
-        },
-    };
+    }
 }]);

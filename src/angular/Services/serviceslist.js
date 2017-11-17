@@ -3,7 +3,10 @@ var services = angular.module('services');
 /**
  * Provides the list of services (compiled.json)
  */
-services.factory('ServicesList', ['$http', '$translate', 'Language', 'SiteSpecificConfig', '_', 'SectorList', 'Markers', function ($http, $translate, Language, SiteSpecificConfig, _, SectorList, Markers) {
+services.factory('ServicesList', [
+    '$http', '$translate', '$q', 'Language', 'SiteSpecificConfig', '_', 'SectorList',
+    ($http, $translate, $q, Language, SiteSpecificConfig, _, SectorList) => {
+
     var servicesById = null;
 
     // doing this here because we need it right before we load the data
@@ -18,19 +21,19 @@ services.factory('ServicesList', ['$http', '$translate', 'Language', 'SiteSpecif
 
     var awaitSectors = SectorList.getRootSectors();
     var servicesList = SiteSpecificConfig.languages[language].servicesUrl;
-    var awaitServices = $http.get(servicesList, {cache: true}).then(
-        (services) => services.data.filter(activeFeatures)
-    );
-    var awaitServicesWithSectors = Promise.all([awaitSectors, awaitServices]).then(joinSectorsWithServices);
+    var awaitServices = $http.get(servicesList, {cache: true})
+            .then((response) => response.data.filter(activeFeatures));
+
+    var awaitServicesWithSectors = $q.all([awaitSectors, awaitServices]).then(joinSectorsWithServices);
 
     return {
         all(successCb) {
             return awaitServicesWithSectors.then(successCb);
         },
-        get: function (successCb) {
+        get(successCb) {
             return awaitServicesWithSectors.then(successCb);
         },
-        findById: function (id) {
+        findById(id) {
             return awaitServicesWithSectors.then((services) => {
                 if (servicesById === null) {
                     servicesById = {};

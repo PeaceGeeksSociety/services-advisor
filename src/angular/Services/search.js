@@ -5,7 +5,10 @@ var Fuse = require('fuse.js');
 /**
  * Holds the state of the current search and the current results of that search
  */
-services.factory('Search', ['SiteSpecificConfig', '$location', 'RegionList', 'SectorList', 'ServicesList', '$rootScope', '_', function (SiteSpecificConfig, $location, RegionList, SectorList, ServicesList, $rootScope, _) {
+services.factory('Search', [
+    '$q', '$rootScope', '$location', '_', 'SiteSpecificConfig', 'RegionList', 'SectorList', 'ServicesList', 'Map',
+    ($q, $rootScope, $location, _, SiteSpecificConfig, RegionList, SectorList, ServicesList, Map) => {
+
     var crossfilter = require('crossfilter')();
     var fuse;
 
@@ -24,19 +27,16 @@ services.factory('Search', ['SiteSpecificConfig', '$location', 'RegionList', 'Se
     var referralsDimension = crossfilter.dimension((f) => f.referral.required);
     /** Used to get list of currently filtered services rather than re-using an existing dimension **/
     var metaDimension = crossfilter.dimension(function (f) { return f.id; });
-
     var allDimensions = [
         categoryDimension, regionDimension, textDimension, partnerDimension,
         nationalityDimension, locationDimension, idDimension,
         referralsDimension
     ];
 
-    /** End crossfilter setup **/
-
     // asynchronously initialize crossfilter
-    const awaitData = fetchData()
+    fetchData()
         .then(indexServices)
-        .then(broadcastFilterChanged);
+        .then(() => $rootScope.$broadcast('FILTER_CHANGED', _getCurrResults()));
 
     return {
         selectCategory: withClearAndEmit(selectCategory),
@@ -95,11 +95,6 @@ services.factory('Search', ['SiteSpecificConfig', '$location', 'RegionList', 'Se
         fuse = new Fuse(services, SiteSpecificConfig.search);
     }
 
-    function broadcastFilterChanged() {
-        // trigger initial map load
-        $rootScope.$broadcast('FILTER_CHANGED', _getCurrResults());
-    }
-
     function _getCurrResults() {
         return metaDimension.top(Infinity);
     }
@@ -151,7 +146,7 @@ services.factory('Search', ['SiteSpecificConfig', '$location', 'RegionList', 'Se
     function selectLocation(region) {
         var activeRegionLayer = null;
         // TODO: Where is polygonLayer coming from??
-        polygonLayer.getLayers().forEach(function(f) {
+        Map.polygonLayer().getLayers().forEach(function(f) {
             if (f.feature.properties.adm1_name == region) {
                 activeRegionLayer = f;
             }
@@ -170,8 +165,8 @@ services.factory('Search', ['SiteSpecificConfig', '$location', 'RegionList', 'Se
 
     function filterByProxmity(geoLocation){
         var requiredArgumentGiven =  _.has(geoLocation, 'latitude') &&
-                                        _.has(geoLocation, 'longitude') &&
-                                        _.has(geoLocation, 'radius');
+            _.has(geoLocation, 'longitude') && _.has(geoLocation, 'radius');
+
         if (requiredArgumentGiven) {
             var center = gju.rectangleCentroid({
                 "type": "Polygon",

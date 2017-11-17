@@ -5,17 +5,16 @@ var controllers = angular.module('controllers');
  */
 controllers.controller(
     'SearchCtrl',
-    ['$scope', '$http', '$location', '$rootScope', 'SiteSpecificConfig', 'ServicesList', 'SectorList', 'RegionList', 'Search', '_', '$translate', 'Language',
-    ($scope, $http, $location, $rootScope, SiteSpecificConfig, ServicesList, SectorList, RegionList, Search, _, $translate, Language) => {
+    ['$scope', '$q', '$http', '$location', '$rootScope', 'SiteSpecificConfig', 'ServicesList', 'SectorList', 'RegionList', 'Search', '_', '$translate', 'Language',
+    ($scope, $q, $http, $location, $rootScope, SiteSpecificConfig, ServicesList, SectorList, RegionList, Search, _, $translate, Language) => {
+
+    const awaitData = $q.all([RegionList.get(), SectorList.get(), ServicesList.get()])
+        .then(setScopeData)
+        .catch(console.error.bind(console));
 
     $scope.feedbackMail = SiteSpecificConfig.feedbackMail;
-
-    // $scope.organizations = {};
-
-    const awaitData = Promise.all([RegionList.get(), SectorList.get(), ServicesList.get()]).then(setScopeData);
-
     $scope.$on('$locationChangeSuccess', onLocationChangeSuccess);
-    $scope.$on('FILTER_CHANGED', onFilterChanged);
+    $scope.$on('FILTER_CHANGED', setCounts);
     // toggle selection for a given organization by name
     $scope.toggleSelection = toggleSelection;
 
@@ -29,7 +28,28 @@ controllers.controller(
             }
             return organizations;
         }, {});
+        setCounts();
         return [regions, sectors, services];
+    }
+
+    function setCounts() {
+        // TODO: We awaitData here to ensure that $scope.{categories|regions} has been set.
+        //       Execution sequence could be cleaned up a bit so that this isn't necessary.
+        awaitData.then(
+            () => {
+                var categoryCounts = Search.getCategoryGroup.value();
+                var regionCounts = Search.getRegionGroup.value();
+                // TODO: There's no guarantee that $scope.categories or $scope.regions have been set here.
+                $scope.categories.walk((node) => {
+                    node.model.count = categoryCounts[node.model.id] || 0;
+                });
+                $scope.regions.walk((node) => {
+                    node.model.count = regionCounts[node.model.id] || 0;
+                });
+            },
+            // Log errors that occur in above promise handler.
+            console.error.bind(console)
+        )
     }
 
     function onLocationChangeSuccess() {
@@ -37,22 +57,6 @@ controllers.controller(
         if ($location.path() === '/') {
             Search.filterByUrlParameters();
         }
-    }
-
-    function onFilterChanged(event, results) {
-        var categoryCounts = Search.getCategoryGroup.value();
-        var regionCounts = Search.getRegionGroup.value();
-
-        awaitData.then(([regions, sectors, services]) => {
-            // sectors.walk((node) => {
-            $scope.categories.walk((node) => {
-                node.model.count = categoryCounts[node.model.id] || 0;
-            });
-            // regions.walk((node) => {
-            $scope.regions.walk((node) => {
-                node.model.count = regionCounts[node.model.id] || 0;
-            });
-        });
     }
 
     function toggleSelection(organization) {

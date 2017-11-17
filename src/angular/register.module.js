@@ -6,7 +6,8 @@ angular
 .module(
     'servicesAdvisorApp',
     ['ngRoute', 'controllers', 'directives', 'services', 'pascalprecht.translate', 'ngPrint']
-).run([
+)
+.run([
     '$rootScope', '$location', '$window', '$translate', 'SiteSpecificConfig', 'Language', 'RegionList', 'SectorList', 'ServicesList',
     ($rootScope, $location, $window, $translate, SiteSpecificConfig, Language, RegionList, SectorList, ServicesList) => {
         var language = Language.getLanguageKey() || alert("ERROR: site-specific-config.js doesn't have any keys in it!");
@@ -17,7 +18,7 @@ angular
             $window.ga('create', SiteSpecificConfig.analyticsId, 'auto');
 
             // track pageview on state change
-            $rootScope.$on('$routeChangeSuccess', function (event) {
+            $rootScope.$on('$routeChangeSuccess', () => {
                 $window.ga('send', 'pageview', $location.url());
             });
         }
