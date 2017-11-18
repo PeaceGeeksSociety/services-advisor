@@ -8,8 +8,8 @@ angular
     ['ngRoute', 'controllers', 'directives', 'services', 'pascalprecht.translate', 'ngPrint']
 )
 .run([
-    '$rootScope', '$location', '$window', '$translate', 'SiteSpecificConfig', 'Language', 'RegionList', 'SectorList', 'ServicesList',
-    ($rootScope, $location, $window, $translate, SiteSpecificConfig, Language, RegionList, SectorList, ServicesList) => {
+    '$rootScope', '$location', '$window', '$translate', 'SiteSpecificConfig', 'Language', 'RegionList', 'SectorList', 'ServicesList', 'Map',
+    ($rootScope, $location, $window, $translate, SiteSpecificConfig, Language, RegionList, SectorList, ServicesList, Map) => {
         var language = Language.getLanguageKey() || alert("ERROR: site-specific-config.js doesn't have any keys in it!");
         $translate.use(language);
 
@@ -45,6 +45,7 @@ angular
         if (SiteSpecificConfig.includePolygons) {
             jQuery.getJSON("polygons.json", (polygonData) => Map.polygonLayer().addData(polygonData));
         }
+
     }
 ]);
 

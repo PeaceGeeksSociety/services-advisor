@@ -247,7 +247,7 @@ services.factory('Search', [
 
     function _selectLocation(location) {
         var activeLocationLayer = null;
-        polygonLayer.getLayers().forEach((f) => {
+        Map.polygonLayer().getLayers().forEach((f) => {
             if (f.feature.properties.adm1_name == location) {
                 activeLocationLayer = f;
             }
