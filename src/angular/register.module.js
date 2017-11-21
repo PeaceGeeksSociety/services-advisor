@@ -23,23 +23,25 @@ angular
             });
         }
 
+        // Attach a spinner to our LongTask counter.
+        // TODO: This could be moved alongside the Spinner markup in a Angular
+        //       Component or Directive.
+        const spinner = document.getElementById('spinner-modal');
+        $rootScope.$on('LongTask.update', (e, state) => {
+            spinner.style.display = state.activeTasks ? 'auto' : 'none';
+            console.debug('LongTask.update', state, spinner.style.display);
+        });
+
         // Start fetching data ASAP, this will ensure that it's available sooner.
         var awaitData = Promise.all([
             RegionList.all(),
             SectorList.all(),
             ServicesList.all()
         ]);
-        // Get a handle on our spinner.
-        const spinner = document.getElementById('spinner-modal');
+
         awaitData
-            .then((data) => {
-                console.log('Data pre-load complete!', data);
-                spinner.style.display = 'none';
-            })
-            .catch((e) => {
-                console.error(`Error during pre-load: ${e.message}`, e);
-                spinner.style.display = 'none';
-            });
+            .then((data) => console.log('Data pre-load complete!', data))
+            .catch((e) => console.error(`Error during pre-load: ${e.message}`, e));
 
         // TODO temporarily removed.
         if (SiteSpecificConfig.includePolygons) {

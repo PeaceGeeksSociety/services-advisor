@@ -34,6 +34,7 @@ require('./Directives/servicecategorysummary.js');
 require('./Routes/routes.js');
 
 // Services
+require('./Services/longtask.js');
 require('./Services/defaultsettings.js');
 require('./Services/language.js');
 require('./Services/markers.js');

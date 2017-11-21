@@ -1,10 +1,15 @@
 var services = angular.module('services'),
     TreeModel = require('tree-model');
 
-services.factory('SectorList', ['$http', 'Language', '_', function ($http, Language, _) {
+services.factory('SectorList', [
+    '$http', 'LongTask', 'Language', '_',
+    ($http, LongTask, Language, _) => {
+
     var treeconfig = new TreeModel();
     var sectorsPromise = null;
     var sectorsByIdPromise = {};
+
+    LongTask.run(getSectors);
 
     return {
         get(successCb) {

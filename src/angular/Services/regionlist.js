@@ -2,12 +2,14 @@ var services = angular.module('services'),
     TreeModel = require('tree-model');
 
 services.factory('RegionList', [
-    '$http', 'Language', '_',
-    ($http, Language, _) => {
+    '$http', 'LongTask', 'Language', '_',
+    ($http, LongTask, Language, _) => {
 
     var treeconfig = new TreeModel();
     var regionsPromise = null;
     var regionsByIdPromise = {};
+
+    LongTask.run(getRegions);
 
     return {
         get(successCb) {

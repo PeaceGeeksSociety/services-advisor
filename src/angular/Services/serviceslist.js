@@ -4,8 +4,8 @@ var services = angular.module('services');
  * Provides the list of services (compiled.json)
  */
 services.factory('ServicesList', [
-    '$http', '$translate', '$q', 'Language', 'SiteSpecificConfig', '_', 'SectorList',
-    ($http, $translate, $q, Language, SiteSpecificConfig, _, SectorList) => {
+    '$http', '$translate', '$q', 'LongTask', 'Language', 'SiteSpecificConfig', '_', 'SectorList',
+    ($http, $translate, $q, LongTask, Language, SiteSpecificConfig, _, SectorList) => {
 
     var servicesById = null;
 
@@ -25,6 +25,8 @@ services.factory('ServicesList', [
             .then((response) => response.data.filter(activeFeatures));
 
     var awaitServicesWithSectors = $q.all([awaitSectors, awaitServices]).then(joinSectorsWithServices);
+
+    LongTask.run(() => awaitServices);
 
     return {
         all(successCb) {
