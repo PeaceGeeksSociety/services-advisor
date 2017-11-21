@@ -8,9 +8,10 @@ controllers.controller('ResultsCtrl', ['$scope', '$location', '$translate', '_',
     // A bit of a hack to get the services to load before we apply any filter on,
     // ServicesList.get will only load the services if they haven't been loaded already.
     ServicesList.get(
-        function(services){
+        async (services) => {
             // ****** RESULTS OBJECT *********
-            $scope.results = Search.filterByUrlParameters();
+            const results = await Search.filterByUrlParameters();
+            $scope.results = results;
             $scope.count = $scope.results.length;
             var search = $location.search();
             var sectorIds = search.category || [];
