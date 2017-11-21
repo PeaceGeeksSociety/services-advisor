@@ -5,137 +5,210 @@ var Fuse = require('fuse.js');
 /**
  * Holds the state of the current search and the current results of that search
  */
-services.factory('Search', ['SiteSpecificConfig', '$location', 'ServicesList', '$rootScope', '_', function (SiteSpecificConfig, $location, ServicesList, $rootScope, _) {
+services.factory('Search', [
+    '$q', '$rootScope', '$location', '_', 'LongTask', 'SiteSpecificConfig', 'RegionList', 'SectorList', 'ServicesList', 'Map',
+    ($q, $rootScope, $location, _, LongTask, SiteSpecificConfig, RegionList, SectorList, ServicesList, Map) => {
+
     var crossfilter = require('crossfilter')();
     var fuse;
 
+    var categoryDimension = crossfilter.dimension((f) => f.servicesProvided);
+    var categoryGroup = categoryDimension.groupAll().reduce(reduceAdd('servicesProvided'), reduceRemove('servicesProvided'), reduceInitial);
+    var regionDimension = crossfilter.dimension((f) => f.region);
+    var regionGroup = regionDimension.groupAll().reduce(reduceAdd('region'), reduceRemove('region'), reduceInitial);
+    var textDimension = crossfilter.dimension((f) => f.id || undefined);
+    var partnerDimension = crossfilter.dimension((f) => f.organization.name || undefined);
+    var nationalityDimension = crossfilter.dimension((f) => f.nationality.split(', ') || undefined);
+    var locationDimension = crossfilter.dimension((f) => {
+        var [lon, lat] = f.location.geometry.coordinates;
+        return `${lon}, ${lat}` || "";
+    });
+    var idDimension = crossfilter.dimension((f) => f.id);
+    var referralsDimension = crossfilter.dimension((f) => f.referral.required);
+    /** Used to get list of currently filtered services rather than re-using an existing dimension **/
+    var metaDimension = crossfilter.dimension(function (f) { return f.id; });
+    var allDimensions = [
+        categoryDimension, regionDimension, textDimension, partnerDimension,
+        nationalityDimension, locationDimension, idDimension,
+        referralsDimension
+    ];
+
     // asynchronously initialize crossfilter
-    ServicesList.get(function (allServices) {
-        $rootScope.allServices = allServices;
-        crossfilter.add(allServices);
-        fuse = new Fuse(allServices, SiteSpecificConfig.search);
-        // trigger initial map load
-        $rootScope.$broadcast('FILTER_CHANGED', _getCurrResults());
-    });
+    fetchData()
+        .then(indexServices)
+        .then(() => $rootScope.$broadcast('FILTER_CHANGED', _getCurrResults()));
 
-    // TODO: not sure why they do || undefined, but previously they had "|| option.empty" where empty was never defined
-    var categoryDimension = crossfilter.dimension(function (f) {
-        return f.servicesProvided;
-    });
+    return {
+        selectId: withClearAndEmit(selectId),
+        currResults: _getCurrResults,
+        filterByUrlParameters: () => LongTask.run(withClearAndEmit(filterByUrlParameters)),
+        getCategoryGroup: categoryGroup,
+        getRegionGroup: regionGroup,
+        // selectCategory: withClearAndEmit(selectCategory),
+        // selectRegion: withClearAndEmit(selectRegion),
+        // selectPartner: withClearAndEmit(selectPartner),
+        // selectOrganizations: _selectOrganizations,
+        // clearOrganizations: _clearOrganizations,
+        // selectLocation: withClearAndEmit(selectLocation),
+        // filterByProximity: withClearAndEmit(filterByProximity),
+        // selectReferrals : _selectReferrals,
+    };
 
-    var reduceAdd = function(property) {
-        return function(p, v) {
-            _.each(v[property], function (value, key, list) {
+    function fetchData() {
+        return Promise.all([
+            RegionList.get(),
+            SectorList.get(),
+            ServicesList.get()
+        ]);
+    }
+
+    function reduceInitial() {
+        return {};
+    }
+
+    function reduceAdd(property) {
+        return (p, v) => {
+            _.each(v[property], (value) => {
                 if (p[value] === undefined) {
                     p[value] = 0;
                 }
 
                 p[value]++;
             });
-
             return p;
         }
-    };
-
-    var reduceRemove = function(property) {
-        return function(p, v) {
-            _.each(v[property], function (value, key, list) {
-                p[value]--;
-            });
-
-            return p;
-        }
-    };
-
-    var reduceInitial = function() {
-      return {};  
     }
 
-    var categoryGroup = categoryDimension.groupAll().reduce(reduceAdd('servicesProvided'), reduceRemove('servicesProvided'), reduceInitial);
+    function reduceRemove(property) {
+        return (p, v) => {
+            _.each(v[property], (value) => {
+                p[value]--;
+            });
+            return p;
+        }
+    }
 
-    var regionDimension = crossfilter.dimension(function (f) {
-        return f.region;
-    });
+    function indexServices([regions, sectors, services]) {
+        $rootScope.allServices = services;
+        crossfilter.add(services);
+        fuse = new Fuse(services, SiteSpecificConfig.search);
+    }
 
-    var regionGroup = regionDimension.groupAll().reduce(reduceAdd('region'), reduceRemove('region'), reduceInitial);
+    function _getCurrResults() {
+        return metaDimension.top(Infinity);
+    }
 
-    var textDimension = crossfilter.dimension(function (f) {
-        return f.id || undefined;
-    });
-
-    var partnerDimension = crossfilter.dimension(function (f) {
-        return f.organization.name || undefined;
-    });
-
-    var nationalityDimension = crossfilter.dimension(function (f) {
-        return f.nationality.split(', ') || undefined;
-    });
-
-    var locationDimension = crossfilter.dimension(function (f) {
-        return f.location.geometry.coordinates[0] + "," + f.location.geometry.coordinates[1] || "";
-    });
-
-    var idDimension = crossfilter.dimension(function (f) {
-        return f.id;
-    });
-
-    var referralsDimension = crossfilter.dimension(function (f) {
-        return f.referral.required;
-    });
-
-    /** Used to get list of currently filtered services rather than re-using an existing dimension **/
-    var metaDimension = crossfilter.dimension(function (f) { return f.id; });
-
-    var allDimensions = [categoryDimension, regionDimension, textDimension, partnerDimension, nationalityDimension, locationDimension, idDimension, referralsDimension];
-
-    var _getCurrResults = function() {
-        var results = metaDimension.top(Infinity);
-
-        return results;
-    };
-
-    var clearAll = function () {
-        angular.forEach(allDimensions, function(filter) {
-            filter.filterAll();
-        });
-    };
-
-    /** End crossfilter setup **/
+    function clearAll() {
+        angular.forEach(allDimensions, (filter) => filter.filterAll());
+    }
 
     // this function allows us to wrap another function with clearAll() and $emit to reduce boilerplate
-    var withClearAndEmit = function(fn) {
-        return function () {
+    function withClearAndEmit(fn) {
+        return function clearAndEmit() {
             clearAll();
             var results = fn.apply(this, arguments);
             $rootScope.$broadcast('FILTER_CHANGED', results);
             return results;
         };
-    };
+    }
 
-    var _searchText = function(search) {
+    function selectId(id) {
+        idDimension.filter((serviceId) => serviceId == id);
+        return _getCurrResults();
+    }
+
+    // function selectCategory(category) {
+    //     _selectCategory([category]);
+
+    //     return _getCurrResults();
+    // }
+
+    // function selectRegion(region) {
+    //     _selectRegion([region]);
+
+    //     return _getCurrResults();
+    // }
+
+    // function selectPartner(partner) {
+    //     partnerDimension.filter(function(servicePartner) {
+    //         return servicePartner == partner;
+    //     });
+
+    //     return _getCurrResults();
+    // }
+
+    // function selectLocation(region) {
+    //     var activeRegionLayer = null;
+    //     // TODO: Where is polygonLayer coming from??
+    //     Map.polygonLayer().getLayers().forEach(function(f) {
+    //         if (f.feature.properties.adm1_name == region) {
+    //             activeRegionLayer = f;
+    //         }
+    //     });
+    //     if (activeRegionLayer) {
+    //         locationDimension.filter((servicePoint) => {
+    //             var pp = servicePoint.split(',');
+    //             var point = {
+    //                 type: "Point",
+    //                 coordinates: [parseFloat(pp[1]), parseFloat(pp[0])]
+    //             };
+    //             return gju.pointInPolygon(point, activeRegionLayer.toGeoJSON().geometry);
+    //         });
+    //     }
+    // }
+
+    // function filterByProximity(geoLocation){
+    //     var requiredArgumentGiven =  _.has(geoLocation, 'latitude') &&
+    //         _.has(geoLocation, 'longitude') && _.has(geoLocation, 'radius');
+
+    //     if (requiredArgumentGiven) {
+    //         var center = gju.rectangleCentroid({
+    //             "type": "Polygon",
+    //             "coordinates": [[ [geoLocation.latitude, geoLocation.longitude],
+    //                             [geoLocation.latitude, geoLocation.longitude],
+    //                             [geoLocation.latitude, geoLocation.longitude]
+    //                         ]]
+    //         });
+    //         var radius = geoLocation.radius;
+    //         locationDimension.filter((servicePoint) => {
+    //             var pp = servicePoint.split(',');
+    //             var point = {
+    //                 type: "Point",
+    //                 coordinates: [parseFloat(pp[1]), parseFloat(pp[0])]
+    //             };
+    //             return gju.geometryWithinRadius(point, center, radius);
+    //         });
+    //     } else {
+    //         console.log(' Please provide the pass in object into filterByProximity method with the following keys: latitude, longitude, and radius');
+    //     }
+    // }
+
+    // Crossfilter dimensions
+
+    function _searchText(search) {
         var result = search.length > 0 ? fuse.search(search): [];
-        textDimension.filter(function (serviceId) {
+        textDimension.filter((serviceId) => {
             return _.contains(result, serviceId);
         });
     }
 
-    var _clearOrganizations = function() {
-        partnerDimension.filterAll();
-    };
+    // function _clearOrganizations() {
+    //     partnerDimension.filterAll();
+    // }
 
-    var _selectOrganizations = function(organizations) {
-        partnerDimension.filter(function(serviceOrganization) {
+    function _selectOrganizations(organizations) {
+        partnerDimension.filter((serviceOrganization) => {
             return organizations.indexOf(serviceOrganization) > -1;
         });
-    };
+    }
 
-    var _selectNationalities = function(nationalities) {
-        nationalityDimension.filter(function(serviceNationalities) {
+    function _selectNationalities(nationalities) {
+        nationalityDimension.filter((serviceNationalities) => {
             return _.intersection(nationalities, serviceNationalities).length > 0;
         });
-    };
+    }
 
-    var _selectReferrals = function (selection) {
+    function _selectReferrals(selection) {
         referralsDimension.filter(function(service_requires_referral) {
             // if they've selected all, then we return everything, otherwise we try to match
             if (selection == 'all'){
@@ -148,34 +221,34 @@ services.factory('Search', ['SiteSpecificConfig', '$location', 'ServicesList', '
                 return false;
             }
         });
-    };
+    }
 
-    var _selectCategory = function(categories) {
-        categoryDimension.filter(function(f) {
+    function _selectCategory(categories) {
+        categoryDimension.filter((f) => {
             var intersection = _.intersection(f, categories);
             return _.isEqual(intersection, categories);
         });
 
         return _getCurrResults();
-    };
+    }
 
-    var _selectRegion = function(regions) {
+    function _selectRegion(regions) {
         regionDimension.filter(function (f) {
             var intersection = _.intersection(f, regions);
             return _.isEqual(intersection, regions);
         });
-    };
+    }
 
-    var _selectLocation = function (location) {
+    function _selectLocation(location) {
         var activeLocationLayer = null;
-        polygonLayer.getLayers().forEach(function(f) {
+        Map.polygonLayer().getLayers().forEach((f) => {
             if (f.feature.properties.adm1_name == location) {
                 activeLocationLayer = f;
             }
         });
 
         if (activeLocationLayer) {
-            locationDimension.filter(function(servicePoint) {
+            locationDimension.filter((servicePoint) => {
                 var pp = servicePoint.split(',');
                 var point = {
                     type: "Point",
@@ -186,117 +259,37 @@ services.factory('Search', ['SiteSpecificConfig', '$location', 'ServicesList', '
         }
 
         return _getCurrResults();
-    };
+    }
 
-    return {
-        selectCategory: withClearAndEmit(function (category) {
-            _selectCategory([category]);
+    function filterByUrlParameters() {
+        var parameters = $location.search();
 
-            return _getCurrResults();
-        }),
-        selectRegion: withClearAndEmit(function (region) {
-            _selectRegion([region]);
+        if (_.has(parameters, 'search')) {
+            _searchText(parameters.search);
+        }
+        if (_.has(parameters, 'organization') && parameters.organization.length > 0) {
+            _selectOrganizations(parameters.organization);
+        }
 
-            return _getCurrResults();
-        }),
-        selectId: withClearAndEmit(function (id) {
-            idDimension.filter(function(serviceId) {
-                return serviceId == id;
-            });
+        if (_.has(parameters, 'nationality') && parameters.nationality.length > 0) {
+            _selectNationalities(parameters.nationality);
+        }
 
-            return _getCurrResults();
-        }),
-        selectPartner: withClearAndEmit(function(partner) {
-            partnerDimension.filter(function(servicePartner) {
-                return servicePartner == partner;
-            });
+        if (_.has(parameters, 'referrals')) {
+            _selectReferrals(parameters.referrals);
+        }
 
-            return _getCurrResults();
-        }),
-        selectOrganizations: _selectOrganizations,
-        clearOrganizations: _clearOrganizations,
-        selectLocation: withClearAndEmit(function(region) {
-            var activeRegionLayer = null;
-            polygonLayer.getLayers().forEach(function(f) {
-                if (f.feature.properties.adm1_name == region) {
-                    activeRegionLayer = f;
-                }
-            });
-            if (activeRegionLayer) {
-                locationDimension.filter(function(servicePoint) {
-                    var pp = servicePoint.split(',');
-                    var point = {
-                        type: "Point",
-                        coordinates: [parseFloat(pp[1]), parseFloat(pp[0])]
-                    };
+        if (_.has(parameters, 'category')) {
+            _selectCategory(parameters.category);
+        }
 
-                    return gju.pointInPolygon(point, activeRegionLayer.toGeoJSON().geometry);
-                });
-            }
-        }),
-        filterByProxmity: withClearAndEmit(function(geoLocation){
+        if (_.has(parameters, 'region')) {
+            _selectRegion(parameters.region);
+        }
+        if (_.has(parameters, 'location')) {
+            _selectLocation(parameters.location);
+        }
 
-            var requiredArgumentGiven =  _.has(geoLocation, 'latitude') &&
-                                        _.has(geoLocation, 'longitude') &&
-                                        _.has(geoLocation, 'radius');
-            if(requiredArgumentGiven){
-                var center = gju.rectangleCentroid({
-                  "type": "Polygon",
-                  "coordinates": [[ [geoLocation.latitude, geoLocation.longitude],
-                                    [geoLocation.latitude, geoLocation.longitude],
-                                    [geoLocation.latitude, geoLocation.longitude]
-                                ]]
-                });
-                var radius = geoLocation.radius;
-                locationDimension.filter(function(servicePoint) {
-                    var pp = servicePoint.split(',');
-                    var point = {
-                        type: "Point",
-                        coordinates: [parseFloat(pp[1]), parseFloat(pp[0])]
-                    };
-
-                    return gju.geometryWithinRadius(point, center, radius);
-                });
-            }else {
-                console.log(' Please provide the pass in object into filterByProxmity method with the following keys: latitude, longitude, and radius');
-            }
-
-        }),
-        selectReferrals : _selectReferrals,
-        clearAll: withClearAndEmit(function(){}),
-        currResults: _getCurrResults,
-        filterByUrlParameters: withClearAndEmit(function () {
-            var parameters = $location.search();
-
-            if (_.has(parameters, 'search')) {
-                _searchText(parameters.search);
-            }
-            if (_.has(parameters, 'organization') && parameters.organization.length > 0){
-                _selectOrganizations(parameters.organization);
-            }
-
-            if (_.has(parameters, 'nationality') && parameters.nationality.length > 0){
-                _selectNationalities(parameters.nationality);
-            }
-
-            if (_.has(parameters, 'referrals')) {
-                _selectReferrals(parameters.referrals);
-            }
-
-            if (_.has(parameters, 'category')) {
-                _selectCategory(parameters.category);
-            }
-
-            if (_.has(parameters, 'region')){
-                _selectRegion(parameters.region);
-            }
-            if (_.has(parameters, 'location')){
-                _selectLocation(parameters.location);
-            }
-
-            return _getCurrResults();
-        }),
-        getCategoryGroup: categoryGroup,
-        getRegionGroup: regionGroup,
-    };
+        return _getCurrResults();
+    }
 }]);

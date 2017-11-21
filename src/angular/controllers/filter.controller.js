@@ -90,8 +90,7 @@ controllers.controller('FilterCtrl', ['$scope', '$rootScope', '$location', 'Sear
     Search.filterByUrlParameters();
   };
 
-  $scope.toggleFilters = toggleFilters;
-
+  $scope.toggleFilters = window.toggleFilters;
 
 }]);
 
