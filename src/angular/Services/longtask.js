@@ -34,17 +34,18 @@ class TaskManager {
         this._tasks = this._tasks + 1;
         this.updateAll(taskId);
 
-        try {
-            const result = await this._taskRunner.run((onSuccess) => {
+        return this._taskRunner.run((onSuccess) => {
                 const result = fn();
                 onSuccess(result);
+            })
+            .then((result) => {
+                this.complete(taskId);
+                return result;
+            })
+            .catch((e) => {
+                this.complete(taskId);
+                throw e;
             });
-            this.complete(taskId);
-            return result;
-        } catch (e) {
-            this.complete(taskId);
-            throw e;
-        }
     }
 
     complete(taskId) {
