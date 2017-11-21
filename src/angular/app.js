@@ -13,6 +13,9 @@
 // SASS for the project.
 require('../scss/main.scss');
 
+// Polyfills
+require('./requestIdleCallbackPolyfill');
+
 // Register App Modules
 require('./register.module.js');
 
