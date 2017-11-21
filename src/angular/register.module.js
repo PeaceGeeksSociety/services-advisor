@@ -8,8 +8,8 @@ angular
     ['ngRoute', 'controllers', 'directives', 'services', 'pascalprecht.translate', 'ngPrint']
 )
 .run([
-    '$rootScope', '$location', '$window', '$translate', 'SiteSpecificConfig', 'Language', 'RegionList', 'SectorList', 'ServicesList', 'Map',
-    ($rootScope, $location, $window, $translate, SiteSpecificConfig, Language, RegionList, SectorList, ServicesList, Map) => {
+    '$rootScope', '$location', '$window', '$translate', 'LongTask', 'SiteSpecificConfig', 'Language', 'RegionList', 'SectorList', 'ServicesList', 'Map',
+    ($rootScope, $location, $window, $translate, LongTask, SiteSpecificConfig, Language, RegionList, SectorList, ServicesList, Map) => {
         var language = Language.getLanguageKey() || alert("ERROR: site-specific-config.js doesn't have any keys in it!");
         $translate.use(language);
 
@@ -28,8 +28,8 @@ angular
         //       Component or Directive.
         const spinner = document.getElementById('spinner-modal');
         $rootScope.$on('LongTask.update', (e, state) => {
-            spinner.style.display = state.activeTasks ? 'auto' : 'none';
-            console.debug('LongTask.update', state, spinner.style.display);
+            const visibility = state.activeTasks ? 'visible' : 'hidden';
+            spinner.style.visibility = visibility;
         });
 
         // Start fetching data ASAP, this will ensure that it's available sooner.

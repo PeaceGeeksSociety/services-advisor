@@ -6,8 +6,8 @@ var Fuse = require('fuse.js');
  * Holds the state of the current search and the current results of that search
  */
 services.factory('Search', [
-    '$q', '$rootScope', '$location', '_', 'SiteSpecificConfig', 'RegionList', 'SectorList', 'ServicesList', 'Map',
-    ($q, $rootScope, $location, _, SiteSpecificConfig, RegionList, SectorList, ServicesList, Map) => {
+    '$q', '$rootScope', '$location', '_', 'LongTask', 'SiteSpecificConfig', 'RegionList', 'SectorList', 'ServicesList', 'Map',
+    ($q, $rootScope, $location, _, LongTask, SiteSpecificConfig, RegionList, SectorList, ServicesList, Map) => {
 
     var crossfilter = require('crossfilter')();
     var fuse;
@@ -39,20 +39,19 @@ services.factory('Search', [
         .then(() => $rootScope.$broadcast('FILTER_CHANGED', _getCurrResults()));
 
     return {
-        selectCategory: withClearAndEmit(selectCategory),
-        selectRegion: withClearAndEmit(selectRegion),
         selectId: withClearAndEmit(selectId),
-        selectPartner: withClearAndEmit(selectPartner),
-        selectOrganizations: _selectOrganizations,
-        clearOrganizations: _clearOrganizations,
-        selectLocation: withClearAndEmit(selectLocation),
-        filterByProxmity: withClearAndEmit(filterByProxmity),
-        selectReferrals : _selectReferrals,
-        clearAll: withClearAndEmit(() => ({})),
         currResults: _getCurrResults,
-        filterByUrlParameters: withClearAndEmit(filterByUrlParameters),
+        filterByUrlParameters: () => LongTask.run(withClearAndEmit(filterByUrlParameters)),
         getCategoryGroup: categoryGroup,
         getRegionGroup: regionGroup,
+        // selectCategory: withClearAndEmit(selectCategory),
+        // selectRegion: withClearAndEmit(selectRegion),
+        // selectPartner: withClearAndEmit(selectPartner),
+        // selectOrganizations: _selectOrganizations,
+        // clearOrganizations: _clearOrganizations,
+        // selectLocation: withClearAndEmit(selectLocation),
+        // filterByProximity: withClearAndEmit(filterByProximity),
+        // selectReferrals : _selectReferrals,
     };
 
     function fetchData() {
@@ -69,7 +68,7 @@ services.factory('Search', [
 
     function reduceAdd(property) {
         return (p, v) => {
-            _.each(v[property], function (value, key, list) {
+            _.each(v[property], (value) => {
                 if (p[value] === undefined) {
                     p[value] = 0;
                 }
@@ -82,7 +81,7 @@ services.factory('Search', [
 
     function reduceRemove(property) {
         return (p, v) => {
-            _.each(v[property], function (value, key, list) {
+            _.each(v[property], (value) => {
                 p[value]--;
             });
             return p;
@@ -100,9 +99,7 @@ services.factory('Search', [
     }
 
     function clearAll() {
-        angular.forEach(allDimensions, function(filter) {
-            filter.filterAll();
-        });
+        angular.forEach(allDimensions, (filter) => filter.filterAll());
     }
 
     // this function allows us to wrap another function with clearAll() and $emit to reduce boilerplate
@@ -115,79 +112,76 @@ services.factory('Search', [
         };
     }
 
-    function selectCategory(category) {
-        _selectCategory([category]);
-
-        return _getCurrResults();
-    }
-
-    function selectRegion(region) {
-        _selectRegion([region]);
-
-        return _getCurrResults();
-    }
-
     function selectId(id) {
-        idDimension.filter(function(serviceId) {
-            return serviceId == id;
-        });
-
+        idDimension.filter((serviceId) => serviceId == id);
         return _getCurrResults();
     }
 
-    function selectPartner(partner) {
-        partnerDimension.filter(function(servicePartner) {
-            return servicePartner == partner;
-        });
+    // function selectCategory(category) {
+    //     _selectCategory([category]);
 
-        return _getCurrResults();
-    }
+    //     return _getCurrResults();
+    // }
 
-    function selectLocation(region) {
-        var activeRegionLayer = null;
-        // TODO: Where is polygonLayer coming from??
-        Map.polygonLayer().getLayers().forEach(function(f) {
-            if (f.feature.properties.adm1_name == region) {
-                activeRegionLayer = f;
-            }
-        });
-        if (activeRegionLayer) {
-            locationDimension.filter((servicePoint) => {
-                var pp = servicePoint.split(',');
-                var point = {
-                    type: "Point",
-                    coordinates: [parseFloat(pp[1]), parseFloat(pp[0])]
-                };
-                return gju.pointInPolygon(point, activeRegionLayer.toGeoJSON().geometry);
-            });
-        }
-    }
+    // function selectRegion(region) {
+    //     _selectRegion([region]);
 
-    function filterByProxmity(geoLocation){
-        var requiredArgumentGiven =  _.has(geoLocation, 'latitude') &&
-            _.has(geoLocation, 'longitude') && _.has(geoLocation, 'radius');
+    //     return _getCurrResults();
+    // }
 
-        if (requiredArgumentGiven) {
-            var center = gju.rectangleCentroid({
-                "type": "Polygon",
-                "coordinates": [[ [geoLocation.latitude, geoLocation.longitude],
-                                [geoLocation.latitude, geoLocation.longitude],
-                                [geoLocation.latitude, geoLocation.longitude]
-                            ]]
-            });
-            var radius = geoLocation.radius;
-            locationDimension.filter((servicePoint) => {
-                var pp = servicePoint.split(',');
-                var point = {
-                    type: "Point",
-                    coordinates: [parseFloat(pp[1]), parseFloat(pp[0])]
-                };
-                return gju.geometryWithinRadius(point, center, radius);
-            });
-        } else {
-            console.log(' Please provide the pass in object into filterByProxmity method with the following keys: latitude, longitude, and radius');
-        }
-    }
+    // function selectPartner(partner) {
+    //     partnerDimension.filter(function(servicePartner) {
+    //         return servicePartner == partner;
+    //     });
+
+    //     return _getCurrResults();
+    // }
+
+    // function selectLocation(region) {
+    //     var activeRegionLayer = null;
+    //     // TODO: Where is polygonLayer coming from??
+    //     Map.polygonLayer().getLayers().forEach(function(f) {
+    //         if (f.feature.properties.adm1_name == region) {
+    //             activeRegionLayer = f;
+    //         }
+    //     });
+    //     if (activeRegionLayer) {
+    //         locationDimension.filter((servicePoint) => {
+    //             var pp = servicePoint.split(',');
+    //             var point = {
+    //                 type: "Point",
+    //                 coordinates: [parseFloat(pp[1]), parseFloat(pp[0])]
+    //             };
+    //             return gju.pointInPolygon(point, activeRegionLayer.toGeoJSON().geometry);
+    //         });
+    //     }
+    // }
+
+    // function filterByProximity(geoLocation){
+    //     var requiredArgumentGiven =  _.has(geoLocation, 'latitude') &&
+    //         _.has(geoLocation, 'longitude') && _.has(geoLocation, 'radius');
+
+    //     if (requiredArgumentGiven) {
+    //         var center = gju.rectangleCentroid({
+    //             "type": "Polygon",
+    //             "coordinates": [[ [geoLocation.latitude, geoLocation.longitude],
+    //                             [geoLocation.latitude, geoLocation.longitude],
+    //                             [geoLocation.latitude, geoLocation.longitude]
+    //                         ]]
+    //         });
+    //         var radius = geoLocation.radius;
+    //         locationDimension.filter((servicePoint) => {
+    //             var pp = servicePoint.split(',');
+    //             var point = {
+    //                 type: "Point",
+    //                 coordinates: [parseFloat(pp[1]), parseFloat(pp[0])]
+    //             };
+    //             return gju.geometryWithinRadius(point, center, radius);
+    //         });
+    //     } else {
+    //         console.log(' Please provide the pass in object into filterByProximity method with the following keys: latitude, longitude, and radius');
+    //     }
+    // }
 
     // Crossfilter dimensions
 
@@ -198,9 +192,9 @@ services.factory('Search', [
         });
     }
 
-    function _clearOrganizations() {
-        partnerDimension.filterAll();
-    }
+    // function _clearOrganizations() {
+    //     partnerDimension.filterAll();
+    // }
 
     function _selectOrganizations(organizations) {
         partnerDimension.filter((serviceOrganization) => {
