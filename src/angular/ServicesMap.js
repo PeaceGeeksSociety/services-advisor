@@ -30,6 +30,7 @@ class ServicesMap {
         this._baseLayer = this._createBaseLayer(this._config);
         this._clusterLayer = this._createClusterLayer(this._config, ClusterLayerBugFix(this._map));
         this._polygonLayer = this._createPolygonLayer();
+        this._lockBounds = false;
         this._map.addLayer(this._baseLayer);
         this._map.addLayer(this._clusterLayer);
         this._map.addLayer(this._polygonLayer);
@@ -76,12 +77,17 @@ class ServicesMap {
         }
     }
 
+    fitBounds(bounds) {
+        this._fitBounds(bounds);
+        this._lockBounds = true;
+    }
+
     _fitBounds(bounds) {
-        this._bounds = bounds;
-        if (typeof this.bbox !== 'undefined') {
-            this.bbox = undefined;
-        } else {
+        if (!this._lockBounds) {
+            this._bounds = bounds;
             this._bugFix.fitBounds(bounds);
+        } else {
+            this._lockBounds = false;
         }
     }
 
@@ -209,7 +215,7 @@ function ClusterLayerBugFix(map, clusterLayerOptions = null, fitBoundsOptions = 
     }
 
     function _fitBounds(bounds) {
-        _map.fitBounds(bounds, _fitBoundsOptions)
+        _map.fitBounds(bounds, _fitBoundsOptions);
     }
 
 }

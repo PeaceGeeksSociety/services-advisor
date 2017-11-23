@@ -26,8 +26,7 @@ services.factory('Map', [
     // If no, we'll user the points to fix to zoom.
     var parameters = $location.search();
     if (parameters.hasOwnProperty('bbox')) {
-        const bbox = servicesMap.bbox = JSON.parse(decodeURI(parameters.bbox));
-        delete parameters.bbox;
+        const bbox = JSON.parse(decodeURI(parameters.bbox));
         servicesMap.fitBounds([
             [bbox._northEast.lat, bbox._northEast.lng],
             [bbox._southWest.lat, bbox._southWest.lng]
