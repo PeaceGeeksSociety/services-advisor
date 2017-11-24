@@ -18,6 +18,7 @@ const extractCSSPlugin = new ExtractTextPlugin({
 module.exports = {
     entry: {
         app: [
+            "babel-polyfill",
             Path.join(__dirname, 'src/angular/app.js')
         ]
     },
@@ -31,7 +32,7 @@ module.exports = {
             {
                 test: /\.js$/,
                 exclude: [/node_modules/],
-                // use: ['eslint-loader']
+                loader: "babel-loader",
             },
             {
                 test: /\.(eot|woff2|woff|ttf)$/,

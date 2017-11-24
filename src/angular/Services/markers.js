@@ -1,19 +1,22 @@
 var services = angular.module('services');
 
-services.factory('Markers', ['$rootScope', '$compile', '$location', '$templateRequest', '$timeout', function ($rootScope, $compile, $location, $templateRequest, $timeout) {
+services.factory('Markers', [
+    '$rootScope', '$compile', '$location', '$templateRequest', '$timeout',
+    ($rootScope, $compile, $location, $templateRequest, $timeout) => {
+
     // Eagerly fetching service-popup template as we'll need it and it will be
     // (in theory) cached.
     $templateRequest('views/service-popup.html');
 
     var service = {
         markers: [],
-        addMarker: function (feature) {
+        createMarker: function (feature) {
             var marker = L.marker(
                 feature.location.geometry.coordinates.reverse(),
                 {icon: feature.sector.icon}
             );
 
-            marker.on('click', function (e) {
+            marker.on('click', function onMarkerClick(e) {
                 $location.search('showOthers', true);
                 $location.path("/services/" + feature.id);
                 $rootScope.$apply();
@@ -31,8 +34,12 @@ services.factory('Markers', ['$rootScope', '$compile', '$location', '$templateRe
 
             feature.marker = marker;
             service.markers.push(marker);
-            $rootScope.$broadcast('markers.add', marker);
-        }
+            return marker;
+        },
+        createMarkersFromServices(services) {
+            const markers = services.map(service.createMarker);
+            return markers;
+        },
     };
 
     return service;

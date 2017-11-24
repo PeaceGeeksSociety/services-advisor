@@ -3,47 +3,63 @@ var controllers = angular.module('controllers');
 /**
  * For the category/region search view
  */
-controllers.controller('SearchCtrl', ['$scope', '$http', '$location', '$rootScope', 'SiteSpecificConfig', 'ServicesList', 'SectorList', 'RegionList', 'Search', '_', '$translate', 'Language', function ($scope, $http, $location, $rootScope, SiteSpecificConfig, ServicesList, SectorList, RegionList, Search, _, $translate, Language) {
+controllers.controller(
+    'SearchCtrl',
+    ['$scope', '$q', '$http', '$location', '$rootScope', 'SiteSpecificConfig', 'ServicesList', 'SectorList', 'RegionList', 'Search', '_', '$translate', 'Language',
+    ($scope, $q, $http, $location, $rootScope, SiteSpecificConfig, ServicesList, SectorList, RegionList, Search, _, $translate, Language) => {
+
+    const awaitData = $q.all([RegionList.get(), SectorList.get(), ServicesList.get()])
+        .then(setScopeData)
+        .catch(console.error.bind(console));
+
     $scope.feedbackMail = SiteSpecificConfig.feedbackMail;
+    $scope.$on('$locationChangeSuccess', onLocationChangeSuccess);
+    $scope.$on('FILTER_CHANGED', setCounts);
+    // toggle selection for a given organization by name
+    $scope.toggleSelection = toggleSelection;
 
-    $scope.organizations = {};
-
-    SectorList.get(function (sectors) {
-        $scope.categories = sectors;
-    });
-
-    RegionList.get(function (regions) {
+    function setScopeData([regions, sectors, services]) {
         $scope.regions = regions;
-    });
+        $scope.categories = sectors;
+        $scope.organizations = services.reduce((organizations, service) => {
+            const {organization: {name}, logoUrl} = service;
+            if (!organizations.hasOwnProperty(name)) {
+                organizations[name] = {name, logoUrl};
+            }
+            return organizations;
+        }, {});
+        setCounts();
+        return [regions, sectors, services];
+    }
 
-    ServicesList.get(function (services) {
-        _.each(services, function (service) {
-            $scope.organizations[service.organization.name] = { name: service.organization.name, logoUrl: service.logoUrl };
-        });
-    });
+    function setCounts() {
+        // TODO: We awaitData here to ensure that $scope.{categories|regions} has been set.
+        //       Execution sequence could be cleaned up a bit so that this isn't necessary.
+        awaitData.then(
+            () => {
+                var categoryCounts = Search.getCategoryGroup.value();
+                var regionCounts = Search.getRegionGroup.value();
+                // TODO: There's no guarantee that $scope.categories or $scope.regions have been set here.
+                $scope.categories.walk((node) => {
+                    node.model.count = categoryCounts[node.model.id] || 0;
+                });
+                $scope.regions.walk((node) => {
+                    node.model.count = regionCounts[node.model.id] || 0;
+                });
+            },
+            // Log errors that occur in above promise handler.
+            console.error.bind(console)
+        )
+    }
 
-    $scope.$on('$locationChangeSuccess', function () {
+    function onLocationChangeSuccess() {
         // Only filter results if we stay on front route.
         if ($location.path() === '/') {
             Search.filterByUrlParameters();
         }
-    });
+    }
 
-    $scope.$on('FILTER_CHANGED', function (event, results) {
-        var categoryCounts = Search.getCategoryGroup.value();
-        var regionCounts = Search.getRegionGroup.value();
-
-        $scope.categories.walk(function (node) {
-            node.model.count = categoryCounts[node.model.id] || 0;
-        });
-
-        $scope.regions.walk(function (node) {
-            node.model.count = regionCounts[node.model.id] || 0;
-        });
-    });
-
-    // toggle selection for a given organization by name
-    $scope.toggleSelection = function(organization) {
+    function toggleSelection(organization) {
         var parameters = $location.search();
 
         if (_.has(parameters, 'organization')) {
@@ -66,5 +82,5 @@ controllers.controller('SearchCtrl', ['$scope', '$http', '$location', '$rootScop
         $rootScope.filterSelection = parameters.organization;
         $location.search(parameters);
         Search.filterByUrlParameters();
-    };
+    }
 }]);

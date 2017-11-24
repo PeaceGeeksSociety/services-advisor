@@ -3,7 +3,10 @@ var services = angular.module('services');
 /**
  * Provides the list of services (compiled.json)
  */
-services.factory('ServicesList', ['$http', '$translate', 'Language', 'SiteSpecificConfig', '_', 'SectorList', 'Markers', function ($http, $translate, Language, SiteSpecificConfig, _, SectorList, Markers) {
+services.factory('ServicesList', [
+    '$http', '$translate', '$q', 'LongTask', 'Language', 'SiteSpecificConfig', '_', 'SectorList',
+    ($http, $translate, $q, LongTask, Language, SiteSpecificConfig, _, SectorList) => {
+
     var servicesById = null;
 
     // doing this here because we need it right before we load the data
@@ -16,41 +19,24 @@ services.factory('ServicesList', ['$http', '$translate', 'Language', 'SiteSpecif
         alert("ERROR: No servicesUrl key set for language " + language);
     }
 
+    var awaitSectors = SectorList.getRootSectors();
     var servicesList = SiteSpecificConfig.languages[language].servicesUrl;
+    var awaitServices = $http.get(servicesList, {cache: true})
+            .then((response) => response.data.filter(activeFeatures));
 
-    var services = SectorList.getRootSectors(function (rootSectors) {
+    var awaitServicesWithSectors = $q.all([awaitSectors, awaitServices]).then(joinSectorsWithServices);
 
-        return $http.get(servicesList, {cache: true}).then(function (data) {
-            data = data.data.filter(function (feature) {
-                // We want to remove features that are past the endDate.
-                var featureEndDate = new Date(feature.endDate);
-                var featureEndDateUTC = new Date(featureEndDate.getUTCFullYear(), featureEndDate.getUTCMonth(), featureEndDate.getUTCDate());
-
-                var today = new Date();
-                var todayUTC = new Date(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate());
-                return featureEndDateUTC > todayUTC;
-            });
-
-            angular.forEach(data, function (feature) {
-                var categoryId = feature.servicesProvided[0];
-                var sector = _.find(rootSectors, function(v) {
-                    return v.model.id == categoryId;
-                });
-                feature.sector = sector.model;
-                Markers.addMarker(feature);
-            });
-
-            return data;
-        });
-
-    });
+    LongTask.run(() => awaitServices);
 
     return {
-        get: function (successCb) {
-            return services.then(successCb);
+        all(successCb) {
+            return awaitServicesWithSectors.then(successCb);
         },
-        findById: function (id) {
-            return services.then(function(services) {
+        get(successCb) {
+            return awaitServicesWithSectors.then(successCb);
+        },
+        findById(id) {
+            return awaitServicesWithSectors.then((services) => {
                 if (servicesById === null) {
                     servicesById = {};
                     angular.forEach(services, function (service) {
@@ -61,4 +47,24 @@ services.factory('ServicesList', ['$http', '$translate', 'Language', 'SiteSpecif
             });
         }
     };
+
+    function joinSectorsWithServices([rootSectors, services]) {
+        return services.map((feature) => {
+            var categoryId = feature.servicesProvided[0];
+            var sector = _.find(rootSectors, function(v) {
+                return v.model.id == categoryId;
+            });
+            feature.sector = sector.model;
+            return feature;
+        });
+    }
 }]);
+
+function activeFeatures(feature) {
+    // We want to remove features that are past the endDate.
+    var featureEndDate = new Date(feature.endDate);
+    var featureEndDateUTC = new Date(featureEndDate.getUTCFullYear(), featureEndDate.getUTCMonth(), featureEndDate.getUTCDate());
+    var today = new Date();
+    var todayUTC = new Date(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate());
+    return featureEndDateUTC > todayUTC;
+}

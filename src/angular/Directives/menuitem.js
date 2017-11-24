@@ -8,38 +8,61 @@ directives.directive('menuItem', ['$compile', '$location', '_', function($compil
             type: '='
         },
         templateUrl: 'views/components/menu-item.html',
-        link: function (scope, element, attr) {
-            scope.active = false;
 
+        link(scope, element, attr) {
+            let renderedChildren = false;
+
+            scope.active = false;
             scope.name = scope.item.model.name;
             scope.glyph = scope.item.model.glyph || null;
             scope.markerColor = scope.item.model.markerColor;
             scope.count = scope.item.model.count;
             scope.hasChildren = scope.item.hasChildren();
             scope.openClass = 'glyphicon-chevron-right';
+            scope.$watch('item.model.count', onItemCount);
+            scope.toggle = onToggle;
+            scope.activate = activate;
+            scope.deactivate = deactivate;
+            scope.viewResults = viewResults;
+            scope.$on('$locationChangeSuccess', onLocationChangeSuccess);
+            scope.activeByUrl = activeByUrl;
+            scope.getUrlState = getUrlState;
+            scope.getUrlState();
 
-            scope.$watch('item.model.count', function (newValue, oldValue) {
+            function onItemCount(newValue, oldValue) {
                 scope.count = newValue;
-            });
+            }
 
-            scope.toggle = function() {
+            function onToggle() {
                 if (scope.active) {
                     scope.deactivate();
                 } else {
                     scope.activate();
                 }
-            };
+            }
 
-            scope.activate = function() {
+            function renderChildren() {
+                if (!renderedChildren && scope.item.hasChildren()) {
+                    renderedChildren = true;
+                    element.append("<ul ng-show='active' class='list-group'><li ng-repeat='child in item.children' class='list-group-item'><menu-item item='child' type='type'></menu-item></li></ul>");
+                    // Recreate the element as a way to remove old event listeners.
+                    var html = element.html();
+                    element.contents().remove();
+                    element.html(html);
+                    $compile(element.contents())(scope);
+                }
+            }
+
+            function activate() {
                 if (!scope.active) {
                     var path = scope.item.getPath();
 
-                    var ids = _.map(path, function (node) {
+                    var ids = _.map(path, (node) => {
                         return node.model.id;
                     });
 
                     // getPath returns the root of the tree which has no id.
-                    ids = _.reject(ids, function(item) {
+                    ids = _.reject(ids, (item) => {
                         return item === undefined;
                     });
 
@@ -49,14 +72,15 @@ directives.directive('menuItem', ['$compile', '$location', '_', function($compil
                         $location.path('/results');
                     } else {
                         // Prevent deepest items from opening.
+                        renderChildren()
                         scope.openClass = 'glyphicon-chevron-down';
                     }
 
                     scope.active = true;
                 }
-            };
+            }
 
-            scope.deactivate = function() {
+            function deactivate() {
                 if (scope.active) {
                     var search = $location.search()[scope.type];
 
@@ -74,53 +98,37 @@ directives.directive('menuItem', ['$compile', '$location', '_', function($compil
                     scope.active = false;
                     scope.openClass = 'glyphicon-chevron-right';
                 }
-            };
+            }
 
-            scope.viewResults = function() {
+            function viewResults() {
                 scope.activate();
                 $location.path('/results');
-            };
+            }
 
-            scope.$on('$locationChangeSuccess', function () {
+            function onLocationChangeSuccess() {
                 // if the search query shows this item as active set to active.
                 scope.getUrlState();
-            });
+            }
 
-            scope.activeByUrl = function() {
+            function activeByUrl() {
                 var search = $location.search()[scope.type];
-
                 if (search !== undefined) {
                     if (!Array.isArray(search)) {
                         search = [search];
                     }
-
                     if (_.contains(search, scope.item.model.id)) {
                         return true;
                     }
                 }
-
                 return false;
             }
 
-            scope.getUrlState = function () {
+            function getUrlState() {
                 if (scope.activeByUrl()) {
                     scope.activate();
                 } else {
                     scope.deactivate();
                 }
-            }
-
-            scope.getUrlState();
-
-            if (scope.item.hasChildren()) {
-                element.append("<ul ng-show='active' class='list-group'><li ng-repeat='child in item.children' class='list-group-item'><menu-item item='child' type='type'></menu-item></li></ul>");
-
-                // Recreate the element as a way to remove old event listeners.
-                var html = element.html();
-                element.contents().remove();
-                element.html(html);
-
-                $compile(element.contents())(scope);
             }
         }
     };

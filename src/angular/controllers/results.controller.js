@@ -7,10 +7,13 @@ controllers.controller('ResultsCtrl', ['$scope', '$location', '$translate', '_',
 
     // A bit of a hack to get the services to load before we apply any filter on,
     // ServicesList.get will only load the services if they haven't been loaded already.
-    ServicesList.get(
-        function(services){
+    ServicesList.get()
+        // TODO: Verify if this needs to be called in sequence, would be better
+        //       to not have to wait for ServicesList.get() first.
+        .then(() => Search.filterByUrlParameters())
+        .then((results) => {
             // ****** RESULTS OBJECT *********
-            $scope.results = Search.filterByUrlParameters();
+            $scope.results = results;
             $scope.count = $scope.results.length;
             var search = $location.search();
             var sectorIds = search.category || [];
@@ -18,8 +21,7 @@ controllers.controller('ResultsCtrl', ['$scope', '$location', '$translate', '_',
             SectorList.findAll(sectorIds, function (sectors) {
                 $scope.categories = sectors;
             });
-        }
-    );
+        });
 
     $scope.getPartnerLogoUrl = function(result) {
         return result.logoUrl;

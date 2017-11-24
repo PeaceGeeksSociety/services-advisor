@@ -12,7 +12,7 @@ controllers.controller('NavbarCtrl', ['$scope', 'Language', function ($scope, La
     // example: /#/results?category=Financial%20assistance
   };
 
-  $scope.toggleFilters = toggleFilters;
+  $scope.toggleFilters = window.toggleFilters;
 
   // when anywhere outside the filters overlay is clicked, close the filters
   $('body').on("click", function(e) {
@@ -25,7 +25,7 @@ controllers.controller('NavbarCtrl', ['$scope', 'Language', function ($scope, La
   })
 }]);
 
-toggleFilters = function () {
+window.toggleFilters = function () {
   $('#filters').toggleClass('active');
   $('.overlay-tint').toggleClass('active');
 };
