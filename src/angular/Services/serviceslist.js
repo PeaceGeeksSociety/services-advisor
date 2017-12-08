@@ -22,7 +22,8 @@ services.factory('ServicesList', [
     var awaitSectors = SectorList.getRootSectors();
     var servicesList = SiteSpecificConfig.languages[language].servicesUrl;
     var awaitServices = $http.get(servicesList, {cache: true})
-            .then((response) => response.data.filter(activeFeatures));
+            .then((response) => response.data.filter(activeFeatures))
+            .then((features) => features.filter(validateFeature));
 
     var awaitServicesWithSectors = $q.all([awaitSectors, awaitServices]).then(joinSectorsWithServices);
 
@@ -59,6 +60,14 @@ services.factory('ServicesList', [
         });
     }
 }]);
+
+function validateFeature(feature) {
+    if (feature.location.geometry.type !== 'Point') {
+        console.log(feature, 'Service Location data not valid.');
+        return false;
+    }
+    return true;
+}
 
 function activeFeatures(feature) {
     // We want to remove features that are past the endDate.
