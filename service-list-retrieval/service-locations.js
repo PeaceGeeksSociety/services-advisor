@@ -21,7 +21,7 @@ function transformActivityInfoServices(services, context) {
             nids.push(serviceUntransformed.id);
         }
 
-        if ((serviceUntransformed.location == null || serviceUntransformed.location.location == null) && serviceUntransformed.locationAlternate == null) {
+        if ((serviceUntransformed.location == null || serviceUntransformed.location == "") && serviceUntransformed.locationAlternate == null) {
             continue;
         }
 
@@ -64,7 +64,7 @@ function transformActivityInfoServices(services, context) {
         if (serviceUntransformed.locationAlternate){
             locationFeature.geometry = serviceUntransformed.locationAlternate;
         } else {
-            locationFeature.geometry = serviceUntransformed.location.location;
+            locationFeature.geometry = serviceUntransformed.location;
         }
         serviceTransformed.location = locationFeature;
 
