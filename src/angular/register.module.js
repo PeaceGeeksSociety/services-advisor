@@ -5,7 +5,7 @@
 angular
 .module(
     'servicesAdvisorApp',
-    ['ngRoute', 'controllers', 'directives', 'services', 'pascalprecht.translate', 'ngPrint']
+    ['ngRoute', 'ngSanitize', 'controllers', 'directives', 'services', 'pascalprecht.translate', 'ngPrint']
 )
 .run([
     '$rootScope', '$location', '$window', '$translate', 'LongTask', 'SiteSpecificConfig', 'Language', 'RegionList', 'SectorList', 'ServicesList', 'Map',
