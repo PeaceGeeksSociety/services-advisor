@@ -5,7 +5,7 @@ directives.directive('logo', ['Language', 'SiteSpecificConfig', function(Languag
     var logo = SiteSpecificConfig.languages[lang].logo || SiteSpecificConfig.defaultLogo;
     return {
         restrict: 'E',
-        template: '<strong>A service provided by</strong><img class="logo" src="{{ logo }}"/>',
+        template: '<strong>{{ "SERVICES_PROVIDED_BY" | translate }} </strong><img class="logo" src="{{ logo }}"/>',
         link: function(scope, element, attrs) {
             scope.logo = logo;
         }

@@ -21,6 +21,10 @@ controllers.controller('ResultsCtrl', ['$scope', '$location', '$translate', '_',
             SectorList.findAll(sectorIds, function (sectors) {
                 $scope.categories = sectors;
             });
+
+            $scope.translationData = {
+                count: $scope.count
+            };
         });
 
     $scope.getPartnerLogoUrl = function(result) {
