@@ -935,3 +935,25 @@ div.logo-space {
 .leaflet-marker-icon.you-are-here {
   background-image: url('/images/you-are-here.png');
 }
+
+// Override of css from ngPrint. It was setting all printed content to
+// display: inline; which ruined layouts.
+@media screen {
+  #printSection {
+    display: none;
+  }
+}
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #printSection * {
+    visibility: visible;
+  }
+  #printSection {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+}
