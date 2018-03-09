@@ -39,6 +39,7 @@ require('./Routes/routes.js');
 // Services
 require('./Services/longtask.js');
 require('./Services/defaultsettings.js');
+require('./Services/feedback.js');
 require('./Services/language.js');
 require('./Services/markers.js');
 require('./Services/map.js');
@@ -49,6 +50,7 @@ require('./Services/serviceslist.js');
 require('./Services/underscore.js');
 
 // Controllers
+require('./controllers/feedback.controller.js');
 require('./controllers/filter.controller.js');
 require('./controllers/map.controller.js');
 require('./controllers/navbar.controller.js');

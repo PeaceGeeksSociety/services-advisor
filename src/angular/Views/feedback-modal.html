@@ -1,0 +1,34 @@
+<div class="modal fade" id="feedbackModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" ng-controller="FeedbackCtrl">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h2 class="modal-title">Feedback</h2>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="feedback-title">Title</label>
+            <input class="form-control" type="text" id="feedback-title" ng-model="feedback.title" placeholder="Issue Title" ng-change="onChange()" required>
+          </div>
+          <div class="form-group">
+            <label for="feedback-type">Feedback Type</label>
+            <select class="form-control input-lg" name="feedback-type" id="feedback-type" ng-model="feedback.type" ng-change="onChange()">
+              <option value="not_available">Service not available</option>
+              <option value="incorrect_hours">Opening hours incorrect</option>
+              <option value="incorrect_location">Service location incorrect</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="feedback-summary">Summary</label>
+            <textarea class="form-control" rows="3" ng-model="feedback.summary" placeholder="Issue Summary" ng-change="onChange()"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" ng-click="submit()" ng-disabled="disabled === true" class="btn btn-primary">Send</button>
+      </div>
+    </div>
+  </div>
+</div>
