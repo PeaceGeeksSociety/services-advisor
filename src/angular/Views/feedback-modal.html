@@ -1,11 +1,12 @@
-<div class="modal fade" id="feedbackModal" tabindex="-1" role="dialog">
+<div class="modal fade" id="feedbackModal" tabindex="-1" role="dialog" ng-controller="FeedbackCtrl">
   <div class="modal-dialog" role="document">
-    <div class="modal-content" ng-controller="FeedbackCtrl">
+    <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h2 class="modal-title">Feedback</h2>
       </div>
       <div class="modal-body">
+        <alert ng-repeat="message in messages" type="message.type" closeable="true">{{ message.body }}</alert>
         <form>
           <div class="form-group">
             <label for="feedback-title">Title</label>
@@ -27,7 +28,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" ng-click="submit()" ng-disabled="disabled === true" class="btn btn-primary">Send</button>
+        <button type="button" ng-click="submit()" ng-disabled="disabled === true" class="btn btn-primary"><span ng-show="loading" class="glyphicon glyphicon-refresh spinning"></span>Send</button>
       </div>
     </div>
   </div>

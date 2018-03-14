@@ -118,8 +118,9 @@
       <div field="infoLink" ng-if="service.infoLink" class="more-info">
         <a class="btn btn-primary" href="{{service.infoLink.url}}" target="_blank" role="button">{{ 'INFO_LINK' | translate }}</a>
       </div>
-      <div class="feedback">
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#feedbackModal">Feedback</button>
+      <hr />
+      <div class="feedback" field="allowFeedback">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#feedbackModal">{{ 'REPORT_FEEDBACK' | translate }}</button>
       </div>
     </div>
 

@@ -23,6 +23,7 @@ require('./register.module.js');
 require('../site-specific-config.js');
 
 // Directives
+require('./Directives/alert.js');
 require('./Directives/collapsible.js');
 require('./Directives/field.js');
 require('./Directives/languagedirectionattr.js');
@@ -37,6 +38,7 @@ require('./Directives/servicecategorysummary.js');
 require('./Routes/routes.js');
 
 // Services
+require('./Services/alertbag.js');
 require('./Services/longtask.js');
 require('./Services/defaultsettings.js');
 require('./Services/feedback.js');
@@ -50,6 +52,7 @@ require('./Services/serviceslist.js');
 require('./Services/underscore.js');
 
 // Controllers
+require('./controllers/alerts.controller.js');
 require('./controllers/feedback.controller.js');
 require('./controllers/filter.controller.js');
 require('./controllers/map.controller.js');

@@ -19,7 +19,9 @@ services.factory('DefaultSettings', [function () {
         feedbackEndpoint: false,
         analyticsId: false,
         languages: {},
-        fields: {},
+        fields: {
+            allowFeedback: false
+        },
         clusterColors: {
             // Text color inside cluster markers.
             text:        'rgba(0, 0, 0, 1)',

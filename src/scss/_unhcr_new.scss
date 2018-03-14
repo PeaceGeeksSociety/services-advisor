@@ -455,10 +455,10 @@ h3 {
       padding-top: 0px;
     }
   }
-  button {
-    font-size: 1em;
-    border: 1px solid $grey-medium;
-  }
+  // button {
+  //   font-size: 1em;
+  //   border: 1px solid $grey-medium;
+  // }
 
   button:hover {
     background-color: $grey-medium;
@@ -594,6 +594,10 @@ body.lang-rtl .list-group {
   }
 }
 
+.service-footer {
+  padding: 20px 0;
+}
+
 body.lang-rtl {
   #serviceDetails table.office-hours {
     td.day-name {
@@ -612,6 +616,15 @@ div.more-info {
 
   a {
     color: #fff;
+  }
+}
+
+#serviceList div.feedback {
+  text-align: center;
+
+  button:hover {
+    background-color: #286090;
+    border-color: #204d74;
   }
 }
 
@@ -956,4 +969,24 @@ div.logo-space {
     left: 0;
     top: 0;
   }
+}
+
+// Loading icon appears in buttons.
+.btn .glyphicon {
+  margin-right: 5px;
+}
+
+.glyphicon.spinning {
+  animation: spin 1s infinite linear;
+  -webkit-animation: spin2 1s infinite linear;
+}
+
+@keyframes spin {
+  from { transform: scale(1) rotate(0deg); }
+  to { transform: scale(1) rotate(360deg); }
+}
+
+@-webkit-keyframes spin2 {
+  from { -webkit-transform: rotate(0deg); }
+  to { -webkit-transform: rotate(360deg); }
 }

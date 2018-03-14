@@ -6,10 +6,11 @@ var controllers = angular.module('controllers');
 
 */
 
-controllers.controller('FeedbackCtrl', ['$scope', '$location', 'Language', 'Feedback', function ($scope, $location, Language, Feedback) {
+controllers.controller('FeedbackCtrl', ['$scope', '$element', '$location', 'Language', 'Feedback', 'AlertBag', function ($scope, $element, $location, Language, Feedback, AlertBag) {
     $scope.disabled = true;
     $scope.loading = false;
     $scope.feedback = {};
+    $scope.messages = [];
 
     $scope.onChange = () => {
         $scope.disabled = !($scope.feedbackValid() && $scope.loading !== true);
@@ -28,15 +29,30 @@ controllers.controller('FeedbackCtrl', ['$scope', '$location', 'Language', 'Feed
             $scope.feedback.url = $location.path();
             $scope.feedback.language = Language.getLanguageKey().toLowerCase();
             $scope.loading = true;
-
             Feedback.send($scope.feedback).then((data, status, headers, config) => {
                 $scope.feedback = {};
                 $scope.loading = false;
+                $scope.messages.push({
+                    type: 'success',
+                    body: 'Feedback successfully submitted'
+                });
             }, (data, status, headers, config) => {
                 $scope.loading = false;
-                console.log(data.message);
+                $scope.messages.push({
+                    type: 'danger',
+                    body: data.message
+                });
             });
         }
     }
+
+    // empty messages when modal is closed.
+    angular.element($element).on('hidden.bs.modal', e => {
+        // This happens outside of the digest cycle so we need to let angular
+        // know about it.
+        $scope.$apply(() => {
+            $scope.messages = [];
+        });
+    })
 }]);
 
