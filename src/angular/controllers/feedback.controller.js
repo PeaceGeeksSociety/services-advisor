@@ -6,7 +6,7 @@ var controllers = angular.module('controllers');
 
 */
 
-controllers.controller('FeedbackCtrl', ['$scope', '$element', '$location', 'Language', 'Feedback', 'AlertBag', function ($scope, $element, $location, Language, Feedback, AlertBag) {
+controllers.controller('FeedbackCtrl', ['$scope', '$routeParams', '$element', '$location', 'Language', 'Feedback', 'AlertBag', function ($scope, $routeParams, $element, $location, Language, Feedback, AlertBag) {
     $scope.disabled = true;
     $scope.loading = false;
     $scope.feedback = {};
@@ -26,9 +26,15 @@ controllers.controller('FeedbackCtrl', ['$scope', '$element', '$location', 'Lang
 
     $scope.submit = () => {
         if ($scope.feedbackValid()) {
-            $scope.feedback.url = $location.path();
+            $scope.feedback.url = $location.url();
             $scope.feedback.language = Language.getLanguageKey().toLowerCase();
+            // Add association to service.
+            if ($routeParams.serviceId) {
+                $scope.feedback.serviceId = $routeParams.serviceId;
+            }
+
             $scope.loading = true;
+
             Feedback.send($scope.feedback).then((data, status, headers, config) => {
                 $scope.feedback = {};
                 $scope.loading = false;
