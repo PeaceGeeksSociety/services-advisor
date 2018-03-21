@@ -55,12 +55,8 @@
 
         <div ng-view class="container-fluid"></div>
 
-        <div class="hide">
-          <div id="activityName" />
-          <div id="referralRequired" />
-          <div id="partnerName" />
-          <div id="proximity" />
-          <div id="region" />
+        <div id="feedback-btn" field="allowFeedback">
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#feedbackModal">{{ 'REPORT_FEEDBACK' | translate }}</button>
         </div>
       </section>
     </div>

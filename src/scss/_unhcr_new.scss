@@ -619,15 +619,6 @@ div.more-info {
   }
 }
 
-#serviceList div.feedback {
-  text-align: center;
-
-  button:hover {
-    background-color: #286090;
-    border-color: #204d74;
-  }
-}
-
 /* Toggle styles */
 #map-list-toggler {
   border: 1px solid darken($orange-dark, 20%);
@@ -989,4 +980,14 @@ div.logo-space {
 @-webkit-keyframes spin2 {
   from { -webkit-transform: rotate(0deg); }
   to { -webkit-transform: rotate(360deg); }
+}
+
+#feedback-btn {
+  text-align: center;
+  margin: 35px 0;
+
+  button:hover {
+    background-color: #286090;
+    border-color: #204d74;
+  }
 }
