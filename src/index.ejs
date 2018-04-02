@@ -49,14 +49,14 @@
         <!--[if lt IE 7]>
                 <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
             <![endif]-->
+        <div class="alerts" ng-controller="AlertsCtrl">
+          <alert ng-repeat="message in messages" type="message.type" closeable="true">{{ message.body }}</alert>
+        </div>
+
         <div ng-view class="container-fluid"></div>
 
-        <div class="hide">
-          <div id="activityName" />
-          <div id="referralRequired" />
-          <div id="partnerName" />
-          <div id="proximity" />
-          <div id="region" />
+        <div id="feedback-btn" field="allowFeedback">
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#feedbackModal">{{ 'REPORT_FEEDBACK' | translate }}</button>
         </div>
       </section>
     </div>
@@ -90,7 +90,10 @@
   </div>
   <!-- End SpinKit spinner -->
 
+  <!-- search navigation bar -->
+  <ng-include src="'views/feedback-modal.html'"></ng-include>
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular-route.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular-sanitize.js"></script>

@@ -79,7 +79,9 @@ module.exports = {
             {context: 'node_modules', from: 'leaflet.markercluster/**', to: 'libs'},
             {context: 'node_modules', from: 'mapbox.js/**', to: 'libs'},
             {context: 'node_modules', from: 'ngPrint/**', to: 'libs'}
-        ]),
+        ], {
+            debug: 'warning'
+        }),
         new webpack.optimize.CommonsChunkPlugin({
             name: 'vendor',
             minChunks: function (module) {
@@ -93,7 +95,7 @@ module.exports = {
             template: 'src/index.ejs'
         }),
         new WebpackCleanupPlugin({
-            exclude: ['.htaccess', 'favicon.ico', 'humans.txt', 'robots.txt', '**/*.json', 'libs/**/*']
+            exclude: ['.htaccess', 'favicon.ico', 'humans.txt', 'robots.txt', '**/*.json', 'fonts/**/*', 'images/**/*','libs/**/*', 'views/**/*']
         })
     ],
     devServer: {
