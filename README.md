@@ -1,8 +1,8 @@
 # How to contribute
 <a href="https://zenhub.com"><img src="https://raw.githubusercontent.com/ZenHubIO/support/master/zenhub-badge.png"></a>
 
-[Frontend Configuration](docs/frontend-configuration.md)
-[Data Fetching Confugration](docs/datafetch-configuration.md)
+- [Frontend Configuration](docs/frontend-configuration.md)
+- [Data Fetching Confugration](docs/datafetch-configuration.md)
 
 ## Initial Setup
 - create a github account and click the "Fork" button at the top right to fork this repository
