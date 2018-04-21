@@ -1,5 +1,9 @@
 # How to contribute
 <a href="https://zenhub.com"><img src="https://raw.githubusercontent.com/ZenHubIO/support/master/zenhub-badge.png"></a>
+
+[Frontend Configuration](docs/frontend-configuration.md)
+[Data Fetching Confugration](docs/datafetch-configuration.md)
+
 ## Initial Setup
 - create a github account and click the "Fork" button at the top right to fork this repository
 - copy the ssh address (ex. `git@github.com:PeaceGeeksSociety/services-advisor.git`) and use it to clone the project
@@ -44,11 +48,6 @@ git rebase upstream/master
 git checkout feature
 git merge upstream/feature
 ```
-
-# If you want to run your own version with different service data
-- Modify `src/site-specific-config.js` to specify your languages and the urls for your service data
-- If you're using Amani, then be sure to specify `"amani": true`
-- If you're not using Amani and you want to generate your own data look at our schema here: TODO
 
 # Building
 
