@@ -80,3 +80,7 @@ Run this script. Must have node installed, and have run `npm install`
 ```bash
 service-list-retrieval/update-services.sh
 ```
+
+### Developing with Docker
+
+Run `docker-compose up -d`
